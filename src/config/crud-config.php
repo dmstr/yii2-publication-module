@@ -26,7 +26,12 @@ use schmunk42\giiant\commands\BatchController;
 
         ],
         'activeFields' => [
+            '_date' => function ($attribute) {
 
+        return <<<PHP
+$this->field(\$model, '{$attribute}')->widget(\zhuravljov\yii\widgets\DateTimePicker::class, []);
+PHP;
+            }
         ],
     ]
 );
@@ -35,6 +40,7 @@ use schmunk42\giiant\commands\BatchController;
     OptsProvider::class,
     [
         'columnNames' => [
+            'status' => 'checkbox'
         ]
     ]
 );
