@@ -12,7 +12,8 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "dmstr/yii2-widgets2-module": "^0.6"
+        "dmstr/yii2-widgets2-module": "^0.6",
+        "2amigos/yii2-date-time-picker-widget" : "~1.0"
     },
     "autoload": {
         "psr-4": {
