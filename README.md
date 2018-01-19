@@ -17,15 +17,31 @@ or add
 
 ```
 "dmstr/yii2-publication-module": "*"
+
 ```
 
-to the require section of your `composer.json` file.
+to the require section and 
+
+```
+{
+    "type": "vcs",
+    "url": "https://git.hrzg.de/dmstr/yii2-publication-module.git"
+}
+```
+
+to the repositories section of your `composer.json` file.
+
 
 
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+Once the extension is installed, simply use it in your code by adding the two module to the module section of your config
 
 ```php
-<?= \dmstr\modules\publication\Example::widget(); ?>```
+'modules' => [
+    'publication' => [
+        'class' => dmstr\modules\publication\Module::class
+    ]
+]
+```
