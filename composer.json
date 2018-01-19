@@ -13,7 +13,7 @@
     "require": {
         "yiisoft/yii2": "*",
         "dmstr/yii2-widgets2-module": "^0.6",
-        "2amigos/yii2-date-time-picker-widget" : "~1.0"
+        "zhuravljov/yii2-datetime-widgets" : "~1.1.0"
     },
     "autoload": {
         "psr-4": {
