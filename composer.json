@@ -1,0 +1,22 @@
+{
+    "name": "dmstr/yii2-publication-module",
+    "description": "A module for publications",
+    "type": "yii2-extension",
+    "keywords": ["yii2","publication"],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Elias Luhr",
+            "email": "e.luhr@herzogkommunikation.de"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "dmstr/yii2-widgets2-module": "^0.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "dmstr\\modules\\publication\\": "src/"
+        }
+    }
+}
