@@ -26,12 +26,6 @@ use schmunk42\giiant\commands\BatchController;
 
         ],
         'activeFields' => [
-            '_date' => function ($attribute) {
-
-        return <<<PHP
-$this->field(\$model, '{$attribute}')->widget(\zhuravljov\yii\widgets\DateTimePicker::class, []);
-PHP;
-            }
         ],
     ]
 );
@@ -40,7 +34,7 @@ PHP;
     OptsProvider::class,
     [
         'columnNames' => [
-            'status' => 'checkbox'
+            'type' => 'select2'
         ]
     ]
 );
@@ -59,6 +53,7 @@ return [
             'class' => BatchController::class,
             'overwrite' => true,
             'interactive' => false,
+            'modelBaseClass' => __NAMESPACE__ . '\\models\\crud\\ActiveRecord',
             'modelNamespace' => __NAMESPACE__ . '\\models\\crud',
             'modelQueryNamespace' => __NAMESPACE__ . '\\models\\crud\\query',
             'crudControllerNamespace' => __NAMESPACE__ . '\\controllers\\crud',

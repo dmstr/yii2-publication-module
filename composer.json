@@ -13,7 +13,10 @@
     "require": {
         "yiisoft/yii2": "*",
         "dmstr/yii2-widgets2-module": "^0.6",
-        "zhuravljov/yii2-datetime-widgets" : "~1.1.0"
+        "zhuravljov/yii2-datetime-widgets" : "~1.1.0",
+        "dmstr/yii2-backend-module": "^0.7.0",
+        "kartik-v/yii2-widget-select2": "^2",
+        "insolita/yii2-adminlte-widgets": "~1.1"
     },
     "autoload": {
         "psr-4": {
