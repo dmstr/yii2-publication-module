@@ -79,7 +79,7 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
 
         $model->setContentSchemaByCategoryId($model->publication_category_id);
         $model->setTeaserSchemaByCategoryId($model->publication_category_id);
-        
+
         if ($model->load($_POST) && $model->save()) {
             return $this->redirect(Url::previous());
         }

@@ -12,7 +12,11 @@ namespace dmstr\modules\publication\widgets;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use hrzg\widget\models\crud\WidgetContent;
+use hrzg\widget\widgets\TwigTemplate;
 use yii\base\Widget;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\twig\ViewRenderer;
 
 
 /**
@@ -26,35 +30,36 @@ class Publication extends Widget
     public $teaser = true;
     public $limit = null;
 
+
     /**
      * @return PublicationItem|string
      * @throws \Exception
      */
     public function run()
     {
-//        /** @var PublicationItem $publicationItem */
-//        $publicationItems = PublicationItem::find()->where(['publication_category_id' => $this->categoryId])->published()->all();
-//
-//        $html = null;
-//
-//        foreach ($publicationItems as $publicationItem) {
-//            if ($publicationItem === null) {
-//                return $publicationItem;
-//            }
-//
-//            /** @var PublicationCategory $publicationCategory */
-//            $publicationCategory = $publicationItem->getPublicationCategory()->one();
-//
-//            $widgetTemplateId = $this->teaser === true ? $publicationCategory->teaser_widget_template_id : $publicationCategory->content_widget_template_id;
-//
-//            $widgets = WidgetContent::find()->where(['widget_template_id' => $widgetTemplateId])->andWhere(['status' => '1'])->limit($this->limit)->all();
-//
-//            /** @var WidgetContent[] $widgets */
-//            foreach ($widgets as $widget) {
-//                $html .= DisplayWidgetContent::widget(['widget' => $widget]);
-//            }
-//        }
-//        return "<div class='publication-widget'>{$html}</div>";
+
+        /** @var PublicationCategory $publicationCategory */
+        $publicationCategory = PublicationCategory::findOne($this->categoryId);
+
+        $html = null;
+
+        if ($publicationCategory instanceof PublicationCategory) {
+            /** @var PublicationItem $publicationItem */
+            $publicationItems = PublicationItem::find()->where(['publication_category_id' => $this->categoryId])->published()->limit($this->limit)->all();
+
+            foreach ($publicationItems as $publicationItem) {
+
+                if ($this->teaser === true) {
+                    $properties = Json::decode($publicationItem->teaser_widget_json);
+                } else {
+                    $properties = Json::decode($publicationItem->content_widget_json);
+                }
+
+                $html .= $publicationCategory->render($properties,$this->teaser);
+
+            }
+        }
+        return "<div class='publication-widget'>{$html}</div>";
     }
 
 }

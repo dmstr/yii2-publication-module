@@ -2,9 +2,8 @@
 
 namespace dmstr\modules\publication\models\crud;
 
-use Yii;
-use \dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublicationCategory;
-use yii\helpers\ArrayHelper;
+use dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublicationCategory;
+use hrzg\widget\models\crud\WidgetTemplate;
 
 /**
  * This is the model class for table "{{%dmstr_publication_category}}".
@@ -12,23 +11,25 @@ use yii\helpers\ArrayHelper;
 class PublicationCategory extends BasePublicationCategory
 {
 
-    public function behaviors()
+    /**
+     * @param $properties
+     * @param $teaser
+     * @return null|string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function render($properties, $teaser)
     {
-        return ArrayHelper::merge(
-            parent::behaviors(),
-            [
-                # custom behaviors
-            ]
-        );
-    }
+        $widgetTemplate = $teaser !== true ? $this->contentWidgetTemplate : $this->teaserWidgetTemplate;
+        if ($widgetTemplate instanceof WidgetTemplate) {
 
-    public function rules()
-    {
-        return ArrayHelper::merge(
-            parent::rules(),
-            [
-                # custom validation rules
-            ]
-        );
+            $twigTemplate = $widgetTemplate->twig_template;
+
+            $twig = new \Twig_Environment(new \Twig_Loader_String());
+
+            return $twig->render($twigTemplate, $properties);
+        }
+        return null;
     }
 }
