@@ -23,12 +23,7 @@ class PublicationCategory extends BasePublicationCategory
     {
         $widgetTemplate = $teaser !== true ? $this->contentWidgetTemplate : $this->teaserWidgetTemplate;
         if ($widgetTemplate instanceof WidgetTemplate) {
-
-            $twigTemplate = $widgetTemplate->twig_template;
-
-            $twig = new \Twig_Environment(new \Twig_Loader_String());
-
-            return $twig->render($twigTemplate, $properties);
+            return (new \Twig_Environment(new \Twig_Loader_String()))->render($widgetTemplate->twig_template, $properties);
         }
         return null;
     }
