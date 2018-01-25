@@ -3,6 +3,9 @@
 namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\base\PublicationItem as BasePublicationItem;
+use yii\helpers\ArrayHelper;
+use JsonSchema\Validator;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "{{%dmstr_publication_item}}".
@@ -40,4 +43,25 @@ class PublicationItem extends BasePublicationItem
             }
         }
     }
+
+//    public function rules()
+//    {
+//        return ArrayHelper::merge(parent::rules(), [
+//            [
+//                ['teaser_widget_json','content_widget_json'],
+//                function ($attribute) {
+//                    $validator = new Validator();
+//                    $type = $attribute === 'teaser_widget_json' ? 'teaserWidgetTemplate' : 'contentWidgetTemplate';
+//                    $obj = Json::decode($this->publicationCategory->$type->json_schema, false);
+//                    $data = Json::decode($this->{$attribute}, false);
+//                    $validator->check($data, $obj);
+//                    if ($validator->getErrors()) {
+//                        foreach ($validator->getErrors() as $error) {
+//                            $this->addError($error['property'], "{$error['property']}: {$error['message']}");
+//                        }
+//                    }
+//                },
+//            ],
+//        ]);
+//    }
 }
