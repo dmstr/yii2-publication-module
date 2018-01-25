@@ -8,12 +8,10 @@
 
 namespace dmstr\modules\publication\controllers\crud;
 
-use dmstr\modules\publication\models\crud\HrzgWidgetTemplate;
-use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use yii\helpers\VarDumper;
+use yii\helpers\Url;
 
 /**
  * This is the class for controller "PublicationItemController".
@@ -43,7 +41,8 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
         ]);
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
 
 
         $model = new PublicationItem;
@@ -52,7 +51,7 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
         if (isset(\Yii::$app->request->get()['PublicationItem']['publication_category_id'])) {
             $publicationCategoryId = \Yii::$app->request->get()['PublicationItem']['publication_category_id'];
         }
-         $model->setContentSchemaByCategoryId($publicationCategoryId);
+        $model->setContentSchemaByCategoryId($publicationCategoryId);
         $model->setTeaserSchemaByCategoryId($publicationCategoryId);
 
         try {
@@ -62,10 +61,32 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
                 $model->load($_GET);
             }
         } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             $model->addError('_exception', $msg);
         }
         return $this->render('create', ['model' => $model]);
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws \yii\base\InvalidParamException
+     * @throws \yii\web\HttpException
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        $model->setContentSchemaByCategoryId($model->publication_category_id);
+        $model->setTeaserSchemaByCategoryId($model->publication_category_id);
+        
+        if ($model->load($_POST) && $model->save()) {
+            return $this->redirect(Url::previous());
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
 }
