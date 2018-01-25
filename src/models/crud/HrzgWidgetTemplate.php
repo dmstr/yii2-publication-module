@@ -7,15 +7,17 @@
  * file that was distributed with this source code.
  */
 
-namespace dmstr\modules\publication\models\cruds;
+namespace dmstr\modules\publication\models\crud;
+
+use hrzg\widget\models\crud\WidgetTemplate;
 
 
 /**
- * Class ActiveRecord
- * @package dmstr\modules\publication\models\cruds
+ * Class HrzgWidgetTemplate
+ * @package dmstr\modules\publication\models\crud
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  */
-class ActiveRecord extends \yii\db\ActiveRecord
+class HrzgWidgetTemplate extends WidgetTemplate
 {
 
 }

@@ -28,6 +28,8 @@ class m180119_151608_add_initial_publication_tables extends Migration
         $this->createTable('{{%dmstr_publication_item}}', [
             'id' => $this->primaryKey(),
             'publication_category_id' => $this->integer(),
+            'content_widget_json' => $this->text(),
+            'teaser_widget_json' => $this->text(),
             'status' => "ENUM('draft', 'published') NOT NULL DEFAULT 'draft'",
             'release_date' => $this->dateTime(),
             'end_date' => $this->dateTime(),
