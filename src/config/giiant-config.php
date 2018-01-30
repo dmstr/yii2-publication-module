@@ -11,19 +11,44 @@ namespace dmstr\modules\publication;
 
 
 use schmunk42\giiant\commands\BatchController;
+use schmunk42\giiant\generators\crud\callbacks\base\Callback;
 use schmunk42\giiant\generators\crud\providers\core\CallbackProvider;
 use schmunk42\giiant\generators\crud\providers\core\OptsProvider;
 use schmunk42\giiant\generators\crud\providers\core\RelationProvider;
 
+$formats = [
+    '^id|created_at|updated_at' => Callback::false(),
+    '_date' => function ($attribute) {
+        return <<<PHP
+[
+    'class' => yii\grid\DataColumn::className(),
+    'attribute' => '{$attribute}',
+    'value' => function (\$model) {
+        return \Yii::\$app->formatter->asDateTime(\$model->{$attribute});
+    },
+    'format' => 'raw',
+]
+PHP;
+    },
+    'status' => function ($attribute) {
+        return <<<PHP
+[
+    'class' => yii\grid\DataColumn::className(),
+    'attribute' => '{$attribute}',
+    'value' => function (\$model) {
+        return '<div class="label label-' . (\$model->{$attribute} === 'published' ? 'success' : 'warning') . '">' . ucfirst(\$model->{$attribute}) . '</div>';
+    },
+    'format' => 'raw',
+]
+PHP;
+    }
+];
+
 \Yii::$container->set(
     CallbackProvider::class,
     [
-        'columnFormats' => [
-
-        ],
-        'attributeFormats' => [
-
-        ],
+        'columnFormats' => $formats,
+        'attributeFormats' => $formats,
         'activeFields' => [
             '_json' => function ($attribute) {
                 $schemaProperty = str_replace('_json', '_schema', $attribute);
@@ -42,7 +67,7 @@ PHP;
             },
             '_date' => function ($attribute) {
                 return <<<PHP
-\$form->field(\$model,'{$attribute}')->widget(zhuravljov\yii\widgets\DateTimePicker::class)
+\$form->field(\$model,'{$attribute}')->widget(zhuravljov\yii\widgets\DateTimePicker::class,['clientOptions' => ['autoclose' => true]])
 PHP;
             }
         ],

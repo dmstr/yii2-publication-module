@@ -103,8 +103,12 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			],
 			'name',
 			[
-				'attribute'=>'status',
-				'value'=>dmstr\modules\publication\models\crud\PublicationCategory::getStatusValueLabel($model->status),
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'status',
+				'value' => function ($model) {
+					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
+				},
+				'format' => 'raw',
 			],
 		],
 	]); ?>
@@ -175,17 +179,29 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',
 			[
-				'attribute'=>'status',
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'status',
 				'value' => function ($model) {
-					return dmstr\modules\publication\models\crud\PublicationCategory::getStatusValueLabel($model->status);
-				}
-
-
-			]        ,
-			'release_date',
-			'end_date',
-			'created_at',
-			'updated_at',
+					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'release_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->release_date);
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'end_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->end_date);
+				},
+				'format' => 'raw',
+			],
 		]
 	])
 	. '</div>'

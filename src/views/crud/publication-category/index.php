@@ -174,12 +174,12 @@ if (\Yii::$app->user->can('controllers_publication-category_create', ['route' =>
 			],
 			'name',
 			[
-				'attribute'=>'status',
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'status',
 				'value' => function ($model) {
-					return dmstr\modules\publication\models\crud\PublicationCategory::getStatusValueLabel($model->status);
-				}
-
-
+					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
+				},
+				'format' => 'raw',
 			],
 		],
 	]); ?>

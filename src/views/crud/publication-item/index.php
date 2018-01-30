@@ -154,15 +154,29 @@ if (\Yii::$app->user->can('controllers_publication-item_create', ['route' => tru
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',
 			[
-				'attribute'=>'status',
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'status',
 				'value' => function ($model) {
-					return dmstr\modules\publication\models\crud\PublicationItem::getStatusValueLabel($model->status);
-				}
-
-
+					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
+				},
+				'format' => 'raw',
 			],
-			'release_date',
-			'end_date',
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'release_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->release_date);
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'end_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->end_date);
+				},
+				'format' => 'raw',
+			],
 		],
 	]); ?>
     </div>

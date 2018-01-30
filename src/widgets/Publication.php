@@ -16,6 +16,7 @@ use hrzg\widget\widgets\TwigTemplate;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 use yii\twig\ViewRenderer;
 
 
@@ -27,6 +28,7 @@ use yii\twig\ViewRenderer;
 class Publication extends Widget
 {
     public $categoryId;
+    public $item;
     public $teaser = true;
     public $limit = null;
 
@@ -43,9 +45,16 @@ class Publication extends Widget
 
         $html = null;
 
-        if ($publicationCategory instanceof PublicationCategory) {
-            /** @var PublicationItem $publicationItem */
-            $publicationItems = PublicationItem::find()->where(['publication_category_id' => $this->categoryId])->published()->limit($this->limit)->all();
+
+        if ($publicationCategory instanceof PublicationCategory || $this->item instanceof PublicationItem) {
+
+            if ($this->categoryId !== null) {
+                /** @var PublicationItem $publicationItem */
+                $publicationItems = PublicationItem::find()->where(['publication_category_id' => $this->categoryId])->published()->limit($this->limit)->all();
+            } else {
+                $publicationItems[] = $this->item;
+                $publicationCategory = $this->item->publicationCategory;
+            }
 
             foreach ($publicationItems as $publicationItem) {
 

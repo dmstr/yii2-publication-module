@@ -7,7 +7,7 @@ class Module extends \yii\base\Module
 {
 
     public $widgetModuleId = 'widgets';
-    public $defaultRoute = 'category';
+    public $defaultRoute = 'crud';
 
     /**
      * @param \yii\base\Action $action

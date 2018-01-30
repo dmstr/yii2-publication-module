@@ -94,10 +94,10 @@ $model->status = dmstr\modules\publication\models\crud\PublicationItem::STATUS_P
 ); ?>
 
 <!-- attribute release_date -->
-			<?php echo $form->field($model, 'release_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class) ?>
+			<?php echo $form->field($model, 'release_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>
 
 <!-- attribute end_date -->
-			<?php echo $form->field($model, 'end_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class) ?>
+			<?php echo $form->field($model, 'end_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>
         </p>
         <?php $this->endBlock(); ?>
 
