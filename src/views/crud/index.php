@@ -27,21 +27,3 @@ use insolita\wgadminlte\SmallBox;
         ]) ?>
     </div>
 </div>
-<div class="row">
-    <div class="col-xs-12 col-md-6">
-        <?= SmallBox::widget([
-            'head' => Yii::t('publication', 'Category Translations'),
-            'footer' => Yii::t('publication', 'Manage category translations'),
-            'footer_link' => ['/publication/crud/publication-category/index'],
-            'type' => SmallBox::TYPE_AQUA
-        ]) ?>
-    </div>
-    <div class="col-xs-12 col-md-6">
-        <?= SmallBox::widget([
-            'head' => Yii::t('publication', 'Item Translations'),
-            'footer' => Yii::t('publication', 'Manage item translations'),
-            'footer_link' => ['/publication/crud/publication-item/index'],
-            'type' => SmallBox::TYPE_ORANGE
-        ]) ?>
-    </div>
-</div>

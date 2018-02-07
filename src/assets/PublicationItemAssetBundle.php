@@ -9,7 +9,6 @@
 
 namespace dmstr\modules\publication\assets;
 
-use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
 
 
@@ -18,7 +17,7 @@ use yii\web\JqueryAsset;
  * @package dmstr\modules\publication\assets
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  */
-class PublicationItemAssetBundle extends AssetBundle
+class PublicationItemAssetBundle extends \dmstr\web\AssetBundle
 {
     /**
      * @var string

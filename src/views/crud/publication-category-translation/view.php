@@ -171,6 +171,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 				},
 				'format' => 'raw',
 			],
+			'language_code',
 			'title',
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',

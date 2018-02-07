@@ -44,6 +44,7 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'id' => $this->primaryKey(),
             'item_id' => $this->integer()->notNull(),
             'publication_category_id' => $this->integer()->notNull(),
+            'language_code' => $this->string(8)->notNull(),
             'title' => $this->string(80),
             'content_widget_json' => $this->text(),
             'teaser_widget_json' => $this->text(),

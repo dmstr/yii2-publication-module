@@ -74,6 +74,9 @@ $form->field($model, 'item_id')->widget(\kartik\select2\Select2::classname(), [
 	]); ?>
 			<?php \dmstr\modules\publication\assets\PublicationItemAssetBundle::register($this);?>
 
+<!-- attribute language_code -->
+			<?php echo $form->field($model, 'language_code')->textInput(['maxlength' => true]) ?>
+
 <!-- attribute content_widget_json -->
 			<?php echo $form->field($model, 'content_widget_json')->widget(\beowulfenator\JsonEditor\JsonEditorWidget::class, [
 		'id' => 'content_widget_jsonEditor',
@@ -102,12 +105,11 @@ $form->field($model, 'item_id')->widget(\kartik\select2\Select2::classname(), [
 			<?php
 $model->status = dmstr\modules\publication\models\crud\PublicationItemTranslation::STATUS_PUBLISHED;
 ?>
-			<?php echo                     $form->field($model, 'status')->radioList(
-	dmstr\modules\publication\models\crud\PublicationItemTranslation::optsstatus()
-); ?>
+			<?php echo $form->field($model, 'status')->widget(\kartik\select2\Select2::class, [
+		'data' => [$model::STATUS_PUBLISHED => \Yii::t('crud', 'Published'), $model::STATUS_DRAFT => \Yii::t('crud', 'Draft')] ]); ?>
 
 <!-- attribute title -->
-			<?php echo $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+			<?php echo $form->field($model, 'title'); ?>
         </p>
         <?php $this->endBlock(); ?>
 

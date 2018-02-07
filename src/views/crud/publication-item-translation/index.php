@@ -168,6 +168,7 @@ if (\Yii::$app->user->can('controllers_publication-item-translation_create', ['r
 				},
 				'format' => 'raw',
 			],
+			'language_code',
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',
 			[

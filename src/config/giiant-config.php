@@ -84,6 +84,17 @@ PHP;
 		]
 	]);
 PHP;
+            },
+            'title' => function ($attribute) {
+                return <<<PHP
+\$form->field(\$model, '{$attribute}');
+PHP;
+            },
+            'status' => function ($attribute) {
+                return <<<PHP
+\$form->field(\$model, '{$attribute}')->widget(\kartik\select2\Select2::class, [
+'data' => [\$model::STATUS_PUBLISHED => \Yii::t('crud','Published'),\$model::STATUS_DRAFT => \Yii::t('crud','Draft')] ]);
+PHP;
             }
         ],
         'prependActiveFields' => [
@@ -137,6 +148,7 @@ return [
             'crudTidyOutput' => true,
             'crudAccessFilter' => true,
             'useTablePrefix' => true,
+            'useTranslatableBehavior' => true,
             'languageCodeColumn' => 'language_code',
             'crudProviders' => [
                 CallbackProvider::class,

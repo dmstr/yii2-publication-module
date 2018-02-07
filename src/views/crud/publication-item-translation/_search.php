@@ -30,9 +30,11 @@ use yii\widgets\ActiveForm;
 
 		<?php echo $form->field($model, 'publication_category_id') ?>
 
+		<?php echo $form->field($model, 'language_code') ?>
+
 		<?php echo $form->field($model, 'title') ?>
 
-		<?php echo $form->field($model, 'content_widget_json') ?>
+		<?php // echo $form->field($model, 'content_widget_json') ?>
 
 		<?php // echo $form->field($model, 'teaser_widget_json') ?>
 

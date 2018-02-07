@@ -1,4 +1,4 @@
-let categorySelect = $("#publicationitemtranslation-publication_category_id")
+let categorySelect = $("#publicationitem-publication_category_id")
 
 categorySelect.on('select2:selecting', function (e) {
     if (!confirm('If you change the JSON scheme, all content will be lost. Continue?')) {

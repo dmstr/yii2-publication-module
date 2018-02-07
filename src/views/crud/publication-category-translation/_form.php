@@ -64,7 +64,7 @@ $form->field($model, 'category_id')->widget(\kartik\select2\Select2::classname()
 			<?php echo $form->field($model, 'language_code')->textInput(['maxlength' => true]) ?>
 
 <!-- attribute title -->
-			<?php echo $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+			<?php echo $form->field($model, 'title'); ?>
         </p>
         <?php $this->endBlock(); ?>
 
