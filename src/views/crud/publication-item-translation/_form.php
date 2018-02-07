@@ -60,20 +60,6 @@ $form->field($model, 'item_id')->widget(\kartik\select2\Select2::classname(), [
 		]
 	]); ?>
 
-<!-- attribute publication_category_id -->
-			<?php echo $form->field($model, 'publication_category_id')->widget(\kartik\select2\Select2::classname(), [
-		'name' => 'class_name',
-		'model' => $model,
-		'attribute' => 'publication_category_id',
-		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language_code' => \Yii::$app->language])->all(), 'id', 'title'),
-		'options' => [
-			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
-			'multiple' => false,
-			'disabled' => !$model->isNewRecord,
-		]
-	]); ?>
-			<?php \dmstr\modules\publication\assets\PublicationItemAssetBundle::register($this);?>
-
 <!-- attribute language_code -->
 			<?php echo $form->field($model, 'language_code')->textInput(['maxlength' => true]) ?>
 

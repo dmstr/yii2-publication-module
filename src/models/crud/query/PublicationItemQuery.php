@@ -11,8 +11,10 @@ use dmstr\modules\publication\models\crud\PublicationItem;
  */
 class PublicationItemQuery extends \yii\db\ActiveQuery
 {
+
     public function published()
     {
+        // set scenario ??? IDK lets test tomorrow morning :D
         $this->andWhere(['status' => PublicationItem::STATUS_PUBLISHED]);
         $todaysDate = date('Y-m-d');
         $this->andWhere('release_date <= :todaysDate' , [':todaysDate' => $todaysDate]);

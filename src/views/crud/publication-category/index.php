@@ -97,6 +97,10 @@ if (\Yii::$app->user->can('controllers_publication-category_create', ['route' =>
 					'url' => ['/publication/crud/publication-category-translation/index'],
 					'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Publication Category Translation'),
 				],
+				[
+					'url' => ['/publication/crud/publication-item/index'],
+					'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Publication Item'),
+				],
 
 			]
 		],

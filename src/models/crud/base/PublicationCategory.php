@@ -19,6 +19,7 @@ use yii\behaviors\TimestampBehavior;
  * @property \dmstr\modules\publication\models\crud\HrzgWidgetTemplate $contentWidgetTemplate
  * @property \dmstr\modules\publication\models\crud\HrzgWidgetTemplate $teaserWidgetTemplate
  * @property \dmstr\modules\publication\models\crud\PublicationCategoryTranslation[] $publicationCategoryTranslations
+ * @property \dmstr\modules\publication\models\crud\PublicationItem[] $publicationItems
  * @property string $aliasModel
  */
 abstract class PublicationCategory extends \yii\db\ActiveRecord
@@ -95,6 +96,14 @@ abstract class PublicationCategory extends \yii\db\ActiveRecord
     public function getPublicationCategoryTranslations()
     {
         return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationCategoryTranslation::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPublicationItems()
+    {
+        return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationItem::className(), ['category_id' => 'id']);
     }
 
 

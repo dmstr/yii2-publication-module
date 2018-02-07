@@ -89,10 +89,6 @@ if (\Yii::$app->user->can('controllers_publication-category-translation_create',
 					'url' => ['/publication/crud/publication-category/index'],
 					'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('models', 'Publication Category'),
 				],
-				[
-					'url' => ['/publication/crud/publication-item-translation/index'],
-					'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Publication Item Translation'),
-				],
 
 			]
 		],

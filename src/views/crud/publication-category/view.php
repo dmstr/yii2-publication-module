@@ -177,6 +177,87 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 <?php $this->endBlock() ?>
 
 
+<?php $this->beginBlock('PublicationItems'); ?>
+<div style='position: relative'>
+<div style='position:absolute; right: 0px; top: 0px;'>
+  <?php echo Html::a(
+	'<span class="glyphicon glyphicon-list"></span> ' . Yii::t('cruds', 'List All') . ' Publication Items',
+	['/publication/crud/publication-item/index'],
+	['class'=>'btn text-muted btn-xs']
+) ?>
+  <?php echo Html::a(
+	'<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New') . ' Publication Item',
+	['/publication/crud/publication-item/create', 'PublicationItem' => ['category_id' => $model->id]],
+	['class'=>'btn btn-success btn-xs']
+); ?>
+</div>
+</div>
+<?php Pjax::begin(['id'=>'pjax-PublicationItems', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-PublicationItems ul.pagination a, th a']) ?>
+<?php echo
+'<div class="table-responsive">'
+	. \yii\grid\GridView::widget([
+		'layout' => '{summary}{pager}<br/>{items}{pager}',
+		'dataProvider' => new \yii\data\ActiveDataProvider([
+				'query' => $model->getPublicationItems(),
+				'pagination' => [
+					'pageSize' => 20,
+					'pageParam'=>'page-publicationitems',
+				]
+			]),
+		'pager'        => [
+			'class'          => yii\widgets\LinkPager::className(),
+			'firstPageLabel' => Yii::t('cruds', 'First'),
+			'lastPageLabel'  => Yii::t('cruds', 'Last')
+		],
+		'columns' => [
+			[
+				'class'      => 'yii\grid\ActionColumn',
+				'template'   => '{view} {update}',
+				'contentOptions' => ['nowrap'=>'nowrap'],
+				'urlCreator' => function ($action, $model, $key, $index) {
+					// using the column name as key, not mapping to 'id' like the standard generator
+					$params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
+					$params[0] = '/publication/crud/publication-item' . '/' . $action;
+					$params['PublicationItem'] = ['category_id' => $model->primaryKey()[0]];
+					return $params;
+				},
+				'buttons'    => [
+
+				],
+				'controller' => '/publication/crud/publication-item'
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'status',
+				'value' => function ($model) {
+					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'release_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->release_date);
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'end_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->end_date);
+				},
+				'format' => 'raw',
+			],
+		]
+	])
+	. '</div>'
+?>
+<?php Pjax::end() ?>
+<?php $this->endBlock() ?>
+
+
     <?php echo Tabs::widget(
 	[
 		'id' => 'relation-tabs',
@@ -190,6 +271,11 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			[
 				'content' => $this->blocks['PublicationCategoryTranslations'],
 				'label'   => '<small>Publication Category Translations <span class="badge badge-default">'. $model->getPublicationCategoryTranslations()->count() . '</span></small>',
+				'active'  => false,
+			],
+			[
+				'content' => $this->blocks['PublicationItems'],
+				'label'   => '<small>Publication Items <span class="badge badge-default">'. $model->getPublicationItems()->count() . '</span></small>',
 				'active'  => false,
 			],
 		]

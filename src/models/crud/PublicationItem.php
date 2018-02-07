@@ -23,7 +23,6 @@ class PublicationItem extends BasePublicationItem
                 'relation' => 'publicationItemTranslations',
                 'languageField' => 'language_code',
                 'translationAttributes' => [
-                    'publication_category_id',
                     'content_widget_json',
                     'teaser_widget_json',
                     'status',
@@ -39,7 +38,7 @@ class PublicationItem extends BasePublicationItem
     {
         return ArrayHelper::merge(parent::scenarios(), [
             'crud' => [
-                'publication_category_id',
+                'category_id',
                 'content_widget_json',
                 'teaser_widget_json',
                 'status',
@@ -55,16 +54,7 @@ class PublicationItem extends BasePublicationItem
         return ArrayHelper::merge(
             parent::rules(),
             [
-                [['publication_category_id'], 'required'],
-                [['publication_category_id'], 'integer'],
                 [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
-                [
-                    ['publication_category_id'],
-                    'exist',
-                    'skipOnError' => true,
-                    'targetClass' => \dmstr\modules\publication\models\crud\PublicationCategoryTranslation::className(),
-                    'targetAttribute' => ['publication_category_id' => 'id']
-                ],
                 [['title'], 'string', 'max' => 80],
                 [
                     'status',

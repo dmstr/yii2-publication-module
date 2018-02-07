@@ -18,7 +18,6 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $updated_at
  *
  * @property \dmstr\modules\publication\models\crud\PublicationCategory $category
- * @property \dmstr\modules\publication\models\crud\PublicationItemTranslation[] $publicationItemTranslations
  * @property string $aliasModel
  */
 abstract class PublicationCategoryTranslation extends \yii\db\ActiveRecord
@@ -81,14 +80,6 @@ abstract class PublicationCategoryTranslation extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(\dmstr\modules\publication\models\crud\PublicationCategory::className(), ['id' => 'category_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPublicationItemTranslations()
-    {
-        return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationItemTranslation::className(), ['publication_category_id' => 'id']);
     }
 
 

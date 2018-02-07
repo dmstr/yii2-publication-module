@@ -12,7 +12,6 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property integer $id
  * @property integer $item_id
- * @property integer $publication_category_id
  * @property string $language_code
  * @property string $title
  * @property string $content_widget_json
@@ -21,7 +20,6 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property \dmstr\modules\publication\models\crud\PublicationCategoryTranslation $publicationCategory
  * @property \dmstr\modules\publication\models\crud\PublicationItem $item
  * @property string $aliasModel
  */
@@ -62,12 +60,11 @@ abstract class PublicationItemTranslation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['item_id', 'publication_category_id', 'language_code'], 'required'],
-            [['item_id', 'publication_category_id'], 'integer'],
+            [['item_id', 'language_code'], 'required'],
+            [['item_id'], 'integer'],
             [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
             [['language_code'], 'string', 'max' => 8],
             [['title'], 'string', 'max' => 80],
-            [['publication_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationCategoryTranslation::className(), 'targetAttribute' => ['publication_category_id' => 'id']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']],
             ['status', 'in', 'range' => [
                     self::STATUS_DRAFT,
@@ -85,7 +82,6 @@ abstract class PublicationItemTranslation extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('models', 'ID'),
             'item_id' => Yii::t('models', 'Item ID'),
-            'publication_category_id' => Yii::t('models', 'Publication Category ID'),
             'language_code' => Yii::t('models', 'Language Code'),
             'title' => Yii::t('models', 'Title'),
             'content_widget_json' => Yii::t('models', 'Content Widget Json'),
@@ -94,14 +90,6 @@ abstract class PublicationItemTranslation extends \yii\db\ActiveRecord
             'created_at' => Yii::t('models', 'Created At'),
             'updated_at' => Yii::t('models', 'Updated At'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPublicationCategory()
-    {
-        return $this->hasOne(\dmstr\modules\publication\models\crud\PublicationCategoryTranslation::className(), ['id' => 'publication_category_id']);
     }
 
     /**

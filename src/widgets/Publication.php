@@ -9,6 +9,7 @@
 
 namespace dmstr\modules\publication\widgets;
 
+use dmstr\modules\publication\models\crud\base\PublicationItemTranslation;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use hrzg\widget\models\crud\WidgetContent;

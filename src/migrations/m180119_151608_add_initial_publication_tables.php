@@ -34,16 +34,17 @@ class m180119_151608_add_initial_publication_tables extends Migration
 
         $this->createTable('{{%dmstr_publication_item}}', [
             'id' => $this->primaryKey(),
+            'category_id' => $this->integer()->notNull(),
             'release_date' => $this->dateTime()->notNull(),
             'end_date' => $this->dateTime(),
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
+        $this->addForeignKey('FK_item_translation_category_translation0','{{%dmstr_publication_item}}','category_id','{{%dmstr_publication_category}}','id');
 
         $this->createTable('{{%dmstr_publication_item_translation}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer()->notNull(),
-            'publication_category_id' => $this->integer()->notNull(),
             'language_code' => $this->string(8)->notNull(),
             'title' => $this->string(80),
             'content_widget_json' => $this->text(),
@@ -53,7 +54,6 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
         $this->addForeignKey('FK_item_translation_item0','{{%dmstr_publication_item_translation}}','item_id','{{%dmstr_publication_item}}','id');
-        $this->addForeignKey('FK_item_translation_category_translation0','{{%dmstr_publication_item_translation}}','publication_category_id','{{%dmstr_publication_category_translation}}','id');
     }
 
     /**
@@ -62,9 +62,9 @@ class m180119_151608_add_initial_publication_tables extends Migration
     public function safeDown()
     {
         $this->dropForeignKey('FK_item_translation_item0','{{%dmstr_publication_item_translation}}');
-        $this->dropForeignKey('FK_item_translation_category_translation0','{{%dmstr_publication_item_translation}}');
         $this->dropTable('{{%dmstr_publication_item_translation}}');
 
+        $this->dropForeignKey('FK_item_translation_category_translation0','{{%dmstr_publication_item}}');
         $this->dropTable('{{%dmstr_publication_item}}');
 
         $this->dropForeignKey('FK_category_translation_category_translation0','{{%dmstr_publication_category_translation}}');

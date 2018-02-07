@@ -11,11 +11,13 @@ use yii\behaviors\TimestampBehavior;
  * This is the base-model class for table "{{%dmstr_publication_item}}".
  *
  * @property integer $id
+ * @property integer $category_id
  * @property string $release_date
  * @property string $end_date
  * @property integer $created_at
  * @property integer $updated_at
  *
+ * @property \dmstr\modules\publication\models\crud\PublicationCategory $category
  * @property \dmstr\modules\publication\models\crud\PublicationItemTranslation[] $publicationItemTranslations
  * @property string $aliasModel
  */
@@ -50,8 +52,10 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['release_date'], 'required'],
-            [['release_date', 'end_date'], 'safe']
+            [['category_id', 'release_date'], 'required'],
+            [['category_id'], 'integer'],
+            [['release_date', 'end_date'], 'safe'],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationCategory::className(), 'targetAttribute' => ['category_id' => 'id']]
         ];
     }
 
@@ -62,11 +66,20 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('models', 'ID'),
+            'category_id' => Yii::t('models', 'Category ID'),
             'release_date' => Yii::t('models', 'Release Date'),
             'end_date' => Yii::t('models', 'End Date'),
             'created_at' => Yii::t('models', 'Created At'),
             'updated_at' => Yii::t('models', 'Updated At'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(\dmstr\modules\publication\models\crud\PublicationCategory::className(), ['id' => 'category_id']);
     }
 
     /**

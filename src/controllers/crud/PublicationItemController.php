@@ -48,8 +48,8 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
         $model = new PublicationItem();
 
         $publicationCategoryId = null;
-        if (isset(\Yii::$app->request->get()[$model->formName()]['publication_category_id'])) {
-            $publicationCategoryId = \Yii::$app->request->get()[$model->formName()]['publication_category_id'];
+        if (isset(\Yii::$app->request->get()[$model->formName()]['category_id'])) {
+            $publicationCategoryId = \Yii::$app->request->get()[$model->formName()]['category_id'];
         }
         $model->setContentSchemaByCategoryId($publicationCategoryId);
         $model->setTeaserSchemaByCategoryId($publicationCategoryId);
