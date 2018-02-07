@@ -54,7 +54,7 @@ PHP;
                 $schemaProperty = str_replace('_json', '_schema', $attribute);
                 return <<<PHP
 \$form->field(\$model,'{$attribute}')->widget(\beowulfenator\JsonEditor\JsonEditorWidget::class,[
-    'id' => 'editor',
+    'id' => '{$attribute}Editor',
     'schema' =>\$model->{$schemaProperty},
     'enableSelectize' => true,
     'clientOptions' => [
@@ -68,6 +68,21 @@ PHP;
             '_date' => function ($attribute) {
                 return <<<PHP
 \$form->field(\$model,'{$attribute}')->widget(zhuravljov\yii\widgets\DateTimePicker::class,['clientOptions' => ['autoclose' => true]])
+PHP;
+            },
+            'publication_category_id' => function ($attribute) {
+                return <<<PHP
+\$form->field(\$model, 'publication_category_id')->widget(\kartik\select2\Select2::classname(), [
+		'name' => 'class_name',
+		'model' => \$model,
+		'attribute' => 'publication_category_id',
+		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategory::find()->all(), 'id', 'name'),
+		'options' => [
+			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
+			'multiple' => false,
+			'disabled' => !\$model->isNewRecord,
+		]
+	]);
 PHP;
             }
         ],

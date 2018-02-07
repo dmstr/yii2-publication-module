@@ -11,6 +11,8 @@ $this->title = Yii::$app->settings->get('site','publication.default-detail')?: Y
 ?>
 <div class="publication-default-index">
     <?=Cell::widget(['id' => 'publication_detail_top', 'requestParam' => 'publication_detail_top'])?>
+    <?=Cell::widget(['id' => 'publication_detail_top_' . $item->id , 'requestParam' => 'publication_detail_top_' . $item->id])?>
     <?= Publication::widget(['item' => $item,'teaser' => false])?>
+    <?=Cell::widget(['id' => 'publication_detail_bottom_' . $item->id , 'requestParam' => 'publication_detail_bottom_' . $item->id])?>
     <?=Cell::widget(['id' => 'publication_detail_bottom', 'requestParam' => 'publication_detail_bottom'])?>
 </div>

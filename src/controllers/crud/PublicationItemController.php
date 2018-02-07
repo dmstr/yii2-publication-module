@@ -12,6 +12,7 @@ use dmstr\modules\publication\models\crud\PublicationItem;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 
 /**
  * This is the class for controller "PublicationItemController".
@@ -77,13 +78,12 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
     {
         $model = $this->findModel($id);
 
-        if ($_POST) {
-            $model->setContentSchemaByCategoryId($model->publication_category_id);
-            $model->setTeaserSchemaByCategoryId($model->publication_category_id);
-        }
+        $model->setContentSchemaByCategoryId($model->publication_category_id);
+        $model->setTeaserSchemaByCategoryId($model->publication_category_id);
 
-
+//VarDumper::dump($_POST,4,1);exit;
         if ($model->load($_POST) && $model->save()) {
+
             return $this->redirect(Url::previous());
         }
 

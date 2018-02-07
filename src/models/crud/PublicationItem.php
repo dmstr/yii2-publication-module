@@ -28,6 +28,8 @@ class PublicationItem extends BasePublicationItem
                 $this->content_widget_schema = json_decode($contentWidgetTemplate->json_schema, 1);
             }
         }
+
+
     }
 
     public function setTeaserSchemaByCategoryId($publicationCategoryId)

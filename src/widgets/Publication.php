@@ -64,7 +64,13 @@ class Publication extends Widget
                     $properties = Json::decode($publicationItem->content_widget_json);
                 }
 
-                $html .= $publicationCategory->render($properties,$this->teaser);
+                $publicationWidget = $publicationCategory->render($properties,$this->teaser);
+
+                if ($this->teaser) {
+                    $publicationWidget = Html::a($publicationWidget,['/publication/default/detail','itemId' => $publicationItem->id]);
+                }
+
+                $html .= $publicationWidget;
 
             }
         }
