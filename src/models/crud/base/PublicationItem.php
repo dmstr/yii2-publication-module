@@ -11,16 +11,12 @@ use yii\behaviors\TimestampBehavior;
  * This is the base-model class for table "{{%dmstr_publication_item}}".
  *
  * @property integer $id
- * @property integer $publication_category_id
- * @property string $content_widget_json
- * @property string $teaser_widget_json
- * @property string $status
  * @property string $release_date
  * @property string $end_date
  * @property integer $created_at
  * @property integer $updated_at
  *
- * @property \dmstr\modules\publication\models\crud\PublicationCategory $publicationCategory
+ * @property \dmstr\modules\publication\models\crud\PublicationItemTranslation[] $publicationItemTranslations
  * @property string $aliasModel
  */
 abstract class PublicationItem extends \yii\db\ActiveRecord
@@ -28,12 +24,6 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
 
 
 
-    /**
-    * ENUM field values
-    */
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
-    var $enum_labels = false;
     /**
      * @inheritdoc
      */
@@ -60,15 +50,8 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['publication_category_id'], 'integer'],
-            [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
-            [['release_date', 'end_date'], 'safe'],
-            [['publication_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationCategory::className(), 'targetAttribute' => ['publication_category_id' => 'id']],
-            ['status', 'in', 'range' => [
-                    self::STATUS_DRAFT,
-                    self::STATUS_PUBLISHED,
-                ]
-            ]
+            [['release_date'], 'required'],
+            [['release_date', 'end_date'], 'safe']
         ];
     }
 
@@ -79,10 +62,6 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('models', 'ID'),
-            'publication_category_id' => Yii::t('models', 'Publication Category ID'),
-            'content_widget_json' => Yii::t('models', 'Content Widget Json'),
-            'teaser_widget_json' => Yii::t('models', 'Teaser Widget Json'),
-            'status' => Yii::t('models', 'Status'),
             'release_date' => Yii::t('models', 'Release Date'),
             'end_date' => Yii::t('models', 'End Date'),
             'created_at' => Yii::t('models', 'Created At'),
@@ -93,9 +72,9 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPublicationCategory()
+    public function getPublicationItemTranslations()
     {
-        return $this->hasOne(\dmstr\modules\publication\models\crud\PublicationCategory::className(), ['id' => 'publication_category_id']);
+        return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationItemTranslation::className(), ['item_id' => 'id']);
     }
 
 
@@ -109,30 +88,5 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
         return new \dmstr\modules\publication\models\crud\query\PublicationItemQuery(get_called_class());
     }
 
-
-    /**
-     * get column status enum value label
-     * @param string $value
-     * @return string
-     */
-    public static function getStatusValueLabel($value){
-        $labels = self::optsStatus();
-        if(isset($labels[$value])){
-            return $labels[$value];
-        }
-        return $value;
-    }
-
-    /**
-     * column status ENUM value labels
-     * @return array
-     */
-    public static function optsStatus()
-    {
-        return [
-            self::STATUS_DRAFT => Yii::t('models', self::STATUS_DRAFT),
-            self::STATUS_PUBLISHED => Yii::t('models', self::STATUS_PUBLISHED),
-        ];
-    }
 
 }

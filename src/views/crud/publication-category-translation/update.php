@@ -11,19 +11,19 @@ use yii\helpers\Html;
 /**
  *
  * @var yii\web\View $this
- * @var dmstr\modules\publication\models\crud\PublicationCategory $model
+ * @var dmstr\modules\publication\models\crud\PublicationCategoryTranslation $model
  */
-$this->title = Yii::t('models', 'Publication Category');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Category'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
+$this->title = Yii::t('models', 'Publication Category Translation');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Category Translation'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => (string)$model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'Edit');
 ?>
-<div class="giiant-crud publication-category-update">
+<div class="giiant-crud publication-category-translation-update">
 
     <h1>
-        <?php echo Yii::t('models', 'Publication Category') ?>
+        <?php echo Yii::t('models', 'Publication Category Translation') ?>
         <small>
-                        <?php echo $model->id ?>
+                        <?php echo $model->title ?>
         </small>
     </h1>
 

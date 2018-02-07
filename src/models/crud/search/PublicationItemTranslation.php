@@ -11,12 +11,12 @@ namespace dmstr\modules\publication\models\crud\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use dmstr\modules\publication\models\crud\PublicationCategory as PublicationCategoryModel;
+use dmstr\modules\publication\models\crud\PublicationItemTranslation as PublicationItemTranslationModel;
 
 /**
- * PublicationCategory represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationCategory`.
+ * PublicationItemTranslation represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationItemTranslation`.
  */
-class PublicationCategory extends PublicationCategoryModel
+class PublicationItemTranslation extends PublicationItemTranslationModel
 {
 
 	/**
@@ -26,7 +26,8 @@ class PublicationCategory extends PublicationCategoryModel
 	 */
 	public function rules() {
 		return [
-			[['id', 'content_widget_template_id', 'teaser_widget_template_id', 'created_at', 'updated_at'], 'integer'],
+			[['id', 'item_id', 'publication_category_id', 'created_at', 'updated_at'], 'integer'],
+			[['title', 'content_widget_json', 'teaser_widget_json', 'status'], 'safe'],
 		];
 	}
 
@@ -50,7 +51,7 @@ class PublicationCategory extends PublicationCategoryModel
 	 * @return ActiveDataProvider
 	 */
 	public function search($params) {
-		$query = PublicationCategoryModel::find();
+		$query = PublicationItemTranslationModel::find();
 
 		$dataProvider = new ActiveDataProvider([
 				'query' => $query,
@@ -66,11 +67,16 @@ class PublicationCategory extends PublicationCategoryModel
 
 		$query->andFilterWhere([
 				'id' => $this->id,
-				'content_widget_template_id' => $this->content_widget_template_id,
-				'teaser_widget_template_id' => $this->teaser_widget_template_id,
+				'item_id' => $this->item_id,
+				'publication_category_id' => $this->publication_category_id,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 			]);
+
+		$query->andFilterWhere(['like', 'title', $this->title])
+		->andFilterWhere(['like', 'content_widget_json', $this->content_widget_json])
+		->andFilterWhere(['like', 'teaser_widget_json', $this->teaser_widget_json])
+		->andFilterWhere(['like', 'status', $this->status]);
 
 		return $dataProvider;
 	}

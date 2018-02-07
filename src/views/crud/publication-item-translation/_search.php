@@ -12,12 +12,12 @@ use yii\widgets\ActiveForm;
 /**
  *
  * @var yii\web\View $this
- * @var dmstr\modules\publication\models\crud\search\PublicationCategory $model
+ * @var dmstr\modules\publication\models\crud\search\PublicationItemTranslation $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
 
-<div class="publication-category-search">
+<div class="publication-item-translation-search">
 
     <?php $form = ActiveForm::begin([
 		'action' => ['index'],
@@ -26,13 +26,21 @@ use yii\widgets\ActiveForm;
 
     		<?php echo $form->field($model, 'id') ?>
 
-		<?php echo $form->field($model, 'content_widget_template_id') ?>
+		<?php echo $form->field($model, 'item_id') ?>
 
-		<?php echo $form->field($model, 'teaser_widget_template_id') ?>
+		<?php echo $form->field($model, 'publication_category_id') ?>
 
-		<?php echo $form->field($model, 'created_at') ?>
+		<?php echo $form->field($model, 'title') ?>
 
-		<?php echo $form->field($model, 'updated_at') ?>
+		<?php echo $form->field($model, 'content_widget_json') ?>
+
+		<?php // echo $form->field($model, 'teaser_widget_json') ?>
+
+		<?php // echo $form->field($model, 'status') ?>
+
+		<?php // echo $form->field($model, 'created_at') ?>
+
+		<?php // echo $form->field($model, 'updated_at') ?>
 
     <div class="form-group">
         <?php echo Html::submitButton(Yii::t('cruds', 'Search'), ['class' => 'btn btn-primary']) ?>

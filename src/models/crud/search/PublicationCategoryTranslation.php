@@ -11,12 +11,12 @@ namespace dmstr\modules\publication\models\crud\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use dmstr\modules\publication\models\crud\PublicationCategory as PublicationCategoryModel;
+use dmstr\modules\publication\models\crud\PublicationCategoryTranslation as PublicationCategoryTranslationModel;
 
 /**
- * PublicationCategory represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationCategory`.
+ * PublicationCategoryTranslation represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationCategoryTranslation`.
  */
-class PublicationCategory extends PublicationCategoryModel
+class PublicationCategoryTranslation extends PublicationCategoryTranslationModel
 {
 
 	/**
@@ -26,7 +26,8 @@ class PublicationCategory extends PublicationCategoryModel
 	 */
 	public function rules() {
 		return [
-			[['id', 'content_widget_template_id', 'teaser_widget_template_id', 'created_at', 'updated_at'], 'integer'],
+			[['id', 'category_id', 'created_at', 'updated_at'], 'integer'],
+			[['language_code', 'title'], 'safe'],
 		];
 	}
 
@@ -50,7 +51,7 @@ class PublicationCategory extends PublicationCategoryModel
 	 * @return ActiveDataProvider
 	 */
 	public function search($params) {
-		$query = PublicationCategoryModel::find();
+		$query = PublicationCategoryTranslationModel::find();
 
 		$dataProvider = new ActiveDataProvider([
 				'query' => $query,
@@ -66,11 +67,13 @@ class PublicationCategory extends PublicationCategoryModel
 
 		$query->andFilterWhere([
 				'id' => $this->id,
-				'content_widget_template_id' => $this->content_widget_template_id,
-				'teaser_widget_template_id' => $this->teaser_widget_template_id,
+				'category_id' => $this->category_id,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 			]);
+
+		$query->andFilterWhere(['like', 'language_code', $this->language_code])
+		->andFilterWhere(['like', 'title', $this->title]);
 
 		return $dataProvider;
 	}

@@ -76,7 +76,7 @@ PHP;
 		'name' => 'class_name',
 		'model' => \$model,
 		'attribute' => 'publication_category_id',
-		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategory::find()->all(), 'id', 'name'),
+		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language_code' => \Yii::\$app->language])->all(), 'id', 'title'),
 		'options' => [
 			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
 			'multiple' => false,
@@ -137,6 +137,7 @@ return [
             'crudTidyOutput' => true,
             'crudAccessFilter' => true,
             'useTablePrefix' => true,
+            'languageCodeColumn' => 'language_code',
             'crudProviders' => [
                 CallbackProvider::class,
                 OptsProvider::class,
@@ -145,11 +146,15 @@ return [
             'tablePrefix' => 'dmstr_',
             'tables' => [
                 'dmstr_publication_category',
-                'dmstr_publication_item'
+                'dmstr_publication_category_translation',
+                'dmstr_publication_item',
+                'dmstr_publication_item_translation'
             ],
             'tableNameMap' => [
                 getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_category' => 'PublicationCategory',
-                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item' => 'PublicationItem'
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_category_translation' => 'PublicationCategoryTranslation',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item' => 'PublicationItem',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item_translation' => 'PublicationItemTranslation'
             ]
         ]
     ]

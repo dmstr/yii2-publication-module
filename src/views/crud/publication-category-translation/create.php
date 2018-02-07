@@ -11,18 +11,18 @@ use yii\helpers\Html;
 /**
  *
  * @var yii\web\View $this
- * @var dmstr\modules\publication\models\crud\PublicationCategory $model
+ * @var dmstr\modules\publication\models\crud\PublicationCategoryTranslation $model
  */
-$this->title = Yii::t('models', 'Publication Category');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Categories'), 'url' => ['index']];
+$this->title = Yii::t('models', 'Publication Category Translation');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Category Translations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="giiant-crud publication-category-create">
+<div class="giiant-crud publication-category-translation-create">
 
     <h1>
-        <?php echo Yii::t('models', 'Publication Category') ?>
+        <?php echo Yii::t('models', 'Publication Category Translation') ?>
         <small>
-                        <?php echo $model->id ?>
+                        <?php echo $model->title ?>
         </small>
     </h1>
 

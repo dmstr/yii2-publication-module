@@ -13,14 +13,12 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $id
  * @property integer $content_widget_template_id
  * @property integer $teaser_widget_template_id
- * @property string $name
- * @property string $status
  * @property integer $created_at
  * @property integer $updated_at
  *
  * @property \dmstr\modules\publication\models\crud\HrzgWidgetTemplate $contentWidgetTemplate
  * @property \dmstr\modules\publication\models\crud\HrzgWidgetTemplate $teaserWidgetTemplate
- * @property \dmstr\modules\publication\models\crud\PublicationItem[] $publicationItems
+ * @property \dmstr\modules\publication\models\crud\PublicationCategoryTranslation[] $publicationCategoryTranslations
  * @property string $aliasModel
  */
 abstract class PublicationCategory extends \yii\db\ActiveRecord
@@ -28,12 +26,6 @@ abstract class PublicationCategory extends \yii\db\ActiveRecord
 
 
 
-    /**
-    * ENUM field values
-    */
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
-    var $enum_labels = false;
     /**
      * @inheritdoc
      */
@@ -60,18 +52,10 @@ abstract class PublicationCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['content_widget_template_id', 'teaser_widget_template_id'], 'required'],
             [['content_widget_template_id', 'teaser_widget_template_id'], 'integer'],
-            [['name'], 'required'],
-            [['status'], 'string'],
-            [['name'], 'string', 'max' => 80],
-            [['name'], 'unique'],
             [['content_widget_template_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\HrzgWidgetTemplate::className(), 'targetAttribute' => ['content_widget_template_id' => 'id']],
-            [['teaser_widget_template_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\HrzgWidgetTemplate::className(), 'targetAttribute' => ['teaser_widget_template_id' => 'id']],
-            ['status', 'in', 'range' => [
-                    self::STATUS_DRAFT,
-                    self::STATUS_PUBLISHED,
-                ]
-            ]
+            [['teaser_widget_template_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\HrzgWidgetTemplate::className(), 'targetAttribute' => ['teaser_widget_template_id' => 'id']]
         ];
     }
 
@@ -84,8 +68,6 @@ abstract class PublicationCategory extends \yii\db\ActiveRecord
             'id' => Yii::t('models', 'ID'),
             'content_widget_template_id' => Yii::t('models', 'Content Widget Template ID'),
             'teaser_widget_template_id' => Yii::t('models', 'Teaser Widget Template ID'),
-            'name' => Yii::t('models', 'Name'),
-            'status' => Yii::t('models', 'Status'),
             'created_at' => Yii::t('models', 'Created At'),
             'updated_at' => Yii::t('models', 'Updated At'),
         ];
@@ -110,9 +92,9 @@ abstract class PublicationCategory extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPublicationItems()
+    public function getPublicationCategoryTranslations()
     {
-        return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationItem::className(), ['publication_category_id' => 'id']);
+        return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationCategoryTranslation::className(), ['category_id' => 'id']);
     }
 
 
@@ -126,30 +108,5 @@ abstract class PublicationCategory extends \yii\db\ActiveRecord
         return new \dmstr\modules\publication\models\crud\query\PublicationCategoryQuery(get_called_class());
     }
 
-
-    /**
-     * get column status enum value label
-     * @param string $value
-     * @return string
-     */
-    public static function getStatusValueLabel($value){
-        $labels = self::optsStatus();
-        if(isset($labels[$value])){
-            return $labels[$value];
-        }
-        return $value;
-    }
-
-    /**
-     * column status ENUM value labels
-     * @return array
-     */
-    public static function optsStatus()
-    {
-        return [
-            self::STATUS_DRAFT => Yii::t('models', self::STATUS_DRAFT),
-            self::STATUS_PUBLISHED => Yii::t('models', self::STATUS_PUBLISHED),
-        ];
-    }
 
 }

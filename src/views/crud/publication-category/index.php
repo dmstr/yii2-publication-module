@@ -94,8 +94,8 @@ if (\Yii::$app->user->can('controllers_publication-category_create', ['route' =>
 					'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('models', 'Hrzg Widget Template'),
 				],
 				[
-					'url' => ['/publication/crud/publication-item/index'],
-					'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Publication Item'),
+					'url' => ['/publication/crud/publication-category-translation/index'],
+					'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Publication Category Translation'),
 				],
 
 			]
@@ -169,15 +169,6 @@ if (\Yii::$app->user->can('controllers_publication-category_create', ['route' =>
 					} else {
 						return '';
 					}
-				},
-				'format' => 'raw',
-			],
-			'name',
-			[
-				'class' => yii\grid\DataColumn::className(),
-				'attribute' => 'status',
-				'value' => function ($model) {
-					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
 				},
 				'format' => 'raw',
 			],

@@ -26,8 +26,8 @@ class PublicationItem extends PublicationItemModel
 	 */
 	public function rules() {
 		return [
-			[['id', 'publication_category_id', 'created_at', 'updated_at'], 'integer'],
-			[['content_widget_json', 'teaser_widget_json', 'status', 'release_date', 'end_date'], 'safe'],
+			[['id', 'created_at', 'updated_at'], 'integer'],
+			[['release_date', 'end_date'], 'safe'],
 		];
 	}
 
@@ -67,16 +67,11 @@ class PublicationItem extends PublicationItemModel
 
 		$query->andFilterWhere([
 				'id' => $this->id,
-				'publication_category_id' => $this->publication_category_id,
 				'release_date' => $this->release_date,
 				'end_date' => $this->end_date,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 			]);
-
-		$query->andFilterWhere(['like', 'content_widget_json', $this->content_widget_json])
-		->andFilterWhere(['like', 'teaser_widget_json', $this->teaser_widget_json])
-		->andFilterWhere(['like', 'status', $this->status]);
 
 		return $dataProvider;
 	}
