@@ -30,7 +30,7 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
-        $this->addForeignKey('FK_category_translation_category_translation0','{{%dmstr_publication_category_translation}}','category_id','{{%dmstr_publication_category}}','id');
+        $this->addForeignKey('FK_category_translation_category_translation0','{{%dmstr_publication_category_translation}}','category_id','{{%dmstr_publication_category}}','id','CASCADE');
 
         $this->createTable('{{%dmstr_publication_item}}', [
             'id' => $this->primaryKey(),
@@ -53,7 +53,7 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
-        $this->addForeignKey('FK_item_translation_item0','{{%dmstr_publication_item_translation}}','item_id','{{%dmstr_publication_item}}','id');
+        $this->addForeignKey('FK_item_translation_item0','{{%dmstr_publication_item_translation}}','item_id','{{%dmstr_publication_item}}','id','CASCADE');
     }
 
     /**
