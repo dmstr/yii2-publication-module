@@ -148,7 +148,7 @@ if (\Yii::$app->user->can('controllers_publication-item_create', ['route' => tru
 				'attribute' => 'category_id',
 				'value' => function ($model) {
 					if ($rel = $model->category) {
-						return Html::a($rel->id, ['/publication/crud/publication-category/view', 'id' => $rel->id, ], ['data-pjax' => 0]);
+						return Html::a($rel->label, ['/publication/crud/publication-category/view', 'id' => $rel->id, ], ['data-pjax' => 0]);
 					} else {
 						return '';
 					}

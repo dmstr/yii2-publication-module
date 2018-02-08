@@ -9,16 +9,11 @@
 
 namespace dmstr\modules\publication\widgets;
 
-use dmstr\modules\publication\models\crud\base\PublicationItemTranslation;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
-use hrzg\widget\models\crud\WidgetContent;
-use hrzg\widget\widgets\TwigTemplate;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
-use yii\twig\ViewRenderer;
 
 
 /**
@@ -50,11 +45,20 @@ class Publication extends Widget
         if ($publicationCategory instanceof PublicationCategory || $this->item instanceof PublicationItem) {
 
             if ($this->categoryId !== null) {
-                /** @var PublicationItem $publicationItem */
-                $publicationItems = PublicationItem::find()->where(['publication_category_id' => $this->categoryId])->published()->limit($this->limit)->all();
+                /** @var PublicationItem $publicationItemsBase */
+                $publicationItemsBase = PublicationItem::find()->where(['category_id' => $this->categoryId])->published()->limit($this->limit)->all();
+
+                $publicationItems = [];
+                foreach ($publicationItemsBase as $publicationItemBase) {
+                    $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
+                }
+
             } else {
-                $publicationItems[] = $this->item;
-                $publicationCategory = $this->item->publicationCategory;
+
+                /** @var PublicationItem $item */
+                $item = $this->item;
+                $publicationItems[] = $item;
+                $publicationCategory = $item->category;
             }
 
             foreach ($publicationItems as $publicationItem) {
@@ -65,7 +69,8 @@ class Publication extends Widget
                     $properties = Json::decode($publicationItem->content_widget_json);
                 }
 
-                $publicationWidget = $publicationCategory->render($properties,$this->teaser);
+                $publicationWidget = "<h3 class='publication-title'>{$publicationItem->title}</h3>";
+                $publicationWidget .= $publicationCategory->render($properties,$this->teaser);
 
                 if ($this->teaser) {
                     $publicationWidget = Html::a($publicationWidget,['/publication/default/detail','itemId' => $publicationItem->id]);

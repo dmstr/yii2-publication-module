@@ -13,6 +13,11 @@ use yii\helpers\ArrayHelper;
 class PublicationCategory extends BasePublicationCategory
 {
 
+    public function getLabel()
+    {
+        return $this->title;
+    }
+
     /**
      * @param $properties
      * @param $teaser

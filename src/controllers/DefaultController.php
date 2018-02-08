@@ -25,6 +25,8 @@ class DefaultController extends Controller
             throw new HttpException(404, \Yii::t('publication','Publication item not found'));
         }
 
+        $item->setScenario('crud');
+
         return $this->render('detail',['item' => $item]);
 
     }

@@ -14,9 +14,6 @@ class PublicationItemTranslationQuery extends \yii\db\ActiveQuery
     public function published()
     {
         $this->andWhere(['status' => PublicationItemTranslation::STATUS_PUBLISHED]);
-        $todaysDate = date('Y-m-d');
-        $this->andWhere('release_date <= :todaysDate' , [':todaysDate' => $todaysDate]);
-        $this->andWhere('end_date >= :todaysDate OR end_date IS NULL' , [':todaysDate' => $todaysDate]);
         return $this;
     }
 

@@ -102,6 +102,7 @@ class PublicationItem extends BasePublicationItem
         }
     }
 
+
 //    public function rules()
 //    {
 //        return ArrayHelper::merge(parent::rules(), [

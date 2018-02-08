@@ -70,12 +70,12 @@ PHP;
 \$form->field(\$model,'{$attribute}')->widget(zhuravljov\yii\widgets\DateTimePicker::class,['clientOptions' => ['autoclose' => true]])
 PHP;
             },
-            'publication_category_id' => function ($attribute) {
+            'category_id' => function ($attribute) {
                 return <<<PHP
-\$form->field(\$model, 'publication_category_id')->widget(\kartik\select2\Select2::classname(), [
+\$form->field(\$model, '{$attribute}')->widget(\kartik\select2\Select2::classname(), [
 		'name' => 'class_name',
 		'model' => \$model,
-		'attribute' => 'publication_category_id',
+		'attribute' => '{$attribute}',
 		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language_code' => \Yii::\$app->language])->all(), 'id', 'title'),
 		'options' => [
 			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
@@ -107,7 +107,7 @@ PHP;
             }
         ],
         'appendActiveFields' => [
-            'publication_category_id' => function () {
+            'category_id' => function () {
                 return <<<PHP
 <?php \dmstr\modules\publication\assets\PublicationItemAssetBundle::register(\$this);?>
 PHP;

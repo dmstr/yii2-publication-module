@@ -7,5 +7,5 @@ categorySelect.on('select2:selecting', function (e) {
 });
 
 categorySelect.on('select2:select', function () {
-    window.location = location.origin + location.pathname + `?PublicationItem[publication_category_id]=${$(this).val()}`
+    window.location = location.origin + location.pathname + `?PublicationItem[category_id]=${$(this).val()}`
 });

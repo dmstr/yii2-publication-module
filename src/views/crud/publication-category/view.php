@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <h1>
         <?php echo Yii::t('models', 'Publication Category') ?>
         <small>
-            <?php echo $model->id ?>
+            <?php echo $model->label ?>
         </small>
     </h1>
 

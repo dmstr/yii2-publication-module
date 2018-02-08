@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 				'attribute' => 'category_id',
 				'value' => ($model->category ?
 					Html::a('<i class="glyphicon glyphicon-list"></i>', ['/publication/crud/publication-category/index']).' '.
-					Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->category->id, ['/publication/crud/publication-category/view', 'id' => $model->category->id, ]).' '.
+					Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->category->label, ['/publication/crud/publication-category/view', 'id' => $model->category->id, ]).' '.
 					Html::a('<i class="glyphicon glyphicon-paperclip"></i>', ['create', 'PublicationCategoryTranslation'=>['category_id' => $model->category_id]])
 					:
 					'<span class="label label-warning">?</span>'),
