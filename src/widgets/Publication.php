@@ -25,6 +25,7 @@ class Publication extends Widget
 {
     public $categoryId;
     public $item;
+    public $showTitle = true;
     public $teaser = true;
     public $limit = null;
 
@@ -68,12 +69,14 @@ class Publication extends Widget
                 } else {
                     $properties = Json::decode($publicationItem->content_widget_json);
                 }
-
-                $publicationWidget = "<h3 class='publication-title'>{$publicationItem->title}</h3>";
+                $publicationWidget = '';
+                if ($this->showTitle === true) {
+                    $publicationWidget .= "<h3 class='publication-title'>{$publicationItem->title}</h3>";
+                }
                 $publicationWidget .= $publicationCategory->render($properties,$this->teaser);
 
                 if ($this->teaser) {
-                    $publicationWidget = Html::a($publicationWidget,['/publication/default/detail','itemId' => $publicationItem->id]);
+                    $publicationWidget = Html::a($publicationWidget,['/publication/default/detail','itemId' => $publicationItem->id,'showTitle' => $this->showTitle],['class' => 'publication-detail-link']);
                 }
 
                 $html .= $publicationWidget;

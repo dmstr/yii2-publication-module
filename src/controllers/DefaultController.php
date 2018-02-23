@@ -27,7 +27,7 @@ class DefaultController extends Controller
 
         $item->setScenario('crud');
 
-        return $this->render('detail',['item' => $item]);
+        return $this->render('detail',['item' => $item,'showTitle' => \Yii::$app->request->get('showTitle')]);
 
     }
 }
