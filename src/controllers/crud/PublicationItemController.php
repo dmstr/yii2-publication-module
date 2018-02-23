@@ -77,10 +77,9 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
     {
         $model = $this->findModel($id);
 
-        $model->setContentSchemaByCategoryId($model->publication_category_id);
-        $model->setTeaserSchemaByCategoryId($model->publication_category_id);
+        $model->setContentSchemaByCategoryId($model->category_id);
+        $model->setTeaserSchemaByCategoryId($model->category_id);
 
-//VarDumper::dump($_POST,4,1);exit;
         if ($model->load($_POST) && $model->save()) {
 
             return $this->redirect(Url::previous());
