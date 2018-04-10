@@ -41,6 +41,18 @@ PHP;
     'format' => 'raw',
 ]
 PHP;
+    },
+    'title' => function ($attribute) {
+        return <<<PHP
+[
+    'class' => yii\grid\DataColumn::className(),
+    'attribute' => '{$attribute}',
+    'value' => function (\$model) {
+        return \$model->{$attribute};
+    },
+    'format' => 'raw',
+]
+PHP;
     }
 ];
 
@@ -147,7 +159,6 @@ return [
             'crudPathPrefix' => '/publication/crud/',
             'crudTidyOutput' => true,
             'crudAccessFilter' => true,
-            'useTablePrefix' => true,
             'useTranslatableBehavior' => true,
             'languageCodeColumn' => 'language_code',
             'crudProviders' => [
