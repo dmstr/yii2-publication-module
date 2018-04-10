@@ -8,10 +8,10 @@
 
 namespace dmstr\modules\publication\models\crud\search;
 
-use Yii;
+use dmstr\modules\publication\models\crud\PublicationItem as PublicationItemModel;
+use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use dmstr\modules\publication\models\crud\PublicationItem as PublicationItemModel;
 
 /**
  * PublicationItem represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationItem`.
@@ -19,62 +19,74 @@ use dmstr\modules\publication\models\crud\PublicationItem as PublicationItemMode
 class PublicationItem extends PublicationItemModel
 {
 
-	/**
-	 *
-	 * @inheritdoc
-	 * @return unknown
-	 */
-	public function rules() {
-		return [
-			[['id', 'created_at', 'updated_at'], 'integer'],
-			[['release_date', 'end_date'], 'safe'],
-		];
-	}
+    /**
+     *
+     * @inheritdoc
+     * @return unknown
+     */
+    public function rules()
+    {
+        return [
+            [['id', 'created_at', 'updated_at'], 'integer'],
+            [['release_date', 'end_date', 'title'], 'safe'],
+        ];
+    }
 
 
-	/**
-	 *
-	 * @inheritdoc
-	 * @return unknown
-	 */
-	public function scenarios() {
-		// bypass scenarios() implementation in the parent class
-		return Model::scenarios();
-	}
+    /**
+     *
+     * @inheritdoc
+     * @return unknown
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
 
 
-	/**
-	 * Creates data provider instance with search query applied
-	 *
-	 *
-	 * @param array   $params
-	 * @return ActiveDataProvider
-	 */
-	public function search($params) {
-		$query = PublicationItemModel::find();
+    /**
+     * Creates data provider instance with search query applied
+     *
+     *
+     * @param array $params
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = PublicationItemModel::find();
+        $query->select([PublicationItemModel::tableName() . '.*', PublicationItemTranslation::tableName().'.title', PublicationItemTranslation::tableName().'.language_code']);
 
-		$dataProvider = new ActiveDataProvider([
-				'query' => $query,
-			]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
-		$this->load($params);
+        $this->load($params);
 
-		if (!$this->validate()) {
-			// uncomment the following line if you do not want to any records when validation fails
-			// $query->where('0=1');
-			return $dataProvider;
-		}
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
 
-		$query->andFilterWhere([
-				'id' => $this->id,
-				'release_date' => $this->release_date,
-				'end_date' => $this->end_date,
-				'created_at' => $this->created_at,
-				'updated_at' => $this->updated_at,
-			]);
+        $query->leftJoin(
+            PublicationItemTranslation::tableName(),
+            PublicationItemModel::tableName() . '.id = ' . PublicationItemTranslation::tableName() . '.item_id');
 
-		return $dataProvider;
-	}
+        $query->andFilterWhere(['LIKE', PublicationItemTranslation::tableName() . '.title', $this->title]);
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'release_date' => $this->release_date,
+            'end_date' => $this->end_date,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ]);
+
+        $query->andWhere([PublicationItemTranslation::tableName().'.language_code' => \Yii::$app->language]);
+
+        return $dataProvider;
+    }
 
 
 }
