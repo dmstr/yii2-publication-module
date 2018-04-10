@@ -165,6 +165,14 @@ if (\Yii::$app->user->can('controllers_publication-item_create', ['route' => tru
 			],
 			[
 				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'title',
+				'value' => function ($model) {
+					return $model->title;
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
 				'attribute' => 'release_date',
 				'value' => function ($model) {
 					return \Yii::$app->formatter->asDateTime($model->release_date);

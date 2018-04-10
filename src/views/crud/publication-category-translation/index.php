@@ -152,7 +152,14 @@ if (\Yii::$app->user->can('controllers_publication-category-translation_create',
 				'format' => 'raw',
 			],
 			'language_code',
-			'title',
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'title',
+				'value' => function ($model) {
+					return $model->title;
+				},
+				'format' => 'raw',
+			],
 		],
 	]); ?>
     </div>

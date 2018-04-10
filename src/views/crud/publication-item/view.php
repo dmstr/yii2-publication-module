@@ -100,6 +100,14 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			],
 			[
 				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'title',
+				'value' => function ($model) {
+					return $model->title;
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
 				'attribute' => 'release_date',
 				'value' => function ($model) {
 					return \Yii::$app->formatter->asDateTime($model->release_date);
@@ -181,7 +189,14 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			],
 			'id',
 			'language_code',
-			'title',
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'title',
+				'value' => function ($model) {
+					return $model->title;
+				},
+				'format' => 'raw',
+			],
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',
 			[

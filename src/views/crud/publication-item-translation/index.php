@@ -162,7 +162,14 @@ if (\Yii::$app->user->can('controllers_publication-item-translation_create', ['r
 				},
 				'format' => 'raw',
 			],
-			'title',
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'title',
+				'value' => function ($model) {
+					return $model->title;
+				},
+				'format' => 'raw',
+			],
 		],
 	]); ?>
     </div>

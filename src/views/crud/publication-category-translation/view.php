@@ -91,7 +91,14 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 					'<span class="label label-warning">?</span>'),
 			],
 			'language_code',
-			'title',
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'title',
+				'value' => function ($model) {
+					return $model->title;
+				},
+				'format' => 'raw',
+			],
 		],
 	]); ?>
 
