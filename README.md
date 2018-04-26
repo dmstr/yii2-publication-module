@@ -47,3 +47,48 @@ Once the extension is installed, simply use it in your code by adding the two mo
 ```
 
 Run migrations from `@dmstr/modules/publication/migrations`.
+
+
+
+Usage
+-----
+
+Create widget-templates `/widgets/crud/widget-template/index` for teaser 
+
+```
+{
+    "title": "News Teaser",
+    "type": "object",
+    "properties": {
+        "teaser": {
+            "type": "string",
+            "title": "Teaser",
+            "default": "subline"
+        }
+    }
+}
+```
+
+and content.
+
+```
+{
+    "title": "News Content",
+    "type": "object",
+    "properties": {
+        "content": {
+            "type": "string",
+            "title": "Content",
+            "default": "Content"
+        }
+    }
+}
+```
+
+Create a category, ie. `News` and assign templates to it.
+
+Create an item.
+
+---
+
+`publication/default/index?categoryId=1`
