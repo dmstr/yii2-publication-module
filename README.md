@@ -33,8 +33,8 @@ to the repositories section of your `composer.json` file.
 
 
 
-Usage
------
+Configuration
+-------------
 
 Once the extension is installed, simply use it in your code by adding the two module to the module section of your config
 
@@ -45,3 +45,5 @@ Once the extension is installed, simply use it in your code by adding the two mo
     ]
 ]
 ```
+
+Run migrations from `@dmstr/modules/publication/migrations`.
