@@ -26,13 +26,17 @@ class PublicationCategory extends BasePublicationCategory
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function render($properties, $teaser)
+    public function render(array $properties, $teaser)
     {
         $widgetTemplate = $teaser !== true ? $this->contentWidgetTemplate : $this->teaserWidgetTemplate;
-        if ($widgetTemplate instanceof WidgetTemplate) {
-            return (new \Twig_Environment(new \Twig_Loader_String(),['autoescape' => false]))->render($widgetTemplate->twig_template, $properties);
-        }
-        return null;
+        $loader = new \Twig_Loader_Array(array(
+            'publication' => $widgetTemplate->twig_template,
+        ));
+
+        // TODO: get environment from view renderer
+        $twig = new \Twig_Environment($loader, ['cache'=>\Yii::getAlias('@runtime/publication-module')]);
+
+        return $twig->render('publication', $properties);
     }
 
     public function behaviors()

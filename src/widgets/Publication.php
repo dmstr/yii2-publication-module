@@ -73,7 +73,7 @@ class Publication extends Widget
                 if ($this->showTitle === true) {
                     $publicationWidget .= "<h3 class='publication-title'>{$publicationItem->title}</h3>";
                 }
-                $publicationWidget .= $publicationCategory->render($properties,$this->teaser);
+                $publicationWidget .= $publicationCategory->render((array)$properties,$this->teaser);
 
                 if ($this->teaser) {
                     $publicationWidget = Html::a($publicationWidget,['/publication/default/detail','itemId' => $publicationItem->id,'showTitle' => $this->showTitle],['class' => 'publication-detail-link']);
