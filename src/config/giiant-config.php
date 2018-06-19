@@ -158,7 +158,13 @@ return [
             'crudViewPath' => '@' . str_replace('\\', '/', __NAMESPACE__) . '/views/crud',
             'crudPathPrefix' => '/publication/crud/',
             'crudTidyOutput' => true,
-            'crudAccessFilter' => true,
+            'crudAccessFilter' => false,
+            'crudProviders' => [
+                \schmunk42\giiant\generators\crud\providers\core\OptsProvider::class
+            ],
+            'crudBaseTraits' => implode(',', [
+                '\\'.\dmstr\web\traits\AccessBehaviorTrait::class
+            ]),
             'useTranslatableBehavior' => true,
             'languageCodeColumn' => 'language_code',
             'crudProviders' => [

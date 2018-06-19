@@ -13,6 +13,7 @@ namespace dmstr\modules\publication\controllers\crud\base;
 
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
+use dmstr\web\traits\AccessBehaviorTrait;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -33,36 +34,7 @@ class PublicationItemController extends Controller
 	 */
 	public $enableCsrfValidation = false;
 
-	/**
-	 *
-	 * @inheritdoc
-	 * @return unknown
-	 */
-	public function behaviors() {
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'rules' => [
-					[
-						'allow' => true,
-						'actions' => ['index', 'view', 'create', 'update', 'delete'],
-						'roles' => ['ControllersPublicationItemFull'],
-					],
-					[
-						'allow' => true,
-						'actions' => ['index', 'view'],
-						'roles' => ['ControllersPublicationItemView'],
-					],
-					[
-						'allow' => true,
-						'actions' => ['update', 'create', 'delete'],
-						'roles' => ['ControllersPublicationItemEdit'],
-					],
-
-				],
-			],
-		];
-	}
+	use AccessBehaviorTrait;
 
 
 	/**

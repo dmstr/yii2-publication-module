@@ -19,27 +19,6 @@ use yii\helpers\VarDumper;
  */
 class PublicationItemController extends \dmstr\modules\publication\controllers\crud\base\PublicationItemController
 {
-    /**
-     *
-     * @inheritdoc
-     * @return array
-     */
-    public function behaviors()
-    {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['create', 'update'],
-                'rules' => [
-
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ]);
-    }
 
     public function actionCreate()
     {

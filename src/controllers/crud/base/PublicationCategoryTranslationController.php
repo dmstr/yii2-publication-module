@@ -13,6 +13,7 @@ namespace dmstr\modules\publication\controllers\crud\base;
 
 use dmstr\modules\publication\models\crud\PublicationCategoryTranslation;
 use dmstr\modules\publication\models\crud\search\PublicationCategoryTranslation as PublicationCategoryTranslationSearch;
+use dmstr\web\traits\AccessBehaviorTrait;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -33,39 +34,10 @@ class PublicationCategoryTranslationController extends Controller
 	 */
 	public $enableCsrfValidation = false;
 
-	/**
-	 *
-	 * @inheritdoc
-	 * @return unknown
-	 */
-	public function behaviors() {
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'rules' => [
-					[
-						'allow' => true,
-						'actions' => ['index', 'view', 'create', 'update', 'delete'],
-						'roles' => ['ControllersPublicationCategoryTranslationFull'],
-					],
-					[
-						'allow' => true,
-						'actions' => ['index', 'view'],
-						'roles' => ['ControllersPublicationCategoryTranslationView'],
-					],
-					[
-						'allow' => true,
-						'actions' => ['update', 'create', 'delete'],
-						'roles' => ['ControllersPublicationCategoryTranslationEdit'],
-					],
-
-				],
-			],
-		];
-	}
+    use AccessBehaviorTrait;
 
 
-	/**
+    /**
 	 * Lists all PublicationCategoryTranslation models.
 	 *
 	 * @return mixed

@@ -13,6 +13,7 @@ namespace dmstr\modules\publication\controllers\crud\base;
 
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use dmstr\modules\publication\models\crud\search\PublicationItemTranslation as PublicationItemTranslationSearch;
+use dmstr\web\traits\AccessBehaviorTrait;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -33,37 +34,7 @@ class PublicationItemTranslationController extends Controller
 	 */
 	public $enableCsrfValidation = false;
 
-	/**
-	 *
-	 * @inheritdoc
-	 * @return unknown
-	 */
-	public function behaviors() {
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'rules' => [
-					[
-						'allow' => true,
-						'actions' => ['index', 'view', 'create', 'update', 'delete'],
-						'roles' => ['ControllersPublicationItemTranslationFull'],
-					],
-					[
-						'allow' => true,
-						'actions' => ['index', 'view'],
-						'roles' => ['ControllersPublicationItemTranslationView'],
-					],
-					[
-						'allow' => true,
-						'actions' => ['update', 'create', 'delete'],
-						'roles' => ['ControllersPublicationItemTranslationEdit'],
-					],
-
-				],
-			],
-		];
-	}
-
+	use AccessBehaviorTrait;
 
 	/**
 	 * Lists all PublicationItemTranslation models.
