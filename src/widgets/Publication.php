@@ -66,6 +66,8 @@ class Publication extends Widget
 
                 if ($this->teaser === true) {
                     $properties = Json::decode($publicationItem->teaser_widget_json);
+                    // allow usage of content variables in teaser
+                    $properties['content'] = Json::decode($publicationItem->content_widget_json);
                 } else {
                     $properties = Json::decode($publicationItem->content_widget_json);
                 }
