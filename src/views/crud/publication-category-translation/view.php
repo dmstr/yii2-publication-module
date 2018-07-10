@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <h1>
         <?php echo Yii::t('models', 'Publication Category Translation') ?>
         <small>
-            <?php echo $model->title ?>
+            <?php echo Html::encode($model->title) ?>
         </small>
     </h1>
 
@@ -121,7 +121,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 		'encodeLabels' => false,
 		'items' => [
 			[
-				'label'   => '<b class=""># '.$model->id.'</b>',
+				'label'   => '<b class=""># '.Html::encode($model->id).'</b>',
 				'content' => $this->blocks['dmstr\modules\publication\models\crud\PublicationCategoryTranslation'],
 				'active'  => true,
 			],

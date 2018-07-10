@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <h1>
         <?php echo Yii::t('models', 'Publication Item') ?>
         <small>
-            <?php echo $model->id ?>
+            <?php echo Html::encode($model->id) ?>
         </small>
     </h1>
 
@@ -199,14 +199,6 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			],
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',
-			[
-				'class' => yii\grid\DataColumn::className(),
-				'attribute' => 'status',
-				'value' => function ($model) {
-					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
-				},
-				'format' => 'raw',
-			],
 		]
 	])
 	. '</div>'
@@ -221,7 +213,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 		'encodeLabels' => false,
 		'items' => [
 			[
-				'label'   => '<b class=""># '.$model->id.'</b>',
+				'label'   => '<b class=""># '.Html::encode($model->id).'</b>',
 				'content' => $this->blocks['dmstr\modules\publication\models\crud\PublicationItem'],
 				'active'  => true,
 			],

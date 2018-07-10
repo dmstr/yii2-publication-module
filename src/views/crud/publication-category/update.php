@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'Edit');
     <h1>
         <?php echo Yii::t('models', 'Publication Category') ?>
         <small>
-                        <?php echo $model->label ?>
+                        <?php echo Html::encode($model->label) ?>
         </small>
     </h1>
 

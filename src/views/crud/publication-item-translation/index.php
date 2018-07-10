@@ -19,23 +19,6 @@ use yii\grid\GridView;
 $this->title = Yii::t('models', 'Publication Item Translations');
 $this->params['breadcrumbs'][] = $this->title;
 
-
-/**
- * create action column template depending acces rights
- */
-$actionColumnTemplates = [];
-
-if (\Yii::$app->user->can('controllers_publication-item-translation_view', ['route' => true])) {
-	$actionColumnTemplates[] = '{view}';
-}
-
-if (\Yii::$app->user->can('controllers_publication-item-translation_update', ['route' => true])) {
-	$actionColumnTemplates[] = '{update}';
-}
-
-if (\Yii::$app->user->can('controllers_publication-item-translation_delete', ['route' => true])) {
-	$actionColumnTemplates[] = '{delete}';
-}
 if (isset($actionColumnTemplates)) {
 	$actionColumnTemplate = implode(' ', $actionColumnTemplates);
 	$actionColumnTemplateString = $actionColumnTemplate;
@@ -61,15 +44,10 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
         </small>
     </h1>
     <div class="clearfix crud-navigation">
-<?php
-if (\Yii::$app->user->can('controllers_publication-item-translation_create', ['route' => true])) {
-?>
         <div class="pull-left">
             <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
-<?php
-}
-?>
+
         <div class="pull-right">
 
 

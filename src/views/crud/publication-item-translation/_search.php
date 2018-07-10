@@ -36,8 +36,6 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'teaser_widget_json') ?>
 
-		<?php // echo $form->field($model, 'status') ?>
-
 		<?php // echo $form->field($model, 'created_at') ?>
 
 		<?php // echo $form->field($model, 'updated_at') ?>

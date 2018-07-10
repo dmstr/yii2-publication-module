@@ -13,7 +13,6 @@ namespace dmstr\modules\publication\controllers\crud\base;
 
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
-use dmstr\web\traits\AccessBehaviorTrait;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -26,6 +25,7 @@ use dmstr\bootstrap\Tabs;
 class PublicationItemController extends Controller
 {
 
+	use \dmstr\web\traits\AccessBehaviorTrait;
 
 	/**
 	 *
@@ -33,8 +33,6 @@ class PublicationItemController extends Controller
 	 * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
 	 */
 	public $enableCsrfValidation = false;
-
-	use AccessBehaviorTrait;
 
 
 	/**

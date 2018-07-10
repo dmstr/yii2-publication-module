@@ -13,7 +13,6 @@ namespace dmstr\modules\publication\controllers\crud\base;
 
 use dmstr\modules\publication\models\crud\PublicationCategoryTranslation;
 use dmstr\modules\publication\models\crud\search\PublicationCategoryTranslation as PublicationCategoryTranslationSearch;
-use dmstr\web\traits\AccessBehaviorTrait;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -26,6 +25,7 @@ use dmstr\bootstrap\Tabs;
 class PublicationCategoryTranslationController extends Controller
 {
 
+	use \dmstr\web\traits\AccessBehaviorTrait;
 
 	/**
 	 *
@@ -34,10 +34,8 @@ class PublicationCategoryTranslationController extends Controller
 	 */
 	public $enableCsrfValidation = false;
 
-    use AccessBehaviorTrait;
 
-
-    /**
+	/**
 	 * Lists all PublicationCategoryTranslation models.
 	 *
 	 * @return mixed

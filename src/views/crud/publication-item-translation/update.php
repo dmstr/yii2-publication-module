@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'Edit');
     <h1>
         <?php echo Yii::t('models', 'Publication Item Translation') ?>
         <small>
-                        <?php echo $model->title ?>
+                        <?php echo Html::encode($model->title) ?>
         </small>
     </h1>
 
