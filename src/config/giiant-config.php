@@ -73,6 +73,7 @@ PHP;
         'theme' => 'bootstrap3',
         'disable_collapse' => true,
         'disable_properties' => true,
+        'ajax' => true
     ],
 ])
 PHP;
