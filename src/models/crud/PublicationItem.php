@@ -25,8 +25,15 @@ class PublicationItem extends BasePublicationItem
                 'translationAttributes' => [
                     'content_widget_json',
                     'teaser_widget_json',
+                    'title'
+                ],
+            ],
+            'translatable-meta' => [
+                'class' => TranslateableBehavior::className(),
+                'relation' => 'publicationItemMetas',
+                'languageField' => 'language_code',
+                'translationAttributes' => [
                     'status',
-                    'title',
                     'release_date',
                     'end_date'
                 ],
@@ -60,8 +67,8 @@ class PublicationItem extends BasePublicationItem
                     'status',
                     'in',
                     'range' => [
-                        PublicationItemTranslation::STATUS_DRAFT,
-                        PublicationItemTranslation::STATUS_PUBLISHED,
+                        PublicationItemMeta::STATUS_DRAFT,
+                        PublicationItemMeta::STATUS_PUBLISHED,
                     ]
                 ]
             ]

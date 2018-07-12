@@ -178,13 +178,15 @@ return [
                 'dmstr_publication_category',
                 'dmstr_publication_category_translation',
                 'dmstr_publication_item',
-                'dmstr_publication_item_translation'
+                'dmstr_publication_item_translation',
+                'dmstr_publication_item_meta',
             ],
             'tableNameMap' => [
                 getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_category' => 'PublicationCategory',
                 getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_category_translation' => 'PublicationCategoryTranslation',
                 getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item' => 'PublicationItem',
-                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item_translation' => 'PublicationItemTranslation'
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item_translation' => 'PublicationItemTranslation',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item_meta' => 'PublicationItemMeta'
             ]
         ]
     ]

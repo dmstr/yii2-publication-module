@@ -64,12 +64,16 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			'encodeLabels' => false,
 			'items' => [
 				[
-					'url' => ['/publication/crud/publication-category/index'],
-					'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('models', 'Publication Category'),
+					'url' => ['/publication/crud/publication-item-meta/index'],
+					'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Publication Item Meta'),
 				],
 				[
 					'url' => ['/publication/crud/publication-item-translation/index'],
 					'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Publication Item Translation'),
+				],
+				[
+					'url' => ['/publication/crud/publication-category/index'],
+					'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('models', 'Publication Category'),
 				],
 
 			]

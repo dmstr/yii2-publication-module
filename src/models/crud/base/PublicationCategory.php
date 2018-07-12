@@ -8,7 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the base-model class for table "{{%dmstr_publication_category}}".
+ * This is the base-model class for table "app_dmstr_publication_category".
  *
  * @property integer $id
  * @property integer $content_widget_template_id

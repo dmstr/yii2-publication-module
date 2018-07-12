@@ -95,14 +95,6 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			'teaser_widget_json:ntext',
 			[
 				'class' => yii\grid\DataColumn::className(),
-				'attribute' => 'status',
-				'value' => function ($model) {
-					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
-				},
-				'format' => 'raw',
-			],
-			[
-				'class' => yii\grid\DataColumn::className(),
 				'attribute' => 'title',
 				'value' => function ($model) {
 					return $model->title;

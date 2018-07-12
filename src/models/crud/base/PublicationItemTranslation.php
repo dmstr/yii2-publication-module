@@ -8,7 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the base-model class for table "{{%dmstr_publication_item_translation}}".
+ * This is the base-model class for table "app_dmstr_publication_item_translation".
  *
  * @property integer $id
  * @property integer $item_id
@@ -16,7 +16,6 @@ use yii\behaviors\TimestampBehavior;
  * @property string $title
  * @property string $content_widget_json
  * @property string $teaser_widget_json
- * @property string $status
  * @property integer $created_at
  * @property integer $updated_at
  *
@@ -28,12 +27,6 @@ abstract class PublicationItemTranslation extends \yii\db\ActiveRecord
 
 
 
-    /**
-    * ENUM field values
-    */
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
-    var $enum_labels = false;
     /**
      * @inheritdoc
      */
@@ -62,15 +55,10 @@ abstract class PublicationItemTranslation extends \yii\db\ActiveRecord
         return [
             [['item_id', 'language_code'], 'required'],
             [['item_id'], 'integer'],
-            [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
+            [['content_widget_json', 'teaser_widget_json'], 'string'],
             [['language_code'], 'string', 'max' => 8],
             [['title'], 'string', 'max' => 80],
-            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']],
-            ['status', 'in', 'range' => [
-                    self::STATUS_DRAFT,
-                    self::STATUS_PUBLISHED,
-                ]
-            ]
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']]
         ];
     }
 
@@ -86,7 +74,6 @@ abstract class PublicationItemTranslation extends \yii\db\ActiveRecord
             'title' => Yii::t('models', 'Title'),
             'content_widget_json' => Yii::t('models', 'Content Widget Json'),
             'teaser_widget_json' => Yii::t('models', 'Teaser Widget Json'),
-            'status' => Yii::t('models', 'Status'),
             'created_at' => Yii::t('models', 'Created At'),
             'updated_at' => Yii::t('models', 'Updated At'),
         ];
@@ -111,30 +98,5 @@ abstract class PublicationItemTranslation extends \yii\db\ActiveRecord
         return new \dmstr\modules\publication\models\crud\query\PublicationItemTranslationQuery(get_called_class());
     }
 
-
-    /**
-     * get column status enum value label
-     * @param string $value
-     * @return string
-     */
-    public static function getStatusValueLabel($value){
-        $labels = self::optsStatus();
-        if(isset($labels[$value])){
-            return $labels[$value];
-        }
-        return $value;
-    }
-
-    /**
-     * column status ENUM value labels
-     * @return array
-     */
-    public static function optsStatus()
-    {
-        return [
-            self::STATUS_DRAFT => Yii::t('models', self::STATUS_DRAFT),
-            self::STATUS_PUBLISHED => Yii::t('models', self::STATUS_PUBLISHED),
-        ];
-    }
 
 }

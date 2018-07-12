@@ -138,6 +138,89 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 
 
 
+<?php $this->beginBlock('PublicationItemMetas'); ?>
+<div style='position: relative'>
+<div style='position:absolute; right: 0px; top: 0px;'>
+  <?php echo Html::a(
+	'<span class="glyphicon glyphicon-list"></span> ' . Yii::t('cruds', 'List All') . ' Publication Item Metas',
+	['/publication/crud/publication-item-meta/index'],
+	['class'=>'btn text-muted btn-xs']
+) ?>
+  <?php echo Html::a(
+	'<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New') . ' Publication Item Meta',
+	['/publication/crud/publication-item-meta/create', 'PublicationItemMeta' => ['item_id' => $model->id]],
+	['class'=>'btn btn-success btn-xs']
+); ?>
+</div>
+</div>
+<?php Pjax::begin(['id'=>'pjax-PublicationItemMetas', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-PublicationItemMetas ul.pagination a, th a']) ?>
+<?php echo
+'<div class="table-responsive">'
+	. \yii\grid\GridView::widget([
+		'layout' => '{summary}{pager}<br/>{items}{pager}',
+		'dataProvider' => new \yii\data\ActiveDataProvider([
+				'query' => $model->getPublicationItemMetas(),
+				'pagination' => [
+					'pageSize' => 20,
+					'pageParam'=>'page-publicationitemmetas',
+				]
+			]),
+		'pager'        => [
+			'class'          => yii\widgets\LinkPager::className(),
+			'firstPageLabel' => Yii::t('cruds', 'First'),
+			'lastPageLabel'  => Yii::t('cruds', 'Last')
+		],
+		'columns' => [
+			[
+				'class'      => 'yii\grid\ActionColumn',
+				'template'   => '{view} {update}',
+				'contentOptions' => ['nowrap'=>'nowrap'],
+				'urlCreator' => function ($action, $model, $key, $index) {
+					// using the column name as key, not mapping to 'id' like the standard generator
+					$params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
+					$params[0] = '/publication/crud/publication-item-meta' . '/' . $action;
+					$params['PublicationItemMeta'] = ['item_id' => $model->primaryKey()[0]];
+					return $params;
+				},
+				'buttons'    => [
+
+				],
+				'controller' => '/publication/crud/publication-item-meta'
+			],
+			'id',
+			'language_code',
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'status',
+				'value' => function ($model) {
+					return '<div class="label label-' . ($model->status === 'published' ? 'success' : 'warning') . '">' . ucfirst($model->status) . '</div>';
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'release_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->release_date);
+				},
+				'format' => 'raw',
+			],
+			[
+				'class' => yii\grid\DataColumn::className(),
+				'attribute' => 'end_date',
+				'value' => function ($model) {
+					return \Yii::$app->formatter->asDateTime($model->end_date);
+				},
+				'format' => 'raw',
+			],
+		]
+	])
+	. '</div>'
+?>
+<?php Pjax::end() ?>
+<?php $this->endBlock() ?>
+
+
 <?php $this->beginBlock('PublicationItemTranslations'); ?>
 <div style='position: relative'>
 <div style='position:absolute; right: 0px; top: 0px;'>
@@ -216,6 +299,11 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 				'label'   => '<b class=""># '.Html::encode($model->id).'</b>',
 				'content' => $this->blocks['dmstr\modules\publication\models\crud\PublicationItem'],
 				'active'  => true,
+			],
+			[
+				'content' => $this->blocks['PublicationItemMetas'],
+				'label'   => '<small>Publication Item Metas <span class="badge badge-default">'. $model->getPublicationItemMetas()->count() . '</span></small>',
+				'active'  => false,
 			],
 			[
 				'content' => $this->blocks['PublicationItemTranslations'],
