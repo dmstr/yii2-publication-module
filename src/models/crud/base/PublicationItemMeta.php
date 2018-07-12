@@ -38,7 +38,7 @@ abstract class PublicationItemMeta extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%dmstr_publication_item_meta}}';
+        return 'app_dmstr_publication_item_meta';
     }
 
     /**

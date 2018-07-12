@@ -17,28 +17,32 @@ class PublicationItem extends BasePublicationItem
 
     public function behaviors()
     {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'translatable' => [
-                'class' => TranslateableBehavior::className(),
-                'relation' => 'publicationItemTranslations',
-                'languageField' => 'language_code',
-                'translationAttributes' => [
-                    'content_widget_json',
-                    'teaser_widget_json',
-                    'title'
-                ],
+        $behaviors = parent::behaviors();
+
+        $behaviors['translatable'] = [
+            'class' => TranslateableBehavior::className(),
+            'relation' => 'publicationItemTranslations',
+            'skipSavingDuplicateTranslation' => true,
+            'languageField' => 'language_code',
+            'translationAttributes' => [
+                'content_widget_json',
+                'teaser_widget_json',
+                'title'
             ],
-            'translatable-meta' => [
-                'class' => TranslateableBehavior::className(),
-                'relation' => 'publicationItemMetas',
-                'languageField' => 'language_code',
-                'translationAttributes' => [
-                    'status',
-                    'release_date',
-                    'end_date'
-                ],
+        ];
+        $behaviors['translatable_meta'] = [
+            'class' => TranslateableBehavior::className(),
+            'relation' => 'publicationItemMetas',
+            'languageField' => 'language_code',
+            'fallbackLanguage' => false,
+            'skipSavingDuplicateTranslation' => false,
+            'translationAttributes' => [
+                'status',
+                'release_date',
+                'end_date'
             ],
-        ]);
+        ];
+        return $behaviors;
     }
 
     public function scenarios()
@@ -61,6 +65,7 @@ class PublicationItem extends BasePublicationItem
         return ArrayHelper::merge(
             parent::rules(),
             [
+                ['release_date', 'required'],
                 [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
                 [['title'], 'string', 'max' => 80],
                 [
