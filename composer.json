@@ -14,7 +14,6 @@
         "yiisoft/yii2": "*",
         "dmstr/yii2-widgets2-module": "^0.6",
         "zhuravljov/yii2-datetime-widgets" : "~1.1.0",
-        "dmstr/yii2-backend-module": "^1.0.0",
         "kartik-v/yii2-widget-select2": "^2",
         "insolita/yii2-adminlte-widgets": "~1.1",
         "2amigos/yii2-translateable-behavior": "^0.1.2",
