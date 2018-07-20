@@ -12,7 +12,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property integer $id
  * @property integer $category_id
- * @property string $language_code
+ * @property string $language
  * @property string $title
  * @property integer $created_at
  * @property integer $updated_at
@@ -51,9 +51,9 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
     public function rules()
     {
         return [
-            [['category_id', 'language_code'], 'required'],
+            [['category_id', 'language'], 'required'],
             [['category_id'], 'integer'],
-            [['language_code'], 'string', 'max' => 8],
+            [['language'], 'string', 'max' => 7],
             [['title'], 'string', 'max' => 80],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationCategory::className(), 'targetAttribute' => ['category_id' => 'id']]
         ];
@@ -67,7 +67,7 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
         return [
             'id' => Yii::t('models', 'ID'),
             'category_id' => Yii::t('models', 'Category ID'),
-            'language_code' => Yii::t('models', 'Language Code'),
+            'language' => Yii::t('models', 'Language'),
             'title' => Yii::t('models', 'Title'),
             'created_at' => Yii::t('models', 'Created At'),
             'updated_at' => Yii::t('models', 'Updated At'),

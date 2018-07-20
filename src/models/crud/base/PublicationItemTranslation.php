@@ -12,7 +12,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property integer $id
  * @property integer $item_id
- * @property string $language_code
+ * @property string $language
  * @property string $title
  * @property string $content_widget_json
  * @property string $teaser_widget_json
@@ -53,10 +53,10 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
     public function rules()
     {
         return [
-            [['item_id', 'language_code'], 'required'],
+            [['item_id', 'language'], 'required'],
             [['item_id'], 'integer'],
             [['content_widget_json', 'teaser_widget_json'], 'string'],
-            [['language_code'], 'string', 'max' => 8],
+            [['language'], 'string', 'max' => 7],
             [['title'], 'string', 'max' => 80],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']]
         ];
@@ -70,7 +70,7 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
         return [
             'id' => Yii::t('models', 'ID'),
             'item_id' => Yii::t('models', 'Item ID'),
-            'language_code' => Yii::t('models', 'Language Code'),
+            'language' => Yii::t('models', 'Language'),
             'title' => Yii::t('models', 'Title'),
             'content_widget_json' => Yii::t('models', 'Content Widget Json'),
             'teaser_widget_json' => Yii::t('models', 'Teaser Widget Json'),

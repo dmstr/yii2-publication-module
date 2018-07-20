@@ -175,7 +175,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 				'controller' => '/publication/crud/publication-category-translation'
 			],
 			'id',
-			'language_code',
+			'language',
 			[
 				'class' => yii\grid\DataColumn::className(),
 				'attribute' => 'title',

@@ -188,7 +188,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 				'controller' => '/publication/crud/publication-item-meta'
 			],
 			'id',
-			'language_code',
+			'language',
 			[
 				'class' => yii\grid\DataColumn::className(),
 				'attribute' => 'status',
@@ -271,7 +271,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 				'controller' => '/publication/crud/publication-item-translation'
 			],
 			'id',
-			'language_code',
+			'language',
 			[
 				'class' => yii\grid\DataColumn::className(),
 				'attribute' => 'title',

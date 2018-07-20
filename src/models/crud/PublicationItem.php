@@ -35,7 +35,6 @@ class PublicationItem extends BasePublicationItem
             'class' => TranslateableBehavior::className(),
             'relation' => 'publicationItemTranslations',
             'skipSavingDuplicateTranslation' => true,
-            'languageField' => 'language_code',
             'translationAttributes' => [
                 'content_widget_json',
                 'teaser_widget_json',
@@ -45,7 +44,6 @@ class PublicationItem extends BasePublicationItem
         $behaviors['translatable_meta'] = [
             'class' => TranslateableBehavior::className(),
             'relation' => 'publicationItemMetas',
-            'languageField' => 'language_code',
             'fallbackLanguage' => false,
             'skipSavingDuplicateTranslation' => false,
             'translationAttributes' => [
@@ -57,6 +55,9 @@ class PublicationItem extends BasePublicationItem
         return $behaviors;
     }
 
+    /**
+     * @return array
+     */
     public function scenarios()
     {
         return ArrayHelper::merge(parent::scenarios(), [

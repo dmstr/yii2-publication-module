@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
 
 		<?php echo $form->field($model, 'category_id') ?>
 
-		<?php echo $form->field($model, 'language_code') ?>
+		<?php echo $form->field($model, 'language') ?>
 
 		<?php echo $form->field($model, 'title') ?>
 

@@ -24,7 +24,7 @@ class PublicationItemMeta extends BasePublicationItemMeta
     /**
      * @return string
      */
-    public function getLanguageCode()
+    public function getLanguage()
     {
         return Yii::$app->language;
     }

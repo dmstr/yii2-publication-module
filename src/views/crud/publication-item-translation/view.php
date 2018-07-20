@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 					:
 					'<span class="label label-warning">?</span>'),
 			],
-			'language_code',
+			'language',
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',
 			[

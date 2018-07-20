@@ -55,7 +55,7 @@ class PublicationItem extends PublicationItemModel
     public function search($params)
     {
         $query = PublicationItemModel::find();
-        $query->select([PublicationItemModel::tableName() . '.*', PublicationItemTranslation::tableName().'.title', PublicationItemTranslation::tableName().'.language_code']);
+        $query->select([PublicationItemModel::tableName() . '.*', PublicationItemTranslation::tableName().'.title', PublicationItemTranslation::tableName().'.language']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -83,7 +83,7 @@ class PublicationItem extends PublicationItemModel
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andWhere([PublicationItemTranslation::tableName().'.language_code' => \Yii::$app->language]);
+        $query->andWhere([PublicationItemTranslation::tableName().'.language' => \Yii::$app->language]);
 
         return $dataProvider;
     }

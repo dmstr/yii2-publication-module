@@ -55,7 +55,6 @@ class PublicationCategory extends BasePublicationCategory
             'translatable' => [
                 'class' => TranslateableBehavior::className(),
                 'relation' => 'publicationCategoryTranslations',
-                'languageField' => 'language_code',
                 'translationAttributes' => [
                     'title',
                 ],

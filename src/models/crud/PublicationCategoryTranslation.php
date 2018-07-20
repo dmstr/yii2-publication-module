@@ -19,4 +19,12 @@ class PublicationCategoryTranslation extends BasePublicationCategoryTranslation
     {
         return '{{%dmstr_publication_category_translation}}';
     }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return Yii::$app->language;
+    }
 }

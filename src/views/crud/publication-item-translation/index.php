@@ -129,7 +129,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 				},
 				'format' => 'raw',
 			],
-			'language_code',
+			'language',
 			'content_widget_json:ntext',
 			'teaser_widget_json:ntext',
 			[

@@ -94,7 +94,7 @@ PHP;
 		'name' => 'class_name',
 		'model' => \$model,
 		'attribute' => '{$attribute}',
-		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language_code' => \Yii::\$app->language])->all(), 'id', 'title'),
+		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language' => \Yii::\$app->language])->all(), 'id', 'title'),
 		'options' => [
 			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
 			'multiple' => false,
@@ -168,7 +168,6 @@ return [
             'crudAccessFilter' => false,
             'useTranslatableBehavior' => true,
             'singularEntities' => false,
-            'languageCodeColumn' => 'language_code',
             'crudProviders' => [
                 CallbackProvider::class,
                 OptsProvider::class,

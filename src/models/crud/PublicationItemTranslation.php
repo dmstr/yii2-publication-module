@@ -22,7 +22,7 @@ class PublicationItemTranslation extends BasePublicationItemTranslation
     /**
      * @return string
      */
-    public function getLanguageCode()
+    public function getLanguage()
     {
         return Yii::$app->language;
     }

@@ -27,7 +27,7 @@ class PublicationCategoryTranslation extends PublicationCategoryTranslationModel
 	public function rules() {
 		return [
 			[['id', 'category_id', 'created_at', 'updated_at'], 'integer'],
-			[['language_code', 'title'], 'safe'],
+			[['language', 'title'], 'safe'],
 		];
 	}
 
@@ -72,7 +72,7 @@ class PublicationCategoryTranslation extends PublicationCategoryTranslationModel
 				'updated_at' => $this->updated_at,
 			]);
 
-		$query->andFilterWhere(['like', 'language_code', $this->language_code])
+		$query->andFilterWhere(['like', 'language', $this->language])
 		->andFilterWhere(['like', 'title', $this->title]);
 
 		return $dataProvider;

@@ -60,8 +60,8 @@ $form->field($model, 'item_id')->widget(\kartik\select2\Select2::classname(), [
 		]
 	]); ?>
 
-<!-- attribute language_code -->
-			<?php echo $form->field($model, 'language_code')->textInput(['maxlength' => true]) ?>
+<!-- attribute language -->
+			<?php echo $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
 
 <!-- attribute release_date -->
 			<?php echo $form->field($model, 'release_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>

@@ -26,8 +26,8 @@ class PublicationItemTranslation extends PublicationItemTranslationModel
 	 */
 	public function rules() {
 		return [
-			[['id', 'item_id', 'publication_category_id', 'created_at', 'updated_at'], 'integer'],
-			[['title', 'content_widget_json', 'teaser_widget_json', 'status'], 'safe'],
+			[['id', 'item_id',  'created_at', 'updated_at'], 'integer'],
+			[['title', 'content_widget_json', 'teaser_widget_json','language'], 'safe'],
 		];
 	}
 
@@ -68,7 +68,6 @@ class PublicationItemTranslation extends PublicationItemTranslationModel
 		$query->andFilterWhere([
 				'id' => $this->id,
 				'item_id' => $this->item_id,
-				'publication_category_id' => $this->publication_category_id,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 			]);
@@ -76,7 +75,7 @@ class PublicationItemTranslation extends PublicationItemTranslationModel
 		$query->andFilterWhere(['like', 'title', $this->title])
 		->andFilterWhere(['like', 'content_widget_json', $this->content_widget_json])
 		->andFilterWhere(['like', 'teaser_widget_json', $this->teaser_widget_json])
-		->andFilterWhere(['like', 'status', $this->status]);
+		->andFilterWhere(['like', 'language', $this->language]);
 
 		return $dataProvider;
 	}

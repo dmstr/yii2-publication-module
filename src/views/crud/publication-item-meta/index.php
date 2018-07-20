@@ -129,7 +129,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 				},
 				'format' => 'raw',
 			],
-			'language_code',
+			'language',
 			[
 				'class' => yii\grid\DataColumn::className(),
 				'attribute' => 'release_date',

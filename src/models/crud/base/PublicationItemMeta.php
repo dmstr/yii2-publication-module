@@ -12,7 +12,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property integer $id
  * @property integer $item_id
- * @property string $language_code
+ * @property string $language
  * @property string $status
  * @property string $release_date
  * @property string $end_date
@@ -59,11 +59,11 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
     public function rules()
     {
         return [
-            [['item_id', 'language_code', 'release_date'], 'required'],
+            [['item_id', 'language', 'release_date'], 'required'],
             [['item_id'], 'integer'],
             [['status'], 'string'],
             [['release_date', 'end_date'], 'safe'],
-            [['language_code'], 'string', 'max' => 8],
+            [['language'], 'string', 'max' => 7],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']],
             ['status', 'in', 'range' => [
                     self::STATUS_DRAFT,
@@ -81,7 +81,7 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
         return [
             'id' => Yii::t('models', 'ID'),
             'item_id' => Yii::t('models', 'Item ID'),
-            'language_code' => Yii::t('models', 'Language Code'),
+            'language' => Yii::t('models', 'Language'),
             'status' => Yii::t('models', 'Status'),
             'release_date' => Yii::t('models', 'Release Date'),
             'end_date' => Yii::t('models', 'End Date'),

@@ -51,7 +51,7 @@ use yii\helpers\StringHelper;
 		'name' => 'class_name',
 		'model' => $model,
 		'attribute' => 'category_id',
-		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language_code' => \Yii::$app->language])->all(), 'id', 'title'),
+		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language' => \Yii::$app->language])->all(), 'id', 'title'),
 		'options' => [
 			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
 			'multiple' => false,
@@ -60,8 +60,8 @@ use yii\helpers\StringHelper;
 	]); ?>
 			<?php \dmstr\modules\publication\assets\PublicationItemAssetBundle::register($this);?>
 
-<!-- attribute language_code -->
-			<?php echo $form->field($model, 'language_code')->textInput(['maxlength' => true]) ?>
+<!-- attribute language -->
+			<?php echo $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
 
 <!-- attribute title -->
 			<?php echo $form->field($model, 'title'); ?>

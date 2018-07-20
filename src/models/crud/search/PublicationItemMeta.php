@@ -27,7 +27,7 @@ class PublicationItemMeta extends PublicationItemMetaModel
 	public function rules() {
 		return [
 			[['id', 'item_id', 'created_at', 'updated_at'], 'integer'],
-			[['language_code', 'status', 'release_date', 'end_date'], 'safe'],
+			[['language', 'status', 'release_date', 'end_date'], 'safe'],
 		];
 	}
 
@@ -74,7 +74,7 @@ class PublicationItemMeta extends PublicationItemMetaModel
 				'updated_at' => $this->updated_at,
 			]);
 
-		$query->andFilterWhere(['like', 'language_code', $this->language_code])
+		$query->andFilterWhere(['like', 'language', $this->language])
 		->andFilterWhere(['like', 'status', $this->status]);
 
 		return $dataProvider;
