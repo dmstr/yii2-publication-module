@@ -14,7 +14,7 @@ use yii\helpers\Html;
  * @var dmstr\modules\publication\models\crud\PublicationItemMeta $model
  */
 $this->title = Yii::t('models', 'Publication Item Meta');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Item Meta'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Item Metas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giiant-crud publication-item-meta-create">

@@ -20,7 +20,7 @@ use yii\behaviors\TimestampBehavior;
  * @property \dmstr\modules\publication\models\crud\PublicationCategory $category
  * @property string $aliasModel
  */
-abstract class PublicationCategoryTranslation extends \yii\db\ActiveRecord
+abstract class PublicationCategoryTranslation extends \dmstr\modules\publication\models\crud\ActiveRecord
 {
 
 
@@ -30,7 +30,7 @@ abstract class PublicationCategoryTranslation extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%dmstr_publication_category_translation}}';
+        return 'app_dmstr_publication_category_translation';
     }
 
     /**

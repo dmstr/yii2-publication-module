@@ -13,6 +13,17 @@ use yii\helpers\VarDumper;
 class PublicationItemMeta extends BasePublicationItemMeta
 {
 
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%dmstr_publication_item_meta}}';
+    }
+
+    /**
+     * @return string
+     */
     public function getLanguageCode()
     {
         return Yii::$app->language;

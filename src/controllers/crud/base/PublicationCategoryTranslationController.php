@@ -25,7 +25,6 @@ use dmstr\bootstrap\Tabs;
 class PublicationCategoryTranslationController extends Controller
 {
 
-	use \dmstr\web\traits\AccessBehaviorTrait;
 
 	/**
 	 *

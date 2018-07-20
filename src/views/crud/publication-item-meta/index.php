@@ -16,7 +16,7 @@ use yii\grid\GridView;
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var dmstr\modules\publication\models\crud\search\PublicationItemMeta $searchModel
  */
-$this->title = Yii::t('models', 'Publication Item Meta');
+$this->title = Yii::t('models', 'Publication Item Metas');
 $this->params['breadcrumbs'][] = $this->title;
 
 if (isset($actionColumnTemplates)) {
@@ -38,7 +38,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
     <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
     <h1>
-        <?php echo Yii::t('models', 'Publication Item Meta') ?>
+        <?php echo Yii::t('models', 'Publication Item Metas') ?>
         <small>
             List
         </small>

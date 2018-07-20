@@ -3,7 +3,6 @@
 namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublicationCategory;
-use hrzg\widget\models\crud\WidgetTemplate;
 use dosamigos\translateable\TranslateableBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -13,6 +12,17 @@ use yii\helpers\ArrayHelper;
 class PublicationCategory extends BasePublicationCategory
 {
 
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%dmstr_publication_category}}';
+    }
+
+    /**
+     * @return mixed
+     */
     public function getLabel()
     {
         return $this->title;
@@ -34,7 +44,7 @@ class PublicationCategory extends BasePublicationCategory
         ));
 
         // TODO: get environment from view renderer
-        $twig = new \Twig_Environment($loader, ['cache'=>\Yii::getAlias('@runtime/publication-module')]);
+        $twig = new \Twig_Environment($loader, ['cache' => \Yii::getAlias('@runtime/publication-module')]);
 
         return $twig->render('publication', $properties);
     }

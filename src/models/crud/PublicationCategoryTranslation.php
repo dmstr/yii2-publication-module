@@ -12,23 +12,11 @@ use yii\helpers\ArrayHelper;
 class PublicationCategoryTranslation extends BasePublicationCategoryTranslation
 {
 
-    public function behaviors()
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
     {
-        return ArrayHelper::merge(
-            parent::behaviors(),
-            [
-                # custom behaviors
-            ]
-        );
-    }
-
-    public function rules()
-    {
-        return ArrayHelper::merge(
-            parent::rules(),
-            [
-                # custom validation rules
-            ]
-        );
+        return '{{%dmstr_publication_category_translation}}';
     }
 }

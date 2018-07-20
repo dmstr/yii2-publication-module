@@ -22,7 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property \dmstr\modules\publication\models\crud\PublicationItem $item
  * @property string $aliasModel
  */
-abstract class PublicationItemMeta extends \yii\db\ActiveRecord
+abstract class PublicationItemMeta extends \dmstr\modules\publication\models\crud\ActiveRecord
 {
 
 

@@ -10,11 +10,16 @@
 namespace dmstr\modules\publication;
 
 
+use dmstr\modules\publication\models\crud\ActiveRecord;
 use schmunk42\giiant\commands\BatchController;
 use schmunk42\giiant\generators\crud\callbacks\base\Callback;
-use schmunk42\giiant\generators\crud\providers\core\CallbackProvider;
-use schmunk42\giiant\generators\crud\providers\core\OptsProvider;
-use schmunk42\giiant\generators\crud\providers\core\RelationProvider;
+use schmunk42\giiant\generators\crud\providers\core\CallbackProvider as BaseCallbackProvider;
+use schmunk42\giiant\generators\crud\providers\core\OptsProvider as BaseOptsProvider;
+use schmunk42\giiant\generators\crud\providers\core\RelationProvider as BaseRelationProvider;
+
+class CallbackProvider extends BaseCallbackProvider{};
+class OptsProvider extends BaseOptsProvider{};
+class RelationProvider extends BaseRelationProvider{};
 
 $formats = [
     '^id|created_at|updated_at' => Callback::false(),
@@ -152,6 +157,7 @@ return [
             'class' => BatchController::class,
             'overwrite' => true,
             'interactive' => false,
+            'modelBaseClass' => ActiveRecord::class,
             'modelNamespace' => __NAMESPACE__ . '\\models\\crud',
             'modelQueryNamespace' => __NAMESPACE__ . '\\models\\crud\\query',
             'crudControllerNamespace' => __NAMESPACE__ . '\\controllers\\crud',
@@ -160,26 +166,21 @@ return [
             'crudPathPrefix' => '/publication/crud/',
             'crudTidyOutput' => true,
             'crudAccessFilter' => false,
-            'crudProviders' => [
-                \schmunk42\giiant\generators\crud\providers\core\OptsProvider::class
-            ],
-            'crudBaseTraits' => implode(',', [
-                '\\'.\dmstr\web\traits\AccessBehaviorTrait::class
-            ]),
             'useTranslatableBehavior' => true,
+            'singularEntities' => false,
             'languageCodeColumn' => 'language_code',
             'crudProviders' => [
                 CallbackProvider::class,
                 OptsProvider::class,
                 RelationProvider::class,
             ],
-            'tablePrefix' => 'dmstr_',
+            'tablePrefix' => getenv('DATABASE_TABLE_PREFIX') . 'dmstr_',
             'tables' => [
-                'dmstr_publication_category',
-                'dmstr_publication_category_translation',
-                'dmstr_publication_item',
-                'dmstr_publication_item_translation',
-                'dmstr_publication_item_meta',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_category',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_category_translation',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item_translation',
+                getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_item_meta',
             ],
             'tableNameMap' => [
                 getenv('DATABASE_TABLE_PREFIX') . 'dmstr_publication_category' => 'PublicationCategory',

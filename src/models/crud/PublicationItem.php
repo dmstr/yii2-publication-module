@@ -15,6 +15,18 @@ class PublicationItem extends BasePublicationItem
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
 
+
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%dmstr_publication_item}}';
+    }
+
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         $behaviors = parent::behaviors();

@@ -8,19 +8,19 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the base-model class for table "dmstr_publication_item".
+ * This is the base-model class for table "app_dmstr_publication_item".
  *
  * @property integer $id
  * @property integer $category_id
  * @property integer $created_at
  * @property integer $updated_at
  *
+ * @property \dmstr\modules\publication\models\crud\PublicationCategory $category
  * @property \dmstr\modules\publication\models\crud\PublicationItemMeta[] $publicationItemMetas
  * @property \dmstr\modules\publication\models\crud\PublicationItemTranslation[] $publicationItemTranslations
- * @property \dmstr\modules\publication\models\crud\PublicationCategory $category
  * @property string $aliasModel
  */
-abstract class PublicationItem extends \yii\db\ActiveRecord
+abstract class PublicationItem extends \dmstr\modules\publication\models\crud\ActiveRecord
 {
 
 
@@ -30,7 +30,7 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%dmstr_publication_item}}';
+        return 'app_dmstr_publication_item';
     }
 
     /**
@@ -73,6 +73,14 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getCategory()
+    {
+        return $this->hasOne(\dmstr\modules\publication\models\crud\PublicationCategory::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getPublicationItemMetas()
     {
         return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationItemMeta::className(), ['item_id' => 'id']);
@@ -84,14 +92,6 @@ abstract class PublicationItem extends \yii\db\ActiveRecord
     public function getPublicationItemTranslations()
     {
         return $this->hasMany(\dmstr\modules\publication\models\crud\PublicationItemTranslation::className(), ['item_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategory()
-    {
-        return $this->hasOne(\dmstr\modules\publication\models\crud\PublicationCategory::className(), ['id' => 'category_id']);
     }
 
 

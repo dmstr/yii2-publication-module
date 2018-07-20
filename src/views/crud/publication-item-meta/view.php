@@ -21,7 +21,7 @@ use dmstr\bootstrap\Tabs;
 $copyParams = $model->attributes;
 
 $this->title = Yii::t('models', 'Publication Item Meta');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Item Meta'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Item Metas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 ?>

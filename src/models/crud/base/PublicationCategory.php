@@ -22,7 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property \dmstr\modules\publication\models\crud\PublicationItem[] $publicationItems
  * @property string $aliasModel
  */
-abstract class PublicationCategory extends \yii\db\ActiveRecord
+abstract class PublicationCategory extends \dmstr\modules\publication\models\crud\ActiveRecord
 {
 
 
@@ -32,7 +32,7 @@ abstract class PublicationCategory extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%dmstr_publication_category}}';
+        return 'app_dmstr_publication_category';
     }
 
     /**

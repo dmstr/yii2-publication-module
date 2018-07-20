@@ -25,7 +25,6 @@ use dmstr\bootstrap\Tabs;
 class PublicationItemMetaController extends Controller
 {
 
-	use \dmstr\web\traits\AccessBehaviorTrait;
 
 	/**
 	 *

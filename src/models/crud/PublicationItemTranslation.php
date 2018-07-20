@@ -12,6 +12,16 @@ use yii\helpers\ArrayHelper;
 class PublicationItemTranslation extends BasePublicationItemTranslation
 {
 
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%dmstr_publication_item_translation}}';
+    }
+    /**
+     * @return string
+     */
     public function getLanguageCode()
     {
         return Yii::$app->language;
