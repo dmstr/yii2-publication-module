@@ -66,11 +66,11 @@ abstract class PublicationCategory extends \dmstr\modules\publication\models\cru
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('models', 'ID'),
-            'content_widget_template_id' => Yii::t('models', 'Content Widget Template ID'),
-            'teaser_widget_template_id' => Yii::t('models', 'Teaser Widget Template ID'),
-            'created_at' => Yii::t('models', 'Created At'),
-            'updated_at' => Yii::t('models', 'Updated At'),
+            'id' => Yii::t('publication', 'ID'),
+            'content_widget_template_id' => Yii::t('publication', 'Content Widget Template ID'),
+            'teaser_widget_template_id' => Yii::t('publication', 'Teaser Widget Template ID'),
+            'created_at' => Yii::t('publication', 'Created At'),
+            'updated_at' => Yii::t('publication', 'Updated At'),
         ];
     }
 

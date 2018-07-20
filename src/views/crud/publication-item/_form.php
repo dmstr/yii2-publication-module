@@ -110,7 +110,7 @@ Tabs::widget(
 		'encodeLabels' => false,
 		'items' => [
 			[
-				'label'   => Yii::t('models', 'PublicationItem'),
+				'label'   => Yii::t('publication', 'PublicationItem'),
 				'content' => $this->blocks['main'],
 				'active'  => true,
 			],
@@ -124,7 +124,7 @@ Tabs::widget(
 
         <?php echo Html::submitButton(
 	'<span class="glyphicon glyphicon-check"></span> ' .
-	($model->isNewRecord ? Yii::t('cruds', 'Create') : Yii::t('cruds', 'Save')),
+	($model->isNewRecord ? Yii::t('publication', 'Create') : Yii::t('publication', 'Save')),
 	[
 		'id' => 'save-' . $model->formName(),
 		'class' => 'btn btn-success'

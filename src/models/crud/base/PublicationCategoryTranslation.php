@@ -55,6 +55,7 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
             [['category_id'], 'integer'],
             [['language'], 'string', 'max' => 7],
             [['title'], 'string', 'max' => 80],
+            [['category_id', 'language'], 'unique', 'targetAttribute' => ['category_id', 'language']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationCategory::className(), 'targetAttribute' => ['category_id' => 'id']]
         ];
     }
@@ -65,12 +66,12 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('models', 'ID'),
-            'category_id' => Yii::t('models', 'Category ID'),
-            'language' => Yii::t('models', 'Language'),
-            'title' => Yii::t('models', 'Title'),
-            'created_at' => Yii::t('models', 'Created At'),
-            'updated_at' => Yii::t('models', 'Updated At'),
+            'id' => Yii::t('publication', 'ID'),
+            'category_id' => Yii::t('publication', 'Category ID'),
+            'language' => Yii::t('publication', 'Language'),
+            'title' => Yii::t('publication', 'Title'),
+            'created_at' => Yii::t('publication', 'Created At'),
+            'updated_at' => Yii::t('publication', 'Updated At'),
         ];
     }
 

@@ -97,6 +97,9 @@ class PublicationItem extends BasePublicationItem
     public $content_widget_schema = [];
     public $teaser_widget_schema = [];
 
+    /**
+     * @param $publicationCategoryId
+     */
     public function setContentSchemaByCategoryId($publicationCategoryId)
     {
         $publicationCategory = PublicationCategory::findOne($publicationCategoryId);
@@ -113,6 +116,9 @@ class PublicationItem extends BasePublicationItem
 
     }
 
+    /**
+     * @param $publicationCategoryId
+     */
     public function setTeaserSchemaByCategoryId($publicationCategoryId)
     {
         $publicationCategory = PublicationCategory::findOne($publicationCategoryId);

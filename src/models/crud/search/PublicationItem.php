@@ -12,6 +12,7 @@ use dmstr\modules\publication\models\crud\PublicationItem as PublicationItemMode
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use \dmstr\modules\publication\models\crud\PublicationItemMeta;
 
 /**
  * PublicationItem represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationItem`.
@@ -27,8 +28,8 @@ class PublicationItem extends PublicationItemModel
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at'], 'integer'],
-            [['release_date', 'end_date', 'title'], 'safe'],
+            [['id'], 'integer'],
+            [['release_date', 'title','status','category_id'], 'safe'],
         ];
     }
 
@@ -55,7 +56,7 @@ class PublicationItem extends PublicationItemModel
     public function search($params)
     {
         $query = PublicationItemModel::find();
-        $query->select([PublicationItemModel::tableName() . '.*', PublicationItemTranslation::tableName().'.title', PublicationItemTranslation::tableName().'.language']);
+        $query->select([PublicationItemModel::tableName() . '.*']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -73,14 +74,17 @@ class PublicationItem extends PublicationItemModel
             PublicationItemTranslation::tableName(),
             PublicationItemModel::tableName() . '.id = ' . PublicationItemTranslation::tableName() . '.item_id');
 
+        $query->leftJoin(
+            PublicationItemMeta::tableName(),
+            PublicationItemModel::tableName() . '.id = ' . PublicationItemMeta::tableName() . '.item_id');
+
         $query->andFilterWhere(['LIKE', PublicationItemTranslation::tableName() . '.title', $this->title]);
 
         $query->andFilterWhere([
             'id' => $this->id,
             'release_date' => $this->release_date,
             'end_date' => $this->end_date,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'status' => $this->status
         ]);
 
         $query->andWhere([PublicationItemTranslation::tableName().'.language' => \Yii::$app->language]);

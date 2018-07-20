@@ -54,7 +54,7 @@ $form->field($model, 'item_id')->widget(\kartik\select2\Select2::classname(), [
 		'attribute' => 'item_id',
 		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationItem::find()->all(), 'id', 'id'),
 		'options' => [
-			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
+			'placeholder' => Yii::t('publication', 'Type to autocomplete'),
 			'multiple' => false,
 			'disabled' => (isset($relAttributes) && isset($relAttributes['item_id'])),
 		]
@@ -84,7 +84,7 @@ Tabs::widget(
 		'encodeLabels' => false,
 		'items' => [
 			[
-				'label'   => Yii::t('models', 'PublicationItemMeta'),
+				'label'   => Yii::t('publication', 'PublicationItemMeta'),
 				'content' => $this->blocks['main'],
 				'active'  => true,
 			],
@@ -98,7 +98,7 @@ Tabs::widget(
 
         <?php echo Html::submitButton(
 	'<span class="glyphicon glyphicon-check"></span> ' .
-	($model->isNewRecord ? Yii::t('cruds', 'Create') : Yii::t('cruds', 'Save')),
+	($model->isNewRecord ? Yii::t('publication', 'Create') : Yii::t('publication', 'Save')),
 	[
 		'id' => 'save-' . $model->formName(),
 		'class' => 'btn btn-success'

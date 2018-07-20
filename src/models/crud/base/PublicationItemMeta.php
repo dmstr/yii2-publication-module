@@ -64,6 +64,7 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
             [['status'], 'string'],
             [['release_date', 'end_date'], 'safe'],
             [['language'], 'string', 'max' => 7],
+            [['item_id', 'language'], 'unique', 'targetAttribute' => ['item_id', 'language']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']],
             ['status', 'in', 'range' => [
                     self::STATUS_DRAFT,
@@ -79,14 +80,14 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('models', 'ID'),
-            'item_id' => Yii::t('models', 'Item ID'),
-            'language' => Yii::t('models', 'Language'),
-            'status' => Yii::t('models', 'Status'),
-            'release_date' => Yii::t('models', 'Release Date'),
-            'end_date' => Yii::t('models', 'End Date'),
-            'created_at' => Yii::t('models', 'Created At'),
-            'updated_at' => Yii::t('models', 'Updated At'),
+            'id' => Yii::t('publication', 'ID'),
+            'item_id' => Yii::t('publication', 'Item ID'),
+            'language' => Yii::t('publication', 'Language'),
+            'status' => Yii::t('publication', 'Status'),
+            'release_date' => Yii::t('publication', 'Release Date'),
+            'end_date' => Yii::t('publication', 'End Date'),
+            'created_at' => Yii::t('publication', 'Created At'),
+            'updated_at' => Yii::t('publication', 'Updated At'),
         ];
     }
 
@@ -130,8 +131,8 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
     public static function optsStatus()
     {
         return [
-            self::STATUS_DRAFT => Yii::t('models', self::STATUS_DRAFT),
-            self::STATUS_PUBLISHED => Yii::t('models', self::STATUS_PUBLISHED),
+            self::STATUS_DRAFT => Yii::t('publication', self::STATUS_DRAFT),
+            self::STATUS_PUBLISHED => Yii::t('publication', self::STATUS_PUBLISHED),
         ];
     }
 

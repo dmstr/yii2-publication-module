@@ -58,6 +58,7 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
             [['content_widget_json', 'teaser_widget_json'], 'string'],
             [['language'], 'string', 'max' => 7],
             [['title'], 'string', 'max' => 80],
+            [['item_id', 'language'], 'unique', 'targetAttribute' => ['item_id', 'language']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']]
         ];
     }
@@ -68,14 +69,14 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('models', 'ID'),
-            'item_id' => Yii::t('models', 'Item ID'),
-            'language' => Yii::t('models', 'Language'),
-            'title' => Yii::t('models', 'Title'),
-            'content_widget_json' => Yii::t('models', 'Content Widget Json'),
-            'teaser_widget_json' => Yii::t('models', 'Teaser Widget Json'),
-            'created_at' => Yii::t('models', 'Created At'),
-            'updated_at' => Yii::t('models', 'Updated At'),
+            'id' => Yii::t('publication', 'ID'),
+            'item_id' => Yii::t('publication', 'Item ID'),
+            'language' => Yii::t('publication', 'Language'),
+            'title' => Yii::t('publication', 'Title'),
+            'content_widget_json' => Yii::t('publication', 'Content Widget Json'),
+            'teaser_widget_json' => Yii::t('publication', 'Teaser Widget Json'),
+            'created_at' => Yii::t('publication', 'Created At'),
+            'updated_at' => Yii::t('publication', 'Updated At'),
         ];
     }
 

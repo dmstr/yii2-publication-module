@@ -16,14 +16,14 @@ use yii\grid\GridView;
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var dmstr\modules\publication\models\crud\search\PublicationCategoryTranslation $searchModel
  */
-$this->title = Yii::t('models', 'Publication Category Translations');
+$this->title = Yii::t('publication', 'Publication Category Translations');
 $this->params['breadcrumbs'][] = $this->title;
 
 if (isset($actionColumnTemplates)) {
 	$actionColumnTemplate = implode(' ', $actionColumnTemplates);
 	$actionColumnTemplateString = $actionColumnTemplate;
 } else {
-	Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']);
+	Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('publication', 'New'), ['create'], ['class' => 'btn btn-success']);
 	$actionColumnTemplateString = "{view} {update} {delete}";
 }
 $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTemplateString.'</div>';
@@ -38,14 +38,14 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
     <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
     <h1>
-        <?php echo Yii::t('models', 'Publication Category Translations') ?>
+        <?php echo Yii::t('publication', 'Publication Category Translations') ?>
         <small>
             List
         </small>
     </h1>
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']) ?>
+            <?php echo Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('publication', 'New'), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
 
         <div class="pull-right">
@@ -56,7 +56,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 	[
 		'id' => 'giiant-relations',
 		'encodeLabel' => false,
-		'label' => '<span class="glyphicon glyphicon-paperclip"></span> ' . Yii::t('cruds', 'Relations'),
+		'label' => '<span class="glyphicon glyphicon-paperclip"></span> ' . Yii::t('publication', 'Relations'),
 		'dropdown' => [
 			'options' => [
 				'class' => 'dropdown-menu-right'
@@ -65,7 +65,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			'items' => [
 				[
 					'url' => ['/publication/crud/publication-category/index'],
-					'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('models', 'Publication Category'),
+					'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('publication', 'Publication Category'),
 				],
 
 			]
@@ -86,8 +86,8 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 		'dataProvider' => $dataProvider,
 		'pager' => [
 			'class' => yii\widgets\LinkPager::className(),
-			'firstPageLabel' => Yii::t('cruds', 'First'),
-			'lastPageLabel' => Yii::t('cruds', 'Last'),
+			'firstPageLabel' => Yii::t('publication', 'First'),
+			'lastPageLabel' => Yii::t('publication', 'Last'),
 		],
 		'filterModel' => $searchModel,
 		'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],

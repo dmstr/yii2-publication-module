@@ -167,6 +167,8 @@ return [
             'crudTidyOutput' => true,
             'crudAccessFilter' => false,
             'useTranslatableBehavior' => true,
+            'modelMessageCategory' => 'publication',
+            'crudMessageCategory' => 'publication',
             'singularEntities' => false,
             'crudProviders' => [
                 CallbackProvider::class,

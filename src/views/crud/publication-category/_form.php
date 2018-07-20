@@ -57,7 +57,7 @@ $form->field($model, 'content_widget_template_id')->widget(\kartik\select2\Selec
 		'attribute' => 'content_widget_template_id',
 		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\HrzgWidgetTemplate::find()->all(), 'id', 'name'),
 		'options' => [
-			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
+			'placeholder' => Yii::t('publication', 'Type to autocomplete'),
 			'multiple' => false,
 			'disabled' => (isset($relAttributes) && isset($relAttributes['content_widget_template_id'])),
 		]
@@ -71,7 +71,7 @@ $form->field($model, 'teaser_widget_template_id')->widget(\kartik\select2\Select
 		'attribute' => 'teaser_widget_template_id',
 		'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\HrzgWidgetTemplate::find()->all(), 'id', 'name'),
 		'options' => [
-			'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
+			'placeholder' => Yii::t('publication', 'Type to autocomplete'),
 			'multiple' => false,
 			'disabled' => (isset($relAttributes) && isset($relAttributes['teaser_widget_template_id'])),
 		]
@@ -85,7 +85,7 @@ Tabs::widget(
 		'encodeLabels' => false,
 		'items' => [
 			[
-				'label'   => Yii::t('models', 'PublicationCategory'),
+				'label'   => Yii::t('publication', 'PublicationCategory'),
 				'content' => $this->blocks['main'],
 				'active'  => true,
 			],
@@ -99,7 +99,7 @@ Tabs::widget(
 
         <?php echo Html::submitButton(
 	'<span class="glyphicon glyphicon-check"></span> ' .
-	($model->isNewRecord ? Yii::t('cruds', 'Create') : Yii::t('cruds', 'Save')),
+	($model->isNewRecord ? Yii::t('publication', 'Create') : Yii::t('publication', 'Save')),
 	[
 		'id' => 'save-' . $model->formName(),
 		'class' => 'btn btn-success'

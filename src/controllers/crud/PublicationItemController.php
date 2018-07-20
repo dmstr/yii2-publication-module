@@ -13,6 +13,9 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\helpers\VarDumper;
+use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
+use dmstr\bootstrap\Tabs;
+
 
 /**
  * This is the class for controller "PublicationItemController".
@@ -20,10 +23,30 @@ use yii\helpers\VarDumper;
 class PublicationItemController extends \dmstr\modules\publication\controllers\crud\base\PublicationItemController
 {
 
+    /**
+     * @return mixed|string
+     */
+    public function actionIndex() {
+        $searchModel  = new PublicationItemSearch;
+        $dataProvider = $searchModel->search($_GET);
+
+        Tabs::clearLocalStorage();
+
+        Url::remember();
+        \Yii::$app->session['__crudReturnUrl'] = null;
+
+        return $this->render('../../default/crud/publication-item-index', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
+
+    /**
+     * @return mixed|string|\yii\web\Response
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionCreate()
     {
-
-
         $model = new PublicationItem();
 
         $publicationCategoryId = null;

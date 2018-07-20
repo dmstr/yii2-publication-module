@@ -63,10 +63,10 @@ abstract class PublicationItem extends \dmstr\modules\publication\models\crud\Ac
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('models', 'ID'),
-            'category_id' => Yii::t('models', 'Category ID'),
-            'created_at' => Yii::t('models', 'Created At'),
-            'updated_at' => Yii::t('models', 'Updated At'),
+            'id' => Yii::t('publication', 'ID'),
+            'category_id' => Yii::t('publication', 'Category ID'),
+            'created_at' => Yii::t('publication', 'Created At'),
+            'updated_at' => Yii::t('publication', 'Updated At'),
         ];
     }
 

@@ -20,10 +20,10 @@ use dmstr\bootstrap\Tabs;
  */
 $copyParams = $model->attributes;
 
-$this->title = Yii::t('models', 'Publication Item Meta');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Publication Item Metas'), 'url' => ['index']];
+$this->title = Yii::t('publication', 'Publication Item Meta');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('publication', 'Publication Item Metas'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
+$this->params['breadcrumbs'][] = Yii::t('publication', 'View');
 ?>
 <div class="giiant-crud publication-item-meta-view">
 
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <?php endif; ?>
 
     <h1>
-        <?php echo Yii::t('models', 'Publication Item Meta') ?>
+        <?php echo Yii::t('publication', 'Publication Item Meta') ?>
         <small>
             <?php echo Html::encode($model->id) ?>
         </small>
@@ -49,24 +49,24 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
         <!-- menu buttons -->
         <div class='pull-left'>
             <?php echo Html::a(
-	'<span class="glyphicon glyphicon-pencil"></span> ' . Yii::t('cruds', 'Edit'),
+	'<span class="glyphicon glyphicon-pencil"></span> ' . Yii::t('publication', 'Edit'),
 	[ 'update', 'id' => $model->id],
 	['class' => 'btn btn-info']) ?>
 
             <?php echo Html::a(
-	'<span class="glyphicon glyphicon-copy"></span> ' . Yii::t('cruds', 'Copy'),
+	'<span class="glyphicon glyphicon-copy"></span> ' . Yii::t('publication', 'Copy'),
 	['create', 'id' => $model->id, 'PublicationItemMeta'=>$copyParams],
 	['class' => 'btn btn-success']) ?>
 
             <?php echo Html::a(
-	'<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'),
+	'<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('publication', 'New'),
 	['create'],
 	['class' => 'btn btn-success']) ?>
         </div>
 
         <div class="pull-right">
             <?php echo Html::a('<span class="glyphicon glyphicon-list"></span> '
-	. Yii::t('cruds', 'Full list'), ['index'], ['class'=>'btn btn-default']) ?>
+	. Yii::t('publication', 'Full list'), ['index'], ['class'=>'btn btn-default']) ?>
         </div>
 
     </div>
@@ -121,10 +121,10 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 
     <hr/>
 
-    <?php echo Html::a('<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('cruds', 'Delete'), ['delete', 'id' => $model->id],
+    <?php echo Html::a('<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('publication', 'Delete'), ['delete', 'id' => $model->id],
 	[
 		'class' => 'btn btn-danger',
-		'data-confirm' => '' . Yii::t('cruds', 'Are you sure to delete this item?') . '',
+		'data-confirm' => '' . Yii::t('publication', 'Are you sure to delete this item?') . '',
 		'data-method' => 'post',
 	]); ?>
     <?php $this->endBlock(); ?>
