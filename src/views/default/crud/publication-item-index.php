@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'lastPageLabel' => FA::icon(FA::_CHEVRON_LEFT),
                 ],
                 'filterModel' => $searchModel,
-                'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
+                'tableOptions' => ['class' => 'table table-striped table-hover'],
                 'columns' => [
                     [
                         'class' => \dmstr\modules\publication\widgets\ActiveStatusColumn::class,
@@ -103,6 +103,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => DataColumn::class,
                         'attribute' => 'release_date',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'release_date',
+                            [
+                                2 => Yii::t('publication', 'Latest first'),
+                                1 => Yii::t('publication', 'Oldest first')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'Release Date')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return \Yii::$app->formatter->asDateTime($model->release_date);
                         },
@@ -111,6 +123,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => DataColumn::class,
                         'attribute' => 'category_id',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'category_id',
+                            [
+                                1 => Yii::t('publication', 'A-Z'),
+                                2 => Yii::t('publication', 'Z-A')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'Category')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return Html::a($model->category->label, ['/publication/crud/publication-category/view', 'id' => $model->category->id,], ['data-pjax' => 0]);
                         },
@@ -120,6 +144,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => DataColumn::class,
                         'attribute' => 'status',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'status',
+                            [
+                                1 => Yii::t('publication', 'Draft first'),
+                                2 => Yii::t('publication', 'Published first')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'Status')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return Html::tag('span', FA::icon(FA::_CHECK, ['class' => 'text-success ' . ($model->status !== PublicationItem::STATUS_PUBLISHED ? 'hidden' : '')]) . FA::icon(FA::_TIMES, ['class' => 'text-danger ' . ($model->status !== PublicationItem::STATUS_DRAFT ? 'hidden' : '')]), ['class' => 'status-label-' . $model->id . ' status-label-' . $model->status]);
                         },
@@ -129,6 +165,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => DataColumn::class,
                         'attribute' => 'id',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'id',
+                            [
+                                1 => Yii::t('publication', '0-9'),
+                                2 => Yii::t('publication', '9-0')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'ID')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return $model->id;
                         },
