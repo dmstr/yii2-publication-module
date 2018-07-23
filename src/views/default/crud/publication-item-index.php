@@ -17,27 +17,6 @@ use yii\widgets\Pjax;
  */
 $this->title = Yii::t('publication', 'Publication Items');
 $this->params['breadcrumbs'][] = $this->title;
-
-$language = Yii::$app->language;
-
-$js = <<<EOS
-$(document).on('change','input[type="checkbox"][name="PublicationItem[status]"]', function() {
-    var itemId = $(this).val();
-    $.post('/{$language}/publication/crud/change-item-status',{itemId: itemId}, function(response) {
-        if (response.code === 200) {
-            var statusLabelEl = $('.status-label-' + itemId);
-            statusLabelEl.children('i').toggleClass('hidden');
-            statusLabelEl.toggleClass('status-label-published status-label-draft');
-        } else {
-            console.error('Error: ' + response.errorMessage);
-        }
-    });
-});
-EOS;
-
-
-$this->registerJs($js);
-
 ?>
     <div class="publication-item-index">
 
@@ -107,18 +86,10 @@ $this->registerJs($js);
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
                 'columns' => [
                     [
-                        'class' => 'yii\grid\ActionColumn',
-                        'template' => '{status}',
-                        'buttons' => [
-                            'status' => function ($url, $model) {
-                                $options = [
-                                    'data-pjax' => '0',
-                                    'value' => $model->id
-                                ];
-                                return Html::checkbox(Html::getInputName($model, 'status'), $model->status === PublicationItem::STATUS_PUBLISHED, $options);
-                            }
-
-                        ]
+                        'class' => \dmstr\modules\publication\widgets\ActiveStatusColumn::class,
+                        'attribute' => 'status',
+                        'activeValue' => PublicationItem::STATUS_PUBLISHED,
+                        'endpoint' => ['/publication/crud/change-item-status']
                     ],
                     [
                         'class' => DataColumn::class,
