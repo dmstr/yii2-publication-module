@@ -17,27 +17,6 @@ use yii\widgets\Pjax;
  */
 $this->title = Yii::t('publication', 'Publication Items');
 $this->params['breadcrumbs'][] = $this->title;
-
-$language = Yii::$app->language;
-
-$js = <<<EOS
-$(document).on('change','input[type="checkbox"][name="PublicationItem[status]"]', function() {
-    var itemId = $(this).val();
-    $.post('/{$language}/publication/crud/change-item-status',{itemId: itemId}, function(response) {
-        if (response.code === 200) {
-            var statusLabelEl = $('.status-label-' + itemId);
-            statusLabelEl.children('i').toggleClass('hidden');
-            statusLabelEl.toggleClass('status-label-published status-label-draft');
-        } else {
-            console.error('Error: ' + response.errorMessage);
-        }
-    });
-});
-EOS;
-
-
-$this->registerJs($js);
-
 ?>
     <div class="publication-item-index">
 
@@ -104,21 +83,13 @@ $this->registerJs($js);
                     'lastPageLabel' => FA::icon(FA::_CHEVRON_LEFT),
                 ],
                 'filterModel' => $searchModel,
-                'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
+                'tableOptions' => ['class' => 'table table-striped table-hover'],
                 'columns' => [
                     [
-                        'class' => 'yii\grid\ActionColumn',
-                        'template' => '{status}',
-                        'buttons' => [
-                            'status' => function ($url, $model) {
-                                $options = [
-                                    'data-pjax' => '0',
-                                    'value' => $model->id
-                                ];
-                                return Html::checkbox(Html::getInputName($model, 'status'), $model->status === PublicationItem::STATUS_PUBLISHED, $options);
-                            }
-
-                        ]
+                        'class' => \dmstr\modules\publication\widgets\ActiveStatusColumn::class,
+                        'attribute' => 'status',
+                        'activeValue' => PublicationItem::STATUS_PUBLISHED,
+                        'endpoint' => ['/publication/crud/change-item-status']
                     ],
                     [
                         'class' => DataColumn::class,
@@ -132,6 +103,18 @@ $this->registerJs($js);
                         'class' => DataColumn::class,
                         'attribute' => 'release_date',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'release_date',
+                            [
+                                2 => Yii::t('publication', 'Latest first'),
+                                1 => Yii::t('publication', 'Oldest first')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'Release Date')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return \Yii::$app->formatter->asDateTime($model->release_date);
                         },
@@ -140,6 +123,18 @@ $this->registerJs($js);
                         'class' => DataColumn::class,
                         'attribute' => 'category_id',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'category_id',
+                            [
+                                1 => Yii::t('publication', 'A-Z'),
+                                2 => Yii::t('publication', 'Z-A')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'Category')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return Html::a($model->category->label, ['/publication/crud/publication-category/view', 'id' => $model->category->id,], ['data-pjax' => 0]);
                         },
@@ -149,6 +144,18 @@ $this->registerJs($js);
                         'class' => DataColumn::class,
                         'attribute' => 'status',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'status',
+                            [
+                                1 => Yii::t('publication', 'Draft first'),
+                                2 => Yii::t('publication', 'Published first')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'Status')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return Html::tag('span', FA::icon(FA::_CHECK, ['class' => 'text-success ' . ($model->status !== PublicationItem::STATUS_PUBLISHED ? 'hidden' : '')]) . FA::icon(FA::_TIMES, ['class' => 'text-danger ' . ($model->status !== PublicationItem::STATUS_DRAFT ? 'hidden' : '')]), ['class' => 'status-label-' . $model->id . ' status-label-' . $model->status]);
                         },
@@ -158,6 +165,18 @@ $this->registerJs($js);
                         'class' => DataColumn::class,
                         'attribute' => 'id',
                         'label' => '',
+                        'filter' => Html::activeDropDownList(
+                            $searchModel,
+                            'id',
+                            [
+                                1 => Yii::t('publication', '0-9'),
+                                2 => Yii::t('publication', '9-0')
+                            ],
+                            [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('publication', 'ID')
+                            ]
+                        ),
                         'value' => function ($model) {
                             return $model->id;
                         },
