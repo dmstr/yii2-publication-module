@@ -9,13 +9,15 @@
 
 namespace dmstr\modules\publication\widgets;
 
+use rmrevin\yii\fontawesome\FA;
 use yii\db\ActiveRecord;
 use yii\grid\Column;
 use yii\helpers\Html;
 
 
 /**
- * Class ActiveStatusColumn
+ * Toggle between to types of states
+ *
  * @package dmstr\modules\publication\widgets
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  *
@@ -24,24 +26,52 @@ use yii\helpers\Html;
  * @property string activeValue
  * @property string inputName
  * @property string valueAttribute
- * @property bool submitOnClick
+ *
+ * @property string labelChecked
+ * @property string labelUnchecked
  *
  */
 class ActiveStatusColumn extends Column
 {
 
 
+    /**
+     * Name of the status attribute
+     */
     public $attribute = 'status';
+
+    /**
+     * Url to which the request will be send. Can be either a string or an array.
+     */
     public $endpoint;
 
+    /**
+     * Attribute name which will be checked against the defined attribute attribute to check if status is true or false
+     */
     public $activeValue;
 
+    /**
+     * Define input name so you can handle thing on the defined endpoint action
+     */
     public $inputName = 'entryId';
-    public $name = 'entryId';
+
+    /**
+     * Defines the value which will be posted as a value form with inputName as key to the endpoint
+     */
     public $valueAttribute = 'id';
 
-    public $submitOnClick = true;
     /**
+     * Defined label for status checked. Default is a icon.
+     */
+    public $labelChecked;
+
+    /**
+     * Defined label for status unchecked. Default is a icon.
+     */
+    public $labelUnchecked;
+
+    /**
+     *
      * @param ActiveRecord $model
      * @param int $key
      * @param int $index
@@ -49,18 +79,14 @@ class ActiveStatusColumn extends Column
      */
     public function renderDataCellContent($model, $key, $index)
     {
-        $formId = 'form-' . $index;
-
-        $form = Html::beginForm($this->endpoint, 'post', ['id' => $formId]);
-        $form .= Html::checkbox($this->inputName, false, [
-            'onclick' => $this->submitOnClick ? "document.getElementById('{$formId}').submit();" : false,
-            'value' => $model->{$this->valueAttribute},
-            // checked funktioniert noch nicht!
-            'checked' => $model->{$this->attribute} === $this->activeValue ? 'checked' : false
+        // Check if status checked is true or false and use either the default label or the label defined in the labelChecked or labelUnchecked attribute
+        return Html::a($model->{$this->attribute} === $this->activeValue ? $this->labelChecked ?? FA::icon(FA::_CHECK) : $this->labelUnchecked ?? FA::icon(FA::_TIMES), $this->endpoint, [
+            'class' => 'status-toggle',
+            'data' => [
+                'method' => 'post',
+                'params' => [$this->inputName => $model->{$this->valueAttribute}],
+            ]
         ]);
-        $form .= Html::endForm();
-
-        return $form;
     }
 
 
