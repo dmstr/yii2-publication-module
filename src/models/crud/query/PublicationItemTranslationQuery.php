@@ -2,7 +2,7 @@
 
 namespace dmstr\modules\publication\models\crud\query;
 
-use dmstr\modules\publication\models\crud\base\PublicationItemTranslation;
+use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use dmstr\modules\publication\models\crud\PublicationItemMeta;
 
 /**
