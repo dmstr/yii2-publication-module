@@ -26,6 +26,7 @@ class PublicationItemQuery extends \yii\db\ActiveQuery
         $this->leftJoin(PublicationItemMeta::tableName(),'item_id=' . PublicationItem::tableName() .'.id');
         $todaysDate = date('Y-m-d');
         $this->andWhere('release_date <= :todaysDate' , [':todaysDate' => $todaysDate]);
+        $this->andWhere('status = "' . \dmstr\modules\publication\models\crud\PublicationItem::STATUS_PUBLISHED. '"');
         $this->andWhere('end_date >= :todaysDate OR end_date IS NULL' , [':todaysDate' => $todaysDate]);
         return $this;
     }
