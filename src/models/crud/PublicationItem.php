@@ -79,6 +79,7 @@ class PublicationItem extends BasePublicationItem
             parent::rules(),
             [
                 ['release_date', 'required'],
+                ['end_date', 'safe'],
                 [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
                 [['title'], 'string', 'max' => 80],
                 [
