@@ -29,7 +29,8 @@ class PublicationItemAssetBundle extends \dmstr\web\AssetBundle
      * @var array
      */
     public $js = [
-        'js/publiction-switch-schema.js'
+        'js/publiction-switch-schema.js',
+        'js/ck-init.js'
     ];
 
 
