@@ -92,3 +92,10 @@ Create an item.
 ---
 
 `publication/default/index?categoryId=1`
+
+### Use variables from content schema in teaser template
+
+```
+{{ content.headline }}
+{{ content.image }}
+```
