@@ -197,6 +197,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'format' => 'raw',
                     ],
+                    [
+                        'class' => DataColumn::class,
+                        'label' => '',
+                        'value' => function ($model) {
+                            return Html::a(\Yii::t('publication', '{glyphicon glyphicon-trash} Delete', ['glyphicon glyphicon-trash' => FA::icon(FA::_TRASH)]), ['/' . $this->context->module->id . '/' . $this->context->id . '/delete', 'id' => $model->id,], ['data-pjax' => 0,'onclick' => 'if (confirm("Are you sure you want to delete this item?")) commentDelete(1); return false']);
+                        },
+                        'format' => 'raw',
+                    ],
                 ],
             ]); ?>
         </div>
