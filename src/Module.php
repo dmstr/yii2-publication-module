@@ -2,8 +2,12 @@
 
 namespace dmstr\modules\publication;
 
+use dmstr\web\traits\AccessBehaviorTrait;
+
 class Module extends \yii\base\Module
 {
+
+    use AccessBehaviorTrait;
 
     public $widgetModuleId = 'widgets';
     public $defaultRoute = 'crud';
