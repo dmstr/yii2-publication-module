@@ -42,6 +42,7 @@ class Publication extends Widget
 
         $html = null;
 
+        $cssClass = 'publication-item-detail';
 
         if ($publicationCategory instanceof PublicationCategory || $this->item instanceof PublicationItem) {
 
@@ -53,6 +54,7 @@ class Publication extends Widget
                 foreach ($publicationItemsBase as $publicationItemBase) {
                     $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
                 }
+                $cssClass = 'publication-item-index';
 
             } else {
 
@@ -85,7 +87,7 @@ class Publication extends Widget
 
             }
         }
-        return "<div class='publication-widget'>{$html}</div>";
+        return "<div class='publication-widget {$cssClass}'>{$html}</div>";
     }
 
 }
