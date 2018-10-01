@@ -78,7 +78,7 @@ class PublicationItem extends BasePublicationItem
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['release_date', 'required'],
+                [['release_date','title'], 'required'],
                 ['end_date', 'safe'],
                 [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
                 [['title'], 'string', 'max' => 80],

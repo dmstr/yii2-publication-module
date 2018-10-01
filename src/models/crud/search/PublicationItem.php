@@ -18,6 +18,9 @@ use yii\helpers\ArrayHelper;
 
 /**
  * PublicationItem represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationItem`.
+ *
+ * @property string title
+ * @property string status
  */
 class PublicationItem extends PublicationItemModel
 {
@@ -25,7 +28,7 @@ class PublicationItem extends PublicationItemModel
     /**
      *
      * @inheritdoc
-     * @return unknown
+     * @return array
      */
     public function rules()
     {
@@ -58,7 +61,11 @@ class PublicationItem extends PublicationItemModel
     public function search($params)
     {
         $query = PublicationItemModel::find();
-        $query->select([PublicationItemModel::tableName() . '.*', PublicationCategoryTranslation::tableName() . '.title', 'status']);
+        $query->select([
+            PublicationItemModel::tableName() . '.*',
+            PublicationItemTranslation::tableName() . '.title',
+            'status'
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -140,6 +147,9 @@ class PublicationItem extends PublicationItemModel
 
 
         $query->andWhere([PublicationItemTranslation::tableName() . '.language' => \Yii::$app->language]);
+
+
+//        var_dump($query->createCommand()->rawSql);exit;
 
 
         return $dataProvider;
