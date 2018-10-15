@@ -4,7 +4,10 @@ namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublicationCategory;
 use dosamigos\translateable\TranslateableBehavior;
+use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
+use yii\twig\ViewRenderer;
 
 /**
  * This is the model class for table "{{%dmstr_publication_category}}".
@@ -39,12 +42,14 @@ class PublicationCategory extends BasePublicationCategory
     public function render(array $properties, $teaser)
     {
         $widgetTemplate = $teaser !== true ? $this->contentWidgetTemplate : $this->teaserWidgetTemplate;
-        $loader = new \Twig_Loader_Array(array(
-            'publication' => $widgetTemplate->twig_template,
-        ));
 
-        // TODO: get environment from view renderer
-        $twig = new \Twig_Environment($loader, ['cache' => \Yii::getAlias('@runtime/publication-module')]);
+        /** @var ViewRenderer $twigRenderer */
+        $twigRenderer = Yii::createObject(Yii::$app->view->renderers['twig']);
+        
+        $twigRenderer->twig->setLoader(new \Twig_Loader_Array([
+            'publication' => $widgetTemplate->twig_template,
+        ]));
+        $twig = $twigRenderer->twig;
 
         return $twig->render('publication', $properties);
     }
