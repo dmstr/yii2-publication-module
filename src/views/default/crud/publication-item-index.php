@@ -3,9 +3,11 @@
 use dmstr\modules\publication\models\crud\PublicationItem;
 use rmrevin\yii\fontawesome\FA;
 use yii\bootstrap\ButtonDropdown;
+use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 
@@ -116,7 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]
                         ),
                         'value' => function ($model) {
-                            return \Yii::$app->formatter->asDateTime($model->release_date);
+                            return \Yii::$app->formatter->asDatetime($model->release_date);
                         },
                     ],
                     [
@@ -142,27 +144,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class' => DataColumn::class,
-                        'attribute' => 'status',
-                        'label' => '',
-                        'filter' => Html::activeDropDownList(
-                            $searchModel,
-                            'status',
-                            [
-                                1 => Yii::t('publication', 'Draft first'),
-                                2 => Yii::t('publication', 'Published first')
-                            ],
-                            [
-                                'class' => 'form-control',
-                                'prompt' => Yii::t('publication', 'Status')
-                            ]
-                        ),
-                        'value' => function ($model) {
-                            return Html::tag('span', FA::icon(FA::_CHECK, ['class' => 'text-success ' . ($model->status !== PublicationItem::STATUS_PUBLISHED ? 'hidden' : '')]) . FA::icon(FA::_TIMES, ['class' => 'text-danger ' . ($model->status !== PublicationItem::STATUS_DRAFT ? 'hidden' : '')]), ['class' => 'status-label-' . $model->id . ' status-label-' . $model->status]);
-                        },
-                        'format' => 'raw'
-                    ],
-                    [
-                        'class' => DataColumn::class,
                         'attribute' => 'id',
                         'label' => '',
                         'filter' => Html::activeDropDownList(
@@ -182,29 +163,46 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     [
-                        'class' => DataColumn::class,
-                        'label' => '',
-                        'value' => function ($model) {
-                            return Html::a(\Yii::t('publication', '{eye-icon} View frontend page', ['eye-icon' => FA::icon(FA::_EYE)]), ['/' . $this->context->module->id . '/default/detail', 'itemId' => $model->id,], ['data-pjax' => 0]);
-                        },
-                        'format' => 'raw',
-                    ],
-                    [
-                        'class' => DataColumn::class,
-                        'label' => '',
-                        'value' => function ($model) {
-                            return Html::a(\Yii::t('publication', '{pencil-icon} Edit', ['pencil-icon' => FA::icon(FA::_PENCIL)]), ['/' . $this->context->module->id . '/' . $this->context->id . '/update', 'id' => $model->id,], ['data-pjax' => 0]);
-                        },
-                        'format' => 'raw',
-                    ],
-                    [
-                        'class' => DataColumn::class,
-                        'label' => '',
-                        'value' => function ($model) {
-                            return Html::a(\Yii::t('publication', '{glyphicon glyphicon-trash} Delete', ['glyphicon glyphicon-trash' => FA::icon(FA::_TRASH)]), ['/' . $this->context->module->id . '/' . $this->context->id . '/delete', 'id' => $model->id,], ['data-pjax' => 0,'onclick' => 'if (confirm("Are you sure you want to delete this item?")) commentDelete(1); return false']);
-                        },
-                        'format' => 'raw',
-                    ],
+                            'class' => ActionColumn::class,
+                            'template' => '{view} {update} {delete}',
+                            'buttons' => [
+                                'view' => function ($url) {
+                                    $options = [
+                                        'title' => Yii::t('cruds', 'View'),
+                                        'aria-label' => Yii::t('cruds', 'View'),
+                                        'data-pjax' => '0',
+                                        'class' => 'btn-primary'
+                                    ];
+                                    return Html::a(FA::icon(FA::_EYE), $url, $options);
+                                },
+                                'update' => function ($url, $model) {
+                                    $options = [
+                                        'title' => Yii::t('cruds', 'Update'),
+                                        'aria-label' => Yii::t('cruds', 'Update'),
+                                        'data-pjax' => '0',
+                                        'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
+                                    ];
+                                    return Html::a(FA::icon(FA::_PENCIL), $url, $options);
+                                },
+                                'delete' => function ($url, $model) {
+                                    $options = [
+                                        'title' => Yii::t('cruds', 'Delete'),
+                                        'aria-label' => Yii::t('cruds', 'Delete'),
+                                        'data-confirm' => Yii::t('bikes', 'Are you sure to delete this publication?'),
+                                        'data-method' => 'post',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn-danger'
+                                    ];
+                                    return Html::a(FA::icon(FA::_TRASH), $url, $options);
+                                }
+                            ],
+                            'urlCreator' => function ($action, $model, $key) {
+                                $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
+                                $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
+                                return Url::toRoute($params);
+                            },
+                            'contentOptions' => ['nowrap' => 'nowrap']
+                        ],
                 ],
             ]); ?>
         </div>

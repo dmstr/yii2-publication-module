@@ -53,7 +53,7 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
     public function rules()
     {
         return [
-            [['item_id', 'language'], 'required'],
+            [['item_id', 'language','title'], 'required'],
             [['item_id'], 'integer'],
             [['content_widget_json', 'teaser_widget_json'], 'string'],
             [['language'], 'string', 'max' => 7],

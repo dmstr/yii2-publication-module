@@ -8,13 +8,10 @@
 
 namespace dmstr\modules\publication\controllers\crud;
 
-use dmstr\modules\publication\models\crud\PublicationItem;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\helpers\VarDumper;
-use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
 use dmstr\bootstrap\Tabs;
+use dmstr\modules\publication\models\crud\PublicationItem;
+use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
+use yii\helpers\Url;
 
 
 /**
@@ -23,6 +20,10 @@ use dmstr\bootstrap\Tabs;
 class PublicationItemController extends \dmstr\modules\publication\controllers\crud\base\PublicationItemController
 {
 
+    /**
+     * {@inheritdoc}
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function beforeAction($action)
     {
         // if set use CKEditor configurations from settings module else use default configuration.
@@ -44,15 +45,13 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
     }
 
 
-
-
     /**
      * @return mixed|string
      */
-    public function actionIndex() {
-        $searchModel  = new PublicationItemSearch;
+    public function actionIndex()
+    {
+        $searchModel = new PublicationItemSearch;
         $dataProvider = $searchModel->search($_GET);
-
         Tabs::clearLocalStorage();
 
         Url::remember();
@@ -86,7 +85,7 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
                 $model->load($_GET);
             }
         } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+            $msg = isset($e->errorInfo[2]) ? $e->errorInfo[2] : $e->getMessage();
             $model->addError('_exception', $msg);
         }
         return $this->render('create', ['model' => $model]);
