@@ -44,7 +44,7 @@ class PublicationCategory extends BasePublicationCategory
         $widgetTemplate = $teaser !== true ? $this->contentWidgetTemplate : $this->teaserWidgetTemplate;
 
         /** @var ViewRenderer $twigRenderer */
-        $twigRenderer = Yii::createObject(Yii::$app->view->renderers['twig']);
+        $twigRenderer = Yii::createObject('yii\twig\ViewRenderer');
         
         $twigRenderer->twig->setLoader(new \Twig_Loader_Array([
             'publication' => $widgetTemplate->twig_template,
