@@ -73,6 +73,9 @@ class Publication extends Widget
                 } else {
                     $properties = Json::decode($publicationItem->content_widget_json);
                 }
+
+                $properties['model'] = $publicationItem;
+
                 $publicationWidget = '';
                 if ($this->showTitle === true) {
                     $publicationWidget .= "<h3 class='publication-title'>{$publicationItem->title}</h3>";
