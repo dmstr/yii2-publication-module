@@ -66,13 +66,5 @@ function initSelectize() {
                 }
             });
         }
-    });
-
-    $('input[type="filefly"]').on('change', function () {
-        for (var name in editor.editors) {
-            console.log(name);
-            editor.editors[name].refreshValue();
-            editor.editors[name].onChange(true);
-        }
-    });
+    });   
 }
