@@ -6,7 +6,6 @@ use dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublic
 use dosamigos\translateable\TranslateableBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\VarDumper;
 use yii\twig\ViewRenderer;
 
 /**
@@ -43,9 +42,14 @@ class PublicationCategory extends BasePublicationCategory
     {
         $widgetTemplate = $teaser !== true ? $this->contentWidgetTemplate : $this->teaserWidgetTemplate;
 
+        $appTwig = Yii::$app->view->renderers['twig'];
         /** @var ViewRenderer $twigRenderer */
-        $twigRenderer = Yii::createObject('yii\twig\ViewRenderer');
-        
+        $twigRenderer = Yii::createObject([
+            'class' => ViewRenderer::class,
+            'functions' => $appTwig['functions'],
+            'globals' => $appTwig['globals']
+        ]);
+
         $twigRenderer->twig->setLoader(new \Twig_Loader_Array([
             'publication' => $widgetTemplate->twig_template,
         ]));
