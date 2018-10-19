@@ -56,24 +56,24 @@ use yii\helpers\Html;
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">
-                    <?= Yii::t('publication', 'General') ?>
+                <?= Yii::t('publication', 'General') ?>
             </h3>
         </div>
-            <div class="panel-body">
+        <div class="panel-body">
 
-                <!-- attribute category_id -->
-                <?php echo $form->field($model, 'category_id')->widget(\kartik\select2\Select2::classname(), [
-                    'name' => 'class_name',
-                    'model' => $model,
-                    'attribute' => 'category_id',
-                    'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language' => \Yii::$app->language])->all(), 'id', 'title'),
-                    'options' => [
-                        'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
-                        'multiple' => false,
-                        'disabled' => !$model->isNewRecord,
-                    ]
-                ]); ?>
-            </div>
+            <!-- attribute category_id -->
+            <?php echo $form->field($model, 'category_id')->widget(\kartik\select2\Select2::classname(), [
+                'name' => 'class_name',
+                'model' => $model,
+                'attribute' => 'category_id',
+                'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategoryTranslation::find()->where(['language' => \Yii::$app->language])->all(), 'id', 'title'),
+                'options' => [
+                    'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
+                    'multiple' => false,
+                    'disabled' => !$model->isNewRecord,
+                ]
+            ]); ?>
+        </div>
     </div>
 
     <div class="panel panel-default">
@@ -87,10 +87,9 @@ use yii\helpers\Html;
             <?php \dmstr\modules\publication\assets\PublicationItemAssetBundle::register($this); ?>
 
             <!-- attribute content_widget_json -->
-            <?php echo $form->field($model, 'content_widget_json')->widget(\beowulfenator\JsonEditor\JsonEditorWidget::class, [
+            <?php echo $form->field($model, 'content_widget_json')->widget(dmstr\JsonEditor\JsonEditorWidget::class, [
                 'id' => 'content_widget_jsonEditor',
                 'schema' => $model->content_widget_schema,
-                'enableSelectize' => true,
                 'clientOptions' => [
                     'theme' => 'bootstrap3',
                     'disable_collapse' => true,
@@ -100,10 +99,9 @@ use yii\helpers\Html;
             ]) ?>
 
             <!-- attribute teaser_widget_json -->
-            <?php echo $form->field($model, 'teaser_widget_json')->widget(\beowulfenator\JsonEditor\JsonEditorWidget::class, [
+            <?php echo $form->field($model, 'teaser_widget_json')->widget(dmstr\JsonEditor\JsonEditorWidget::class, [
                 'id' => 'teaser_widget_jsonEditor',
                 'schema' => $model->teaser_widget_schema,
-                'enableSelectize' => true,
                 'clientOptions' => [
                     'theme' => 'bootstrap3',
                     'disable_collapse' => true,
