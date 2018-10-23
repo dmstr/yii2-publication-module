@@ -46,8 +46,8 @@ class PublicationCategory extends BasePublicationCategory
         /** @var ViewRenderer $twigRenderer */
         $twigRenderer = Yii::createObject([
             'class' => ViewRenderer::class,
-            'functions' => $appTwig['functions'],
-            'globals' => $appTwig['globals']
+            'functions' => $appTwig->functions,
+            'globals' => $appTwig->globals
         ]);
 
         $twigRenderer->twig->setLoader(new \Twig_Loader_Array([
