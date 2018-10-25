@@ -77,9 +77,9 @@ class Publication extends Widget
                     $html .= $this->renderHtmlByPublicationItem($publicationItem,$publicationCategory);
 
                 }
-                $widgets[] = "<div class='publication-widget publication-item-index'>{$html}</div>";
+                $widgets[] = $html;
             }
-            return implode(PHP_EOL,$widgets);
+            return "<div class='publication-widget publication-item-index'>" . implode(PHP_EOL,$widgets) . '</div>';
         }
 
         if ($this->item) {
