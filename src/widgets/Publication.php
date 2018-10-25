@@ -11,6 +11,7 @@ namespace dmstr\modules\publication\widgets;
 
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
+use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -74,12 +75,13 @@ class Publication extends Widget
                     $properties = Json::decode($publicationItem->content_widget_json);
                 }
 
-                $properties['model'] = $publicationItem;
+                $properties['model'] = $publicationItem instanceof PublicationItemTranslation ? $publicationItem->item : $publicationItem;
 
                 $publicationWidget = '';
                 if ($this->showTitle === true) {
                     $publicationWidget .= "<h3 class='publication-title'>{$publicationItem->title}</h3>";
                 }
+
                 $publicationWidget .= $publicationCategory->render((array)$properties,$this->teaser);
 
                 if ($this->teaser) {
