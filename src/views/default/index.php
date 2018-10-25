@@ -11,6 +11,6 @@ $this->title = Yii::$app->settings->get('site','publication.default-index')?: Yi
 ?>
 <div class="publication-default-index">
     <?=Cell::widget(['id' => 'publication_index_top', 'requestParam' => 'publication_index_top'])?>
-    <?= Publication::widget(['categoryId' => $categoryId, 'showTitle' => false])?>
+    <?= Publication::widget(['categoryId' => $categoryId])?>
     <?=Cell::widget(['id' => 'publication_index_bottom', 'requestParam' => 'publication_index_bottom'])?>
 </div>

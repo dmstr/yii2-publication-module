@@ -8,6 +8,9 @@ use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%dmstr_publication_item}}".
+ *
+ * @property string teaser_widget_json
+ * @property string content_widget_json
  */
 class PublicationItem extends BasePublicationItem
 {

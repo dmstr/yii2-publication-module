@@ -12,6 +12,7 @@ namespace dmstr\modules\publication\widgets;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
+use const PHP_EOL;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -26,9 +27,8 @@ class Publication extends Widget
 {
     public $categoryId;
     public $item;
-    public $showTitle = true;
     public $teaser = true;
-    public $limit = null;
+    public $limit;
 
 
     /**
@@ -38,61 +38,90 @@ class Publication extends Widget
     public function run()
     {
 
-        /** @var PublicationCategory $publicationCategory */
-        $publicationCategory = PublicationCategory::findOne($this->categoryId);
+        if ($this->categoryId) {
+            /** @var PublicationCategory $publicationCategory */
 
-        $html = null;
-
-        $cssClass = 'publication-item-detail';
-
-        if ($publicationCategory instanceof PublicationCategory || $this->item instanceof PublicationItem) {
-
-            if ($this->categoryId !== null) {
-                /** @var PublicationItem $publicationItemsBase */
-                $publicationItemsBase = PublicationItem::find()->where(['category_id' => $this->categoryId])->published()->limit($this->limit)->all();
-
-                $publicationItems = [];
-                foreach ($publicationItemsBase as $publicationItemBase) {
-                    $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
-                }
-                $cssClass = 'publication-item-index';
+            if ($this->categoryId === 'all') {
+                $publicationCategories = PublicationCategory::find()->all();
 
             } else {
-
-                /** @var PublicationItem $item */
-                $item = $this->item;
-                $publicationItems[] = $item;
-                $publicationCategory = $item->category;
+                $publicationCategories = PublicationCategory::findAll($this->categoryId);
             }
 
-            foreach ($publicationItems as $publicationItem) {
 
-                if ($this->teaser === true) {
-                    $properties = Json::decode($publicationItem->teaser_widget_json);
-                    // allow usage of content variables in teaser
-                    $properties['content'] = Json::decode($publicationItem->content_widget_json);
+
+            $widgets = [];
+            foreach ($publicationCategories as $publicationCategory) {
+
+                $categoryId = $publicationCategory->id;
+
+                if ($categoryId !== null) {
+                    /** @var PublicationItem $publicationItemsBase */
+                    $publicationItemsBase = PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->all();
+
+                    $publicationItems = [];
+                    foreach ($publicationItemsBase as $publicationItemBase) {
+                        $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
+                    }
+
                 } else {
-                    $properties = Json::decode($publicationItem->content_widget_json);
+
+                    /** @var PublicationItem $item */
+                    $item = $this->item;
+                    $publicationItems[] = $item;
+                    $publicationCategory = $item->category;
                 }
+                $html = '';
+                foreach ($publicationItems as $publicationItem) {
 
-                $properties['model'] = $publicationItem instanceof PublicationItemTranslation ? $publicationItem->item : $publicationItem;
+                    $html .= $this->renderHtmlByPublicationItem($publicationItem,$publicationCategory);
 
-                $publicationWidget = '';
-                if ($this->showTitle === true) {
-                    $publicationWidget .= "<h3 class='publication-title'>{$publicationItem->title}</h3>";
                 }
-
-                $publicationWidget .= $publicationCategory->render((array)$properties,$this->teaser);
-
-                if ($this->teaser) {
-                    $publicationWidget = Html::a($publicationWidget,['/publication/default/detail','itemId' => $publicationItem->id,'showTitle' => $this->showTitle],['class' => 'publication-detail-link']);
-                }
-
-                $html .= $publicationWidget;
-
+                $widgets[] = "<div class='publication-widget publication-item-index'>{$html}</div>";
             }
+            return implode(PHP_EOL,$widgets);
         }
-        return "<div class='publication-widget {$cssClass}'>{$html}</div>";
+
+        if ($this->item) {
+
+            $html = $this->renderHtmlByPublicationItem($this->item,$this->item->category);
+
+            return "<div class='publication-widget publication-item-detail'>{$html}</div>";
+        }
+
+        return '';
+
+    }
+
+    /**
+     * @param PublicationItem $publicationItem
+     * @param PublicationCategory $publicationCategory
+     * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function renderHtmlByPublicationItem($publicationItem, $publicationCategory) {
+        if ($this->teaser) {
+            $properties = Json::decode($publicationItem->teaser_widget_json);
+            // allow usage of content variables in teaser
+            $properties['content'] = Json::decode($publicationItem->content_widget_json);
+        } else {
+            $properties = Json::decode($publicationItem->content_widget_json);
+        }
+
+        $properties['model'] = $publicationItem instanceof PublicationItemTranslation ? $publicationItem->item : $publicationItem;
+
+        $publicationWidget = '';
+
+
+        $publicationWidget .= $publicationCategory->render((array)$properties, $this->teaser);
+
+        if ($this->teaser) {
+            $publicationWidget = Html::a($publicationWidget, ['/publication/default/detail', 'itemId' => $publicationItem->id], ['class' => 'publication-detail-link']);
+        }
+
+        return $publicationWidget;
     }
 
 }
