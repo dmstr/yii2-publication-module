@@ -57,7 +57,7 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
             [['item_id'], 'integer'],
             [['content_widget_json', 'teaser_widget_json'], 'string'],
             [['language'], 'string', 'max' => 7],
-            [['title'], 'string', 'max' => 80],
+            [['title'], 'string', 'max' => 255],
             [['item_id', 'language'], 'unique', 'targetAttribute' => ['item_id', 'language']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']]
         ];

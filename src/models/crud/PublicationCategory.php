@@ -88,7 +88,7 @@ class PublicationCategory extends BasePublicationCategory
         return ArrayHelper::merge(
             parent::rules(),
             [
-                [['title'], 'string', 'max' => 80],
+                [['title'], 'string', 'max' => 255],
             ]
         );
     }

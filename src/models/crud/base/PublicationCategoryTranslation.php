@@ -54,7 +54,7 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
             [['category_id', 'language'], 'required'],
             [['category_id'], 'integer'],
             [['language'], 'string', 'max' => 7],
-            [['title'], 'string', 'max' => 80],
+            [['title'], 'string', 'max' => 255],
             [['category_id', 'language'], 'unique', 'targetAttribute' => ['category_id', 'language']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationCategory::className(), 'targetAttribute' => ['category_id' => 'id']]
         ];

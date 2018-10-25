@@ -81,7 +81,7 @@ class PublicationItem extends BasePublicationItem
                 [['release_date','title'], 'required'],
                 ['end_date', 'safe'],
                 [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
-                [['title'], 'string', 'max' => 80],
+                [['title'], 'string', 'max' => 255],
                 [
                     'status',
                     'in',
