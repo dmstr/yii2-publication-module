@@ -61,11 +61,7 @@ class PublicationItem extends PublicationItemModel
     public function search($params)
     {
         $query = PublicationItemModel::find();
-        $query->select([
-            PublicationItemModel::tableName() . '.*',
-            PublicationItemTranslation::tableName() . '.title',
-            'status'
-        ]);
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -142,15 +138,7 @@ class PublicationItem extends PublicationItemModel
             $orderBy = ArrayHelper::merge($orderBy, [PublicationItemModel::tableName() . '.id' => $this->id === '1' ? SORT_ASC : SORT_DESC]);
         }
 
-
         $query->orderBy($orderBy);
-
-
-        $query->andWhere([PublicationItemTranslation::tableName() . '.language' => \Yii::$app->language]);
-
-
-//        var_dump($query->createCommand()->rawSql);exit;
-
 
         return $dataProvider;
     }
