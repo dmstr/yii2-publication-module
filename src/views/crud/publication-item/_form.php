@@ -87,7 +87,7 @@ use yii\helpers\Html;
             <?php \dmstr\modules\publication\assets\PublicationItemAssetBundle::register($this); ?>
 
             <!-- attribute content_widget_json -->
-            <?php echo $form->field($model, 'content_widget_json')->widget(dmstr\JsonEditor\JsonEditorWidget::class, [
+            <?php echo $form->field($model, 'content_widget_json')->widget(dmstr\jsoneditor\JsonEditorWidget::class, [
                 'id' => 'content_widget_jsonEditor',
                 'schema' => $model->content_widget_schema,
                 'clientOptions' => [
@@ -99,7 +99,7 @@ use yii\helpers\Html;
             ]) ?>
 
             <!-- attribute teaser_widget_json -->
-            <?php echo $form->field($model, 'teaser_widget_json')->widget(dmstr\JsonEditor\JsonEditorWidget::class, [
+            <?php echo $form->field($model, 'teaser_widget_json')->widget(dmstr\jsoneditor\JsonEditorWidget::class, [
                 'id' => 'teaser_widget_jsonEditor',
                 'schema' => $model->teaser_widget_schema,
                 'clientOptions' => [
