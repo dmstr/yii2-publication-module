@@ -1,7 +1,6 @@
 window.addEventListener('load', function () {
 
   var trigger = function (event, element) {
-    console.log('...trigger');
     setTimeout(function () {
       var e = document.createEvent("HTMLEvents");
       e.initEvent(event, false, true);
@@ -10,7 +9,6 @@ window.addEventListener('load', function () {
   };
 
   var initCKEditor = function (input) {
-    console.log('...initCKEditor');
     // CKCONFIG is defined in crud/WidgetController
     var instance = CKEDITOR.replace(input, window.CKCONFIG);
     instance.on('change', function () {
@@ -20,7 +18,6 @@ window.addEventListener('load', function () {
   };
 
   var initSelectizeEditor = function (input) {
-    console.log('...initSelectizeEditor');
     $(input).selectize({
       valueField: 'path',
       labelField: 'path',
@@ -63,11 +60,9 @@ window.addEventListener('load', function () {
         });
       },
       onItemAdd: function () {
-        console.log('...onItemAdd');
         trigger('change', input);
       },
       onItemRemove: function () {
-        console.log('...onItemRemove');
         trigger('change', input);
       }
     });
@@ -75,7 +70,6 @@ window.addEventListener('load', function () {
 
   window.jsonEditors.forEach(function (jsonEditor) {
     jsonEditor.theme.afterInputReady = function (input) {
-      console.log('...afterInputReady');
       var dataAttribute = input.getAttribute('data-schemaformat');
       switch(dataAttribute) {
         case 'html':
