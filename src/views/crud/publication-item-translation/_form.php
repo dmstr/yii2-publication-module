@@ -72,6 +72,7 @@ $form->field($model, 'item_id')->widget(\kartik\select2\Select2::classname(), [
 			'theme' => 'bootstrap3',
 			'disable_collapse' => true,
 			'disable_properties' => true,
+            'keep_oneof_values' => false,
 			'ajax' => true
 		],
 	]) ?>
@@ -85,6 +86,7 @@ $form->field($model, 'item_id')->widget(\kartik\select2\Select2::classname(), [
 			'theme' => 'bootstrap3',
 			'disable_collapse' => true,
 			'disable_properties' => true,
+            'keep_oneof_values' => false,
 			'ajax' => true
 		],
 	]) ?>
