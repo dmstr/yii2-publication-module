@@ -37,7 +37,7 @@ class DefaultController extends Controller
      */
     public function actionDetail($itemId)
     {
-        $item = PublicationItem::findOne($itemId);
+        $item = PublicationItem::find()->andWhere(['app_dmstr_publication_item.id' => $itemId])->published()->one();
 
         if ($item === null) {
             throw new HttpException(404, \Yii::t('publication', 'Publication item not found'));

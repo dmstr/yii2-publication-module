@@ -13,6 +13,7 @@ use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use const PHP_EOL;
+use const SORT_ASC;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -56,8 +57,9 @@ class Publication extends Widget
                 $categoryId = $publicationCategory->id;
 
                 if ($categoryId !== null) {
+
                     /** @var PublicationItem $publicationItemsBase */
-                    $publicationItemsBase = PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->all();
+                    $publicationItemsBase = PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
 
                     $publicationItems = [];
                     foreach ($publicationItemsBase as $publicationItemBase) {
@@ -113,7 +115,6 @@ class Publication extends Widget
         $properties['model'] = $publicationItem instanceof PublicationItemTranslation ? $publicationItem->item : $publicationItem;
 
         $publicationWidget = '';
-
 
         $publicationWidget .= $publicationCategory->render((array)$properties, $this->teaser);
 
