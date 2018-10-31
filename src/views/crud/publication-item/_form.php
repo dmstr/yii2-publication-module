@@ -93,7 +93,7 @@ use yii\helpers\Html;
                 'clientOptions' => [
                     'theme' => 'bootstrap3',
                     'disable_collapse' => true,
-                    'disable_properties' => true,,
+                    'disable_properties' => true,
                     'keep_oneof_values' => false,
                     'ajax' => true
                 ],
