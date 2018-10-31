@@ -9,6 +9,7 @@
 namespace dmstr\modules\publication\controllers\crud;
 
 use dmstr\bootstrap\Tabs;
+use dmstr\modules\publication\components\PublicationHelper;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
 use yii\helpers\Url;
@@ -112,5 +113,44 @@ class PublicationItemController extends \dmstr\modules\publication\controllers\c
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionDelete($id)
+    {
+        try {
+            /** @var \project\modules\cruds\models\ActiveRecord|PublicationItem $model */
+            $model = $this->findModel($id);
+            /** @var ActiveRecord $translation */
+            $translation = $model->getPublicationItemTranslations()->andWhere(['language' => \Yii::$app->language])->one();
+
+
+            $translation->delete();
+
+        } catch (\Exception $e) {
+            \Yii::$app->getSession()->addFlash('error', $e->errorInfo[2] ?? $e->getMessage());
+        }
+
+        return $this->redirect(\Yii::$app->request->referrer);
+    }
+
+    public function actionDeleteBaseModel($id)
+    {
+        $model = $this->findModel($id);
+
+        if (PublicationHelper::checkModelAccess($model)) {
+            try {
+                // no null pointer exception because if also checks if model not null
+                $model->delete();
+
+            } catch (\Exception $e) {
+                \Yii::$app->session->addFlash('error', $e->errorInfo[2] ?? $e->getMessage());
+            }
+        }
+        else {
+            \Yii::$app->session->addFlash('warning', Yii::t('bikeadmin', 'You are not allowed to delete the base record'));
+        }
+
+
+        return $this->redirect(\Yii::$app->request->referrer);
     }
 }

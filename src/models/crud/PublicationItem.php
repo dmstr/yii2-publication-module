@@ -43,6 +43,8 @@ class PublicationItem extends BasePublicationItem
                 'teaser_widget_json',
                 'title'
             ],
+            'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE,
+            'restrictDeletion' => TranslateableBehavior::DELETE_LAST
         ];
         $behaviors['translatable_meta'] = [
             'class' => TranslateableBehavior::className(),
@@ -54,6 +56,7 @@ class PublicationItem extends BasePublicationItem
                 'release_date',
                 'end_date'
             ],
+            'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE
         ];
         return $behaviors;
     }
@@ -72,6 +75,11 @@ class PublicationItem extends BasePublicationItem
                 'title',
                 'release_date',
                 'end_date'
+            ],
+            'meta' => [
+                'status',
+                'release_date',
+                'end_date'
             ]
         ]);
     }
@@ -81,7 +89,7 @@ class PublicationItem extends BasePublicationItem
         return ArrayHelper::merge(
             parent::rules(),
             [
-                [['release_date','title'], 'required'],
+                [['release_date', 'title'], 'required'],
                 ['end_date', 'safe'],
                 [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
                 [['title'], 'string', 'max' => 255],

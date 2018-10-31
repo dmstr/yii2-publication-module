@@ -81,7 +81,7 @@ class ActiveStatusColumn extends Column
     {
         // Check if status checked is true or false and use either the default label or the label defined in the labelChecked or labelUnchecked attribute
         return Html::a($model->{$this->attribute} === $this->activeValue ? $this->labelChecked ?? FA::icon(FA::_CHECK) : $this->labelUnchecked ?? FA::icon(FA::_TIMES), $this->endpoint, [
-            'class' => 'status-toggle',
+            'class' => 'status-toggle btn-' . ($model->{$this->attribute} === $this->activeValue ? 'success' : 'danger'),
             'data' => [
                 'method' => 'post',
                 'params' => [$this->inputName => $model->{$this->valueAttribute}],

@@ -60,6 +60,7 @@ class Publication extends Widget
 
                     /** @var PublicationItem $publicationItemsBase */
                     $publicationItemsBase = PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
+//                    var_dump(PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC]))
 
                     $publicationItems = [];
                     foreach ($publicationItemsBase as $publicationItemBase) {

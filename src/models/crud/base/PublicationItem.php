@@ -12,6 +12,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property integer $id
  * @property integer $category_id
+ * @property string access_domain
  * @property integer $created_at
  * @property integer $updated_at
  *
@@ -22,7 +23,6 @@ use yii\behaviors\TimestampBehavior;
  */
 abstract class PublicationItem extends \dmstr\modules\publication\models\crud\ActiveRecord
 {
-
 
 
     /**
@@ -95,7 +95,6 @@ abstract class PublicationItem extends \dmstr\modules\publication\models\crud\Ac
     }
 
 
-    
     /**
      * @inheritdoc
      * @return \dmstr\modules\publication\models\crud\query\PublicationItemQuery the active query used by this AR class.
@@ -105,5 +104,12 @@ abstract class PublicationItem extends \dmstr\modules\publication\models\crud\Ac
         return new \dmstr\modules\publication\models\crud\query\PublicationItemQuery(get_called_class());
     }
 
+    public function beforeSave($insert)
+    {
+        if ($this->isNewRecord) {
+            $this->access_domain = Yii::$app->language;
+        }
+        return parent::beforeSave($insert);
+    }
 
 }

@@ -64,7 +64,6 @@ class PublicationItem extends PublicationItemModel
         $query->select([
             PublicationItemModel::tableName() . '.*',
             PublicationItemTranslation::tableName() . '.title',
-            'status'
         ]);
 
         $dataProvider = new ActiveDataProvider([
@@ -141,6 +140,11 @@ class PublicationItem extends PublicationItemModel
         if ($this->id !== null) {
             $orderBy = ArrayHelper::merge($orderBy, [PublicationItemModel::tableName() . '.id' => $this->id === '1' ? SORT_ASC : SORT_DESC]);
         }
+
+        $query->andWhere(['OR',
+                [PublicationItemModel::tableName() . '.access_domain' => \Yii::$app->language],
+                isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationItemModel::tableName() . '.access_domain' => \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
+        );
 
         $query->orderBy($orderBy);
 

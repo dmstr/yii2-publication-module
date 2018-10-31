@@ -1,5 +1,6 @@
 <?php
 
+use dmstr\modules\publication\components\PublicationHelper;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use rmrevin\yii\fontawesome\FA;
 use yii\bootstrap\ButtonDropdown;
@@ -187,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'title' => Yii::t('cruds', 'Update'),
                                         'aria-label' => Yii::t('cruds', 'Update'),
                                         'data-pjax' => '0',
-                                        'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
+                                        'class' => $model->hasMethod('getPublicationItemTranslations') ? $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
                                     ];
                                     return Html::a(FA::icon(FA::_PENCIL), $url, $options);
                                 },
@@ -200,7 +201,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-pjax' => '0',
                                         'class' => 'btn-danger'
                                     ];
-                                    return Html::a(FA::icon(FA::_TRASH), $url, $options);
+                                    if (PublicationHelper::checkModelAccess($model)) {
+                                        $options['data-confirm'] = Yii::t('bikes', 'Are you sure to delete this bike?');
+                                        return Html::a(FA::icon(FA::_TRASH), ['delete-base-model','id' => $model->id], $options);
+                                    }
+                                    if ($model->hasMethod('getPublicationItemTranslations') && $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
+                                        return Html::a(FA::icon(FA::_TRASH), $url, $options);
+                                    }
                                 }
                             ],
                             'urlCreator' => function ($action, $model, $key) {
