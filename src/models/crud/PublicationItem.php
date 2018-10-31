@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property string teaser_widget_json
  * @property string content_widget_json
+ * @property PublicationTag[] tags
  */
 class PublicationItem extends BasePublicationItem
 {
@@ -103,6 +104,14 @@ class PublicationItem extends BasePublicationItem
                 ]
             ]
         );
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(PublicationTag::class, ['id' => 'tag_id'])->viaTable('{{%dmstr_publication_tag}}', ['accessory_id' => 'id']);
     }
 
 
