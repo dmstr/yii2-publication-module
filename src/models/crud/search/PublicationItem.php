@@ -142,15 +142,7 @@ class PublicationItem extends PublicationItemModel
             $orderBy = ArrayHelper::merge($orderBy, [PublicationItemModel::tableName() . '.id' => $this->id === '1' ? SORT_ASC : SORT_DESC]);
         }
 
-
         $query->orderBy($orderBy);
-
-
-        $query->andWhere([PublicationItemTranslation::tableName() . '.language' => \Yii::$app->language]);
-
-
-//        var_dump($query->createCommand()->rawSql);exit;
-
 
         return $dataProvider;
     }

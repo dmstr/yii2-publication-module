@@ -86,6 +86,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-striped table-hover'],
+                'rowOptions' => function ($model) {
+                    if ($model->hasMethod('getPublicationItemTranslations')) {
+                        return ['class' => $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() === null ? 'warning' : ''];
+                    }
+                    return [];
+                },
                 'columns' => [
                     [
                         'class' => \dmstr\modules\publication\widgets\ActiveStatusColumn::class,
@@ -120,6 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => function ($model) {
                             return \Yii::$app->formatter->asDatetime($model->release_date);
                         },
+                        'format' => 'raw'
                     ],
                     [
                         'class' => DataColumn::class,
