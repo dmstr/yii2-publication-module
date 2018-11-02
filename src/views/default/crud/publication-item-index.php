@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-striped table-hover'],
-                'rowOptions' => function ($model) {
+                'rowOptions' => function (PublicationItem $model) {
                     if ($model->hasMethod('getPublicationItemTranslations')) {
                         return ['class' => $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() === null ? 'warning' : ''];
                     }
@@ -171,52 +171,53 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     [
-                            'class' => ActionColumn::class,
-                            'template' => '{view} {update} {delete}',
-                            'buttons' => [
-                                'view' => function ($url) {
-                                    $options = [
-                                        'title' => Yii::t('cruds', 'View'),
-                                        'aria-label' => Yii::t('cruds', 'View'),
-                                        'data-pjax' => '0',
-                                        'class' => 'btn-primary'
-                                    ];
-                                    return Html::a(FA::icon(FA::_EYE), $url, $options);
-                                },
-                                'update' => function ($url, $model) {
-                                    $options = [
-                                        'title' => Yii::t('cruds', 'Update'),
-                                        'aria-label' => Yii::t('cruds', 'Update'),
-                                        'data-pjax' => '0',
-                                        'class' => $model->hasMethod('getPublicationItemTranslations') ? $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
-                                    ];
-                                    return Html::a(FA::icon(FA::_PENCIL), $url, $options);
-                                },
-                                'delete' => function ($url, $model) {
-                                    $options = [
-                                        'title' => Yii::t('cruds', 'Delete'),
-                                        'aria-label' => Yii::t('cruds', 'Delete'),
-                                        'data-confirm' => Yii::t('bikes', 'Are you sure to delete this publication?'),
-                                        'data-method' => 'post',
-                                        'data-pjax' => '0',
-                                        'class' => 'btn-danger'
-                                    ];
-                                    if (PublicationHelper::checkModelAccess($model)) {
-                                        $options['data-confirm'] = Yii::t('bikes', 'Are you sure to delete this bike?');
-                                        return Html::a(FA::icon(FA::_TRASH), ['delete-base-model','id' => $model->id], $options);
-                                    }
-                                    if ($model->hasMethod('getPublicationItemTranslations') && $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
-                                        return Html::a(FA::icon(FA::_TRASH), $url, $options);
-                                    }
-                                }
-                            ],
-                            'urlCreator' => function ($action, $model, $key) {
-                                $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
-                                $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
-                                return Url::toRoute($params);
+                        'class' => ActionColumn::class,
+                        'template' => '{view} {update} {delete}',
+                        'buttons' => [
+                            'view' => function ($url) {
+                                $options = [
+                                    'title' => Yii::t('cruds', 'View'),
+                                    'aria-label' => Yii::t('cruds', 'View'),
+                                    'data-pjax' => '0',
+                                    'class' => 'btn-primary'
+                                ];
+                                return Html::a(FA::icon(FA::_EYE), $url, $options);
                             },
-                            'contentOptions' => ['nowrap' => 'nowrap']
+                            'update' => function ($url, PublicationItem $model) {
+                                $options = [
+                                    'title' => Yii::t('cruds', 'Update'),
+                                    'aria-label' => Yii::t('cruds', 'Update'),
+                                    'data-pjax' => '0',
+                                    'class' => $model->hasMethod('getPublicationItemTranslations') ? $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
+                                ];
+                                return Html::a(FA::icon(FA::_PENCIL), $url, $options);
+                            },
+                            'delete' => function ($url, PublicationItem $model) {
+                                $options = [
+                                    'title' => Yii::t('cruds', 'Delete'),
+                                    'aria-label' => Yii::t('cruds', 'Delete'),
+                                    'data-confirm' => Yii::t('bikes', 'Are you sure to delete this publication?'),
+                                    'data-method' => 'post',
+                                    'data-pjax' => '0',
+                                    'class' => 'btn-danger'
+                                ];
+                                if (PublicationHelper::checkModelAccess($model)) {
+                                    $options['data-confirm'] = Yii::t('bikes', 'Are you sure to delete this bike?');
+                                    return Html::a(FA::icon(FA::_TRASH), ['delete-base-model', 'id' => $model->id], $options);
+                                }
+                                if ($model->hasMethod('getPublicationItemTranslations') && $model->getPublicationItemTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
+                                    return Html::a(FA::icon(FA::_TRASH), $url, $options);
+                                }
+                                return '';
+                            }
                         ],
+                        'urlCreator' => function ($action, PublicationItem $model, $key) {
+                            $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
+                            $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
+                            return Url::toRoute($params);
+                        },
+                        'contentOptions' => ['nowrap' => 'nowrap']
+                    ],
                 ],
             ]); ?>
         </div>

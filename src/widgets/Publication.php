@@ -12,8 +12,6 @@ namespace dmstr\modules\publication\widgets;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
-use const PHP_EOL;
-use const SORT_ASC;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -23,12 +21,17 @@ use yii\helpers\Json;
  * Class Publication
  * @package dmstr\modules\publication\widgets
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
+ *
+ * @property int categoryId
+ * @property bool teaser
+ * @property int limit
+ * @property PublicationItem item
  */
 class Publication extends Widget
 {
     public $categoryId;
-    public $item;
     public $teaser = true;
+    public $item;
     public $limit;
 
 
@@ -39,72 +42,65 @@ class Publication extends Widget
     public function run()
     {
 
-        if ($this->categoryId) {
-            /** @var PublicationCategory $publicationCategory */
-
-            if ($this->categoryId === 'all') {
-                $publicationCategories = PublicationCategory::find()->all();
-
-            } else {
-                $publicationCategories = PublicationCategory::findAll($this->categoryId);
-            }
-
-
-
-            $widgets = [];
-            foreach ($publicationCategories as $publicationCategory) {
-
-                $categoryId = $publicationCategory->id;
-
-                if ($categoryId !== null) {
-
-                    /** @var PublicationItem $publicationItemsBase */
-                    $publicationItemsBase = PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
-//                    var_dump(PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC]))
-
-                    $publicationItems = [];
-                    foreach ($publicationItemsBase as $publicationItemBase) {
-                        $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
-                    }
-
-                } else {
-
-                    /** @var PublicationItem $item */
-                    $item = $this->item;
-                    $publicationItems[] = $item;
-                    $publicationCategory = $item->category;
-                }
-                $html = '';
-                foreach ($publicationItems as $publicationItem) {
-
-                    $html .= $this->renderHtmlByPublicationItem($publicationItem,$publicationCategory);
-
-                }
-                $widgets[] = $html;
-            }
-            return "<div class='publication-widget publication-item-index'>" . implode(PHP_EOL,$widgets) . '</div>';
-        }
-
         if ($this->item) {
+            return "<div class='publication-widget publication-item-index'>" . $this->renderHtmlByPublicationItem($this->item, $this->item->category) . '</div>';
+        }
+        /** @var PublicationCategory $publicationCategory */
 
-            $html = $this->renderHtmlByPublicationItem($this->item,$this->item->category);
+        if ($this->categoryId === 'all') {
+            /** @var PublicationItem $publicationItemsBase */
+            $publicationItemsBase = PublicationItem::find()->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
 
-            return "<div class='publication-widget publication-item-detail'>{$html}</div>";
+            $publicationItems = [];
+            foreach ($publicationItemsBase as $publicationItemBase) {
+                $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
+            }
+
+            $html = '';
+            /** @var PublicationItemTranslation $publicationItemTranslation */
+            foreach ($publicationItems as $publicationItemTranslation) {
+                $html .= $this->renderHtmlByPublicationItem($publicationItemTranslation, $publicationItemTranslation->item->category);
+            }
+            return "<div class='publication-widget publication-item-index'>" . $html . '</div>';
         }
 
-        return '';
+        $publicationCategories = PublicationCategory::findAll($this->categoryId);
+
+        $widgets = [];
+        foreach ($publicationCategories as $publicationCategory) {
+
+            $categoryId = $publicationCategory->id;
+
+
+            /** @var PublicationItem $publicationItemsBase */
+            $publicationItemsBase = PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
+
+            $publicationItems = [];
+            foreach ($publicationItemsBase as $publicationItemBase) {
+                $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
+            }
+
+            $html = '';
+            foreach ($publicationItems as $publicationItem) {
+                $html .= $this->renderHtmlByPublicationItem($publicationItem, $publicationCategory);
+            }
+            $widgets[] = $html;
+        }
+        return "<div class='publication-widget publication-item-index'>" . implode(PHP_EOL, $widgets) . '</div>';
 
     }
 
     /**
-     * @param PublicationItem $publicationItem
+     * @param PublicationItem|PublicationItemTranslation $publicationItem
      * @param PublicationCategory $publicationCategory
      * @return string
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     * @throws \yii\base\InvalidConfigException
      */
-    public function renderHtmlByPublicationItem($publicationItem, $publicationCategory) {
+    public function renderHtmlByPublicationItem($publicationItem, $publicationCategory)
+    {
         if ($this->teaser) {
             $properties = Json::decode($publicationItem->teaser_widget_json);
             // allow usage of content variables in teaser

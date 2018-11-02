@@ -34,7 +34,6 @@ class PublicationItem extends BasePublicationItem
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-
         $behaviors['translatable'] = [
             'class' => TranslateableBehavior::className(),
             'relation' => 'publicationItemTranslations',
@@ -67,43 +66,43 @@ class PublicationItem extends BasePublicationItem
      */
     public function scenarios()
     {
-        return ArrayHelper::merge(parent::scenarios(), [
-            'crud' => [
-                'category_id',
-                'content_widget_json',
-                'teaser_widget_json',
-                'status',
-                'title',
-                'release_date',
-                'end_date'
-            ],
-            'meta' => [
-                'status',
-                'release_date',
-                'end_date'
-            ]
-        ]);
+        $scenarios = parent::scenarios();
+        $scenarios['crud'] = [
+            'category_id',
+            'content_widget_json',
+            'teaser_widget_json',
+            'status',
+            'title',
+            'release_date',
+            'end_date'
+        ];
+        $scenarios['meta'] = [
+            'status',
+            'release_date',
+            'end_date'
+        ];
+        return $scenarios;
     }
 
+    /**
+     * @return array
+     */
     public function rules()
     {
-        return ArrayHelper::merge(
-            parent::rules(),
-            [
-                [['release_date', 'title'], 'required'],
-                ['end_date', 'safe'],
-                [['content_widget_json', 'teaser_widget_json', 'status'], 'string'],
-                [['title'], 'string', 'max' => 255],
-                [
-                    'status',
-                    'in',
-                    'range' => [
-                        PublicationItemMeta::STATUS_DRAFT,
-                        PublicationItemMeta::STATUS_PUBLISHED,
-                    ]
-                ]
+        $rules = parent::rules();
+        $rules['requiredAttributes'] = [['release_date', 'title'], 'required'];
+        $rules['safeAttributes'] = ['end_date', 'safe'];
+        $rules['stringAttributes'] = [['content_widget_json', 'teaser_widget_json', 'status'], 'string'];
+        $rules['stringLengthAttributes'] = ['title', 'string', 'max' => 255];
+        $rules['inRangeAttributes'] = [
+            'status',
+            'in',
+            'range' => [
+                PublicationItemMeta::STATUS_DRAFT,
+                PublicationItemMeta::STATUS_PUBLISHED,
             ]
-        );
+        ];
+        return $rules;
     }
 
     /**
@@ -153,27 +152,5 @@ class PublicationItem extends BasePublicationItem
             }
         }
     }
-
-
-//    public function rules()
-//    {
-//        return ArrayHelper::merge(parent::rules(), [
-//            [
-//                ['teaser_widget_json','content_widget_json'],
-//                function ($attribute) {
-//                    $validator = new Validator();
-//                    $type = $attribute === 'teaser_widget_json' ? 'teaserWidgetTemplate' : 'contentWidgetTemplate';
-//                    $obj = Json::decode($this->publicationCategory->$type->json_schema, false);
-//                    $data = Json::decode($this->{$attribute}, false);
-//                    $validator->check($data, $obj);
-//                    if ($validator->getErrors()) {
-//                        foreach ($validator->getErrors() as $error) {
-//                            $this->addError($error['property'], "{$error['property']}: {$error['message']}");
-//                        }
-//                    }
-//                },
-//            ],
-//        ]);
-//    }
 
 }

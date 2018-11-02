@@ -18,16 +18,21 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         $param = Yii::$app->request->get('categoryId');
+        $limit = Yii::$app->request->get('limit');
 
         if ($param === null) {
-            throw new BadRequestHttpException(Yii::t('user', 'Category ID must be set'));
+            throw new BadRequestHttpException(Yii::t('publication', 'Category ID must be set'));
         }
 
         if (!$this->checkParam($param)) {
-            throw new InvalidConfigException(Yii::t('user', 'Invalid config for param category id'));
+            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param category id'));
         }
 
-        return $this->render('index', ['categoryId' => $param]);
+        if ($limit !== null && (!is_numeric($limit) || $limit < 1)) {
+            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param limit'));
+        }
+
+        return $this->render('index', ['categoryId' => $param, 'limit' => $limit]);
     }
 
     /**

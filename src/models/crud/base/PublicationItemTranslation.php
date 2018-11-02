@@ -26,7 +26,6 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
 {
 
 
-
     /**
      * @inheritdoc
      */
@@ -53,7 +52,7 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
     public function rules()
     {
         return [
-            [['item_id', 'language','title'], 'required'],
+            [['item_id', 'language', 'title'], 'required'],
             [['item_id'], 'integer'],
             [['content_widget_json', 'teaser_widget_json'], 'string'],
             [['language'], 'string', 'max' => 7],
@@ -89,7 +88,6 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
     }
 
 
-    
     /**
      * @inheritdoc
      * @return \dmstr\modules\publication\models\crud\query\PublicationItemTranslationQuery the active query used by this AR class.

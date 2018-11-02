@@ -24,7 +24,6 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
 {
 
 
-
     /**
      * @inheritdoc
      */
@@ -84,7 +83,6 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
     }
 
 
-    
     /**
      * @inheritdoc
      * @return \dmstr\modules\publication\models\crud\query\PublicationCategoryTranslationQuery the active query used by this AR class.

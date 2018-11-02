@@ -10,6 +10,8 @@ use yii\twig\ViewRenderer;
 
 /**
  * This is the model class for table "{{%dmstr_publication_category}}".
+ *
+ * @property string title
  */
 class PublicationCategory extends BasePublicationCategory
 {
@@ -37,6 +39,7 @@ class PublicationCategory extends BasePublicationCategory
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     * @throws \yii\base\InvalidConfigException
      */
     public function render(array $properties, $teaser)
     {
@@ -59,37 +62,43 @@ class PublicationCategory extends BasePublicationCategory
         return $twig->render('publication', $properties);
     }
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'translatable' => [
-                'class' => TranslateableBehavior::className(),
-                'relation' => 'publicationCategoryTranslations',
-                'translationAttributes' => [
-                    'title',
-                ],
-            ],
-        ]);
+        $behaviors = parent::behaviors();
+        $behaviors['translatable'] = [
+            'class' => TranslateableBehavior::class,
+            'relation' => 'publicationCategoryTranslations',
+            'translationAttributes' => [
+                'title'
+            ]
+        ];
+        return $behaviors;
     }
 
+    /**
+     * @return array
+     */
     public function scenarios()
     {
-        return ArrayHelper::merge(parent::scenarios(), [
-            'crud' => [
-                'title',
-                'content_widget_template_id',
-                'teaser_widget_template_id'
-            ]
-        ]);
+        $scenarios = parent::scenarios();
+        $scenarios['crud'] = [
+            'title',
+            'content_widget_template_id',
+            'teaser_widget_template_id'
+        ];
+        return $scenarios;
     }
 
+    /**
+     * @return array
+     */
     public function rules()
     {
-        return ArrayHelper::merge(
-            parent::rules(),
-            [
-                [['title'], 'string', 'max' => 255],
-            ]
-        );
+        $rules = parent::rules();
+        $rules['stringLengthAttribute'] = ['title','string','max' => 255];
+        return $rules;
     }
 }

@@ -26,13 +26,13 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
 {
 
 
-
     /**
-    * ENUM field values
-    */
+     * ENUM field values
+     */
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
     var $enum_labels = false;
+
     /**
      * @inheritdoc
      */
@@ -67,9 +67,9 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
             [['item_id', 'language'], 'unique', 'targetAttribute' => ['item_id', 'language']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::className(), 'targetAttribute' => ['item_id' => 'id']],
             ['status', 'in', 'range' => [
-                    self::STATUS_DRAFT,
-                    self::STATUS_PUBLISHED,
-                ]
+                self::STATUS_DRAFT,
+                self::STATUS_PUBLISHED,
+            ]
             ]
         ];
     }
@@ -100,7 +100,6 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
     }
 
 
-    
     /**
      * @inheritdoc
      * @return \dmstr\modules\publication\models\crud\query\PublicationItemMetaQuery the active query used by this AR class.
@@ -116,9 +115,10 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
      * @param string $value
      * @return string
      */
-    public static function getStatusValueLabel($value){
+    public static function getStatusValueLabel($value)
+    {
         $labels = self::optsStatus();
-        if(isset($labels[$value])){
+        if (isset($labels[$value])) {
             return $labels[$value];
         }
         return $value;

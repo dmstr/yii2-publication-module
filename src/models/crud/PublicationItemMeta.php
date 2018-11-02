@@ -20,12 +20,4 @@ class PublicationItemMeta extends BasePublicationItemMeta
     {
         return '{{%dmstr_publication_item_meta}}';
     }
-
-    /**
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return Yii::$app->language;
-    }
 }

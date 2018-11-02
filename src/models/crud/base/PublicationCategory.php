@@ -26,7 +26,6 @@ abstract class PublicationCategory extends \dmstr\modules\publication\models\cru
 {
 
 
-
     /**
      * @inheritdoc
      */
@@ -107,7 +106,6 @@ abstract class PublicationCategory extends \dmstr\modules\publication\models\cru
     }
 
 
-    
     /**
      * @inheritdoc
      * @return \dmstr\modules\publication\models\crud\query\PublicationCategoryQuery the active query used by this AR class.

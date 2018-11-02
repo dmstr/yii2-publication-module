@@ -18,12 +18,5 @@ class PublicationItemTranslation extends BasePublicationItemTranslation
     {
         return '{{%dmstr_publication_item_translation}}';
     }
-    /**
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return Yii::$app->language;
-    }
 
 }

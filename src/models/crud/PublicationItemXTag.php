@@ -56,7 +56,7 @@ class PublicationItemXTag extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccessory()
+    public function getItem()
     {
         return $this->hasOne(PublicationItem::class, ['id' => 'item_id']);
     }
