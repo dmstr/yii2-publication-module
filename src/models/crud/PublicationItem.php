@@ -4,7 +4,6 @@ namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\base\PublicationItem as BasePublicationItem;
 use dosamigos\translateable\TranslateableBehavior;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%dmstr_publication_item}}".
@@ -18,7 +17,8 @@ class PublicationItem extends BasePublicationItem
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
-
+    public $content_widget_schema = [];
+    public $teaser_widget_schema = [];
 
     /**
      * @inheritdoc
@@ -35,8 +35,8 @@ class PublicationItem extends BasePublicationItem
     {
         $behaviors = parent::behaviors();
         $behaviors['translatable'] = [
-            'class' => TranslateableBehavior::className(),
-            'relation' => 'publicationItemTranslations',
+            'class' => TranslateableBehavior::class,
+            'relation' => 'translations',
             'skipSavingDuplicateTranslation' => true,
             'translationAttributes' => [
                 'content_widget_json',
@@ -47,8 +47,8 @@ class PublicationItem extends BasePublicationItem
             'restrictDeletion' => TranslateableBehavior::DELETE_LAST
         ];
         $behaviors['translatable_meta'] = [
-            'class' => TranslateableBehavior::className(),
-            'relation' => 'publicationItemMetas',
+            'class' => TranslateableBehavior::class,
+            'relation' => 'metas',
             'fallbackLanguage' => false,
             'skipSavingDuplicateTranslation' => false,
             'translationAttributes' => [
@@ -90,7 +90,7 @@ class PublicationItem extends BasePublicationItem
     public function rules()
     {
         $rules = parent::rules();
-        $rules['requiredAttributes'] = [['release_date', 'title'], 'required'];
+        $rules['requiredAttributes'] = [['release_date', 'title', 'ref_lang'], 'required'];
         $rules['safeAttributes'] = ['end_date', 'safe'];
         $rules['stringAttributes'] = [['content_widget_json', 'teaser_widget_json', 'status'], 'string'];
         $rules['stringLengthAttributes'] = ['title', 'string', 'max' => 255];
@@ -112,10 +112,6 @@ class PublicationItem extends BasePublicationItem
     {
         return $this->hasMany(PublicationTag::class, ['id' => 'tag_id'])->viaTable('{{%dmstr_publication_tag}}', ['accessory_id' => 'id']);
     }
-
-
-    public $content_widget_schema = [];
-    public $teaser_widget_schema = [];
 
     /**
      * @param $publicationCategoryId

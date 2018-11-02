@@ -56,9 +56,9 @@ class m180710_091658_add_meta_table extends Migration
             ]);
         }
 
-        $this->dropColumn('{{%dmstr_publication_item}}','release_date');
-        $this->dropColumn('{{%dmstr_publication_item}}','end_date');
-        $this->dropColumn('{{%dmstr_publication_item_translation}}','status');
+        $this->dropColumn('{{%dmstr_publication_item}}', 'release_date');
+        $this->dropColumn('{{%dmstr_publication_item}}', 'end_date');
+        $this->dropColumn('{{%dmstr_publication_item_translation}}', 'status');
     }
 
     /**
@@ -66,9 +66,9 @@ class m180710_091658_add_meta_table extends Migration
      */
     public function safeDown()
     {
-        $this->addColumn('{{%dmstr_publication_item}}','release_date','datetime NULL AFTER category_id');
-        $this->addColumn('{{%dmstr_publication_item}}','end_date','datetime NULL AFTER release_date');
-        $this->addColumn('{{%dmstr_publication_item_translation}}','status',"enum('draft','published') COLLATE utf8_unicode_ci NULL DEFAULT 'draft' AFTER teaser_widget_json");
+        $this->addColumn('{{%dmstr_publication_item}}', 'release_date', 'datetime NULL AFTER category_id');
+        $this->addColumn('{{%dmstr_publication_item}}', 'end_date', 'datetime NULL AFTER release_date');
+        $this->addColumn('{{%dmstr_publication_item_translation}}', 'status', "enum('draft','published') COLLATE utf8_unicode_ci NULL DEFAULT 'draft' AFTER teaser_widget_json");
 
         $query = new \yii\db\Query();
         $query->select([
@@ -85,15 +85,15 @@ class m180710_091658_add_meta_table extends Migration
             $this->update('{{%dmstr_publication_item}}', [
                 'release_date' => $publicationMeta['release_date'],
                 'end_date' => $publicationMeta['end_date']
-            ],['id' => $publicationMeta['item_id']]);
+            ], ['id' => $publicationMeta['item_id']]);
 
             $this->update('{{%dmstr_publication_item_translation}}', [
                 'status' => $publicationMeta['status'],
-            ],['item_id' => $publicationMeta['item_id'], 'language_code' => $publicationMeta['language_code']]);
+            ], ['item_id' => $publicationMeta['item_id'], 'language_code' => $publicationMeta['language_code']]);
         }
 
-        $this->alterColumn('{{%dmstr_publication_item}}','release_date','datetime NOT NULL AFTER category_id');
-        $this->alterColumn('{{%dmstr_publication_item_translation}}','status',"enum('draft','published') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'draft' AFTER teaser_widget_json");
+        $this->alterColumn('{{%dmstr_publication_item}}', 'release_date', 'datetime NOT NULL AFTER category_id');
+        $this->alterColumn('{{%dmstr_publication_item_translation}}', 'status', "enum('draft','published') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'draft' AFTER teaser_widget_json");
 
         $this->dropTable('{{%dmstr_publication_item_meta}}');
 

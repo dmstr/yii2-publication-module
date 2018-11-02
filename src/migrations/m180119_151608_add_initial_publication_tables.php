@@ -19,8 +19,8 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
-        $this->addForeignKey('FK_category_hrzg_widget_template0','{{%dmstr_publication_category}}','content_widget_template_id','{{%hrzg_widget_template}}','id');
-        $this->addForeignKey('FK_category_hrzg_widget_template1','{{%dmstr_publication_category}}','teaser_widget_template_id','{{%hrzg_widget_template}}','id');
+        $this->addForeignKey('FK_category_hrzg_widget_template0', '{{%dmstr_publication_category}}', 'content_widget_template_id', '{{%hrzg_widget_template}}', 'id');
+        $this->addForeignKey('FK_category_hrzg_widget_template1', '{{%dmstr_publication_category}}', 'teaser_widget_template_id', '{{%hrzg_widget_template}}', 'id');
 
         $this->createTable('{{%dmstr_publication_category_translation}}', [
             'id' => $this->primaryKey(),
@@ -30,7 +30,7 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
-        $this->addForeignKey('FK_category_translation_category_translation0','{{%dmstr_publication_category_translation}}','category_id','{{%dmstr_publication_category}}','id','CASCADE');
+        $this->addForeignKey('FK_category_translation_category_translation0', '{{%dmstr_publication_category_translation}}', 'category_id', '{{%dmstr_publication_category}}', 'id', 'CASCADE');
 
         $this->createTable('{{%dmstr_publication_item}}', [
             'id' => $this->primaryKey(),
@@ -40,7 +40,7 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
-        $this->addForeignKey('FK_item_translation_category_translation0','{{%dmstr_publication_item}}','category_id','{{%dmstr_publication_category}}','id');
+        $this->addForeignKey('FK_item_translation_category_translation0', '{{%dmstr_publication_item}}', 'category_id', '{{%dmstr_publication_category}}', 'id');
 
         $this->createTable('{{%dmstr_publication_item_translation}}', [
             'id' => $this->primaryKey(),
@@ -53,7 +53,7 @@ class m180119_151608_add_initial_publication_tables extends Migration
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
         ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
-        $this->addForeignKey('FK_item_translation_item0','{{%dmstr_publication_item_translation}}','item_id','{{%dmstr_publication_item}}','id','CASCADE');
+        $this->addForeignKey('FK_item_translation_item0', '{{%dmstr_publication_item_translation}}', 'item_id', '{{%dmstr_publication_item}}', 'id', 'CASCADE');
     }
 
     /**
@@ -61,17 +61,17 @@ class m180119_151608_add_initial_publication_tables extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('FK_item_translation_item0','{{%dmstr_publication_item_translation}}');
+        $this->dropForeignKey('FK_item_translation_item0', '{{%dmstr_publication_item_translation}}');
         $this->dropTable('{{%dmstr_publication_item_translation}}');
 
-        $this->dropForeignKey('FK_item_translation_category_translation0','{{%dmstr_publication_item}}');
+        $this->dropForeignKey('FK_item_translation_category_translation0', '{{%dmstr_publication_item}}');
         $this->dropTable('{{%dmstr_publication_item}}');
 
-        $this->dropForeignKey('FK_category_translation_category_translation0','{{%dmstr_publication_category_translation}}');
+        $this->dropForeignKey('FK_category_translation_category_translation0', '{{%dmstr_publication_category_translation}}');
         $this->dropTable('{{%{{%dmstr_publication_category_translation}}}}');
 
-        $this->dropForeignKey('FK_category_hrzg_widget_template1','{{%dmstr_publication_category}}');
-        $this->dropForeignKey('FK_category_hrzg_widget_template0','{{%dmstr_publication_category}}');
+        $this->dropForeignKey('FK_category_hrzg_widget_template1', '{{%dmstr_publication_category}}');
+        $this->dropForeignKey('FK_category_hrzg_widget_template0', '{{%dmstr_publication_category}}');
         $this->dropTable('{{%dmstr_publication_category}}');
     }
 }

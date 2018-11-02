@@ -6,6 +6,7 @@
  */
 
 
+use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
 
 /**
@@ -23,18 +24,18 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'Edit');
     <h1>
         <?php echo Yii::t('publication', 'Publication Category') ?>
         <small>
-                        <?php echo Html::encode($model->label) ?>
+            <?php echo Html::encode($model->label) ?>
         </small>
     </h1>
 
     <div class="crud-navigation">
-        <?php echo Html::a('<span class="glyphicon glyphicon-file"></span> ' . Yii::t('publication', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?php echo Html::a(FA::icon(FA::_FILE_O) . ' ' . Yii::t('publication', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
     </div>
 
-    <hr />
+    <hr/>
 
     <?php echo $this->render('_form', [
-		'model' => $model,
-	]); ?>
+        'model' => $model,
+    ]); ?>
 
 </div>

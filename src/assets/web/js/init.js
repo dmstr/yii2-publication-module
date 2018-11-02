@@ -92,7 +92,7 @@ window.addEventListener('load', function () {
   window.jsonEditors.forEach(function (jsonEditor) {
     jsonEditor.theme.afterInputReady = function (input) {
       var dataAttribute = input.getAttribute('data-schemaformat');
-      switch(dataAttribute) {
+      switch (dataAttribute) {
         case 'html':
           initCKEditor(input);
           break;

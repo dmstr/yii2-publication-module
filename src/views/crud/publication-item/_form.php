@@ -22,7 +22,6 @@ use yii\helpers\Html;
 
     <?php $form = ActiveForm::begin([
             'id' => 'PublicationItem',
-//            'layout' => 'horizontal',
             'enableClientValidation' => true,
             'errorSummaryCssClass' => 'error-summary alert alert-danger',
             'fieldConfig' => [
@@ -62,7 +61,7 @@ use yii\helpers\Html;
         <div class="panel-body">
 
             <!-- attribute category_id -->
-            <?php echo $form->field($model, 'category_id')->widget(\kartik\select2\Select2::classname(), [
+            <?php echo $form->field($model, 'category_id')->widget(\kartik\select2\Select2::class, [
                 'name' => 'class_name',
                 'model' => $model,
                 'attribute' => 'category_id',
@@ -138,7 +137,7 @@ use yii\helpers\Html;
     <?php echo $form->errorSummary($model); ?>
 
     <?php echo Html::submitButton(
-        '<span class="glyphicon glyphicon-check"></span> ' .
+        FA::icon(FA::_SAVE) . ' ' .
         ($model->isNewRecord ? Yii::t('publication', 'Create') : Yii::t('publication', 'Save')),
         [
             'id' => 'save-' . $model->formName(),

@@ -22,7 +22,7 @@ class PublicationItemAssetBundle extends \dmstr\web\AssetBundle
     /**
      * @var string
      */
-    public $sourcePath = __DIR__.'/web';
+    public $sourcePath = __DIR__ . '/web';
 
 
     /**

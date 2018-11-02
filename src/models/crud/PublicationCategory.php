@@ -5,7 +5,6 @@ namespace dmstr\modules\publication\models\crud;
 use dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublicationCategory;
 use dosamigos\translateable\TranslateableBehavior;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\twig\ViewRenderer;
 
 /**
@@ -70,10 +69,12 @@ class PublicationCategory extends BasePublicationCategory
         $behaviors = parent::behaviors();
         $behaviors['translatable'] = [
             'class' => TranslateableBehavior::class,
-            'relation' => 'publicationCategoryTranslations',
+            'relation' => 'translations',
             'translationAttributes' => [
                 'title'
-            ]
+            ],
+            'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE,
+            'restrictDeletion' => TranslateableBehavior::DELETE_LAST
         ];
         return $behaviors;
     }
@@ -98,7 +99,8 @@ class PublicationCategory extends BasePublicationCategory
     public function rules()
     {
         $rules = parent::rules();
-        $rules['stringLengthAttribute'] = ['title','string','max' => 255];
+        $rules['stringLengthAttribute'] = ['title', 'string', 'max' => 255];
+        $rules['requiredAttributes'] = ['ref_lang', 'required'];
         return $rules;
     }
 }

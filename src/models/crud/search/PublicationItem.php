@@ -34,7 +34,7 @@ class PublicationItem extends PublicationItemModel
     {
         return [
             [['id'], 'integer'],
-            [['release_date', 'title', 'status', 'category_id'], 'safe'],
+            [['release_date', 'title', 'status', 'category_id', 'ref_lang'], 'safe'],
         ];
     }
 
@@ -142,11 +142,14 @@ class PublicationItem extends PublicationItemModel
         }
 
         $query->andWhere(['OR',
-                [PublicationItemModel::tableName() . '.access_domain' => \Yii::$app->language],
-                isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationItemModel::tableName() . '.access_domain' => \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
+                [PublicationItemModel::tableName() . '.ref_lang' => $this->ref_lang ?? \Yii::$app->language],
+                isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationItemModel::tableName() . '.ref_lang' => $this->ref_lang ?? \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
         );
 
+        $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
+
         $query->orderBy($orderBy);
+
 
         return $dataProvider;
     }

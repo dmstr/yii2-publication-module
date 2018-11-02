@@ -22,23 +22,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1>
         <?php echo Yii::t('publication', 'Publication Category') ?>
         <small>
-                        <?php echo Html::encode($model->label) ?>
+            <?php echo Html::encode($model->label) ?>
         </small>
     </h1>
 
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?php echo             Html::a(
-	Yii::t('publication', 'Cancel'),
-	\yii\helpers\Url::previous(),
-	['class' => 'btn btn-default']) ?>
+            <?php echo Html::a(
+                Yii::t('publication', 'Cancel'),
+                \yii\helpers\Url::previous(),
+                ['class' => 'btn btn-default']) ?>
         </div>
     </div>
 
-    <hr />
+    <hr/>
 
     <?php echo $this->render('_form', [
-		'model' => $model,
-	]); ?>
+        'model' => $model,
+    ]); ?>
 
 </div>

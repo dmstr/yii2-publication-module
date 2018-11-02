@@ -35,25 +35,6 @@ class DefaultController extends Controller
         return $this->render('index', ['categoryId' => $param, 'limit' => $limit]);
     }
 
-    /**
-     * @param $itemId
-     * @return string
-     * @throws HttpException
-     */
-    public function actionDetail($itemId)
-    {
-        $item = PublicationItem::find()->andWhere(['app_dmstr_publication_item.id' => $itemId])->published()->one();
-
-        if ($item === null) {
-            throw new HttpException(404, \Yii::t('publication', 'Publication item not found'));
-        }
-
-        $item->setScenario('crud');
-
-        return $this->render('detail', ['item' => $item]);
-
-    }
-
     private function checkParam($param)
     {
         if (!\is_array($param)) {
@@ -71,5 +52,24 @@ class DefaultController extends Controller
             }
         }
         return true;
+    }
+
+    /**
+     * @param $itemId
+     * @return string
+     * @throws HttpException
+     */
+    public function actionDetail($itemId)
+    {
+        $item = PublicationItem::find()->andWhere(['app_dmstr_publication_item.id' => $itemId])->published()->one();
+
+        if ($item === null) {
+            throw new HttpException(404, \Yii::t('publication', 'Publication item not found'));
+        }
+
+        $item->setScenario('crud');
+
+        return $this->render('detail', ['item' => $item]);
+
     }
 }

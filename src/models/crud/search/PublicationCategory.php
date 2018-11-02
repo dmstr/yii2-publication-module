@@ -26,7 +26,8 @@ class PublicationCategory extends PublicationCategoryModel
     public function rules()
     {
         return [
-            [['id', 'content_widget_template_id', 'teaser_widget_template_id', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'content_widget_template_id', 'teaser_widget_template_id'], 'integer'],
+            ['ref_lang','safe']
         ];
     }
 
@@ -53,7 +54,6 @@ class PublicationCategory extends PublicationCategoryModel
     public function search($params)
     {
         $query = PublicationCategoryModel::find();
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -61,8 +61,6 @@ class PublicationCategory extends PublicationCategoryModel
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -70,9 +68,10 @@ class PublicationCategory extends PublicationCategoryModel
             'id' => $this->id,
             'content_widget_template_id' => $this->content_widget_template_id,
             'teaser_widget_template_id' => $this->teaser_widget_template_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
+
+        $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
+
 
         return $dataProvider;
     }

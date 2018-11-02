@@ -8,18 +8,19 @@
  */
 
 use insolita\wgadminlte\SmallBox;
+
 ?>
 
 <div class="row">
     <div class="col-xs-12 col-md-6">
-        <?= Yii::$app->user->can('publication_crud_publication-category_index') ||Yii::$app->user->can('publication_crud_publication-category') ? SmallBox::widget([
+        <?= Yii::$app->user->can('publication_crud_publication-category_index') || Yii::$app->user->can('publication_crud_publication-category') ? SmallBox::widget([
             'head' => Yii::t('publication', 'Categories'),
             'footer' => Yii::t('publication', 'Manage categories'),
             'footer_link' => ['/publication/crud/publication-category/index'],
         ]) : '' ?>
     </div>
     <div class="col-xs-12 col-md-6">
-        <?= Yii::$app->user->can('publication_crud_publication-item_index') ||Yii::$app->user->can('publication_crud_publication-index') ?SmallBox::widget([
+        <?= Yii::$app->user->can('publication_crud_publication-item_index') || Yii::$app->user->can('publication_crud_publication-index') ? SmallBox::widget([
             'head' => Yii::t('publication', 'Items'),
             'footer' => Yii::t('publication', 'Manage items'),
             'footer_link' => ['/publication/crud/publication-item/index'],

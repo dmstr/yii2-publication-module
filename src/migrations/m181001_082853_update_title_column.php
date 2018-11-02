@@ -12,7 +12,7 @@ class m181001_082853_update_title_column extends Migration
      */
     public function safeUp()
     {
-        $this->alterColumn('{{%dmstr_publication_item_translation}}','title','varchar(80) NOT NULL');
+        $this->alterColumn('{{%dmstr_publication_item_translation}}', 'title', 'varchar(80) NOT NULL');
     }
 
     /**
@@ -20,7 +20,7 @@ class m181001_082853_update_title_column extends Migration
      */
     public function safeDown()
     {
-        $this->alterColumn('{{%dmstr_publication_item_translation}}','title','varchar(80) NULL DEFAULT NULL');
+        $this->alterColumn('{{%dmstr_publication_item_translation}}', 'title', 'varchar(80) NULL DEFAULT NULL');
     }
 
 }

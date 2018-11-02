@@ -53,7 +53,7 @@ class Publication extends Widget
 
             $publicationItems = [];
             foreach ($publicationItemsBase as $publicationItemBase) {
-                $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
+                $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
             }
 
             $html = '';
@@ -77,7 +77,7 @@ class Publication extends Widget
 
             $publicationItems = [];
             foreach ($publicationItemsBase as $publicationItemBase) {
-                $publicationItems[] = $publicationItemBase->getPublicationItemTranslations()->published()->one();
+                $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
             }
 
             $html = '';

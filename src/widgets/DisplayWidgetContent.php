@@ -32,7 +32,7 @@ class DisplayWidgetContent extends Widget
     public function run()
     {
         if (!($this->widget instanceof WidgetContent)) {
-            throw new InvalidConfigException(\Yii::t('publication','\$widget must be an instance of hrzg\widget\models\crud\WidgetContent'));
+            throw new InvalidConfigException(\Yii::t('publication', '\$widget must be an instance of hrzg\widget\models\crud\WidgetContent'));
         }
         /** @var WidgetContent $widget */
         $widget = $this->widget;
