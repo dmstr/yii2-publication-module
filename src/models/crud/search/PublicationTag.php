@@ -8,14 +8,14 @@
 
 namespace dmstr\modules\publication\models\crud\search;
 
-use dmstr\modules\publication\models\crud\PublicationItemMeta as PublicationItemMetaModel;
+use dmstr\modules\publication\models\crud\PublicationTag as PublicationTagModel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * PublicationItemMeta represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationItemMeta`.
+ * PublicationTag represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationTag`.
  */
-class PublicationItemMeta extends PublicationItemMetaModel
+class PublicationTag extends PublicationTagModel
 {
 
     /**
@@ -26,8 +26,7 @@ class PublicationItemMeta extends PublicationItemMetaModel
     public function rules()
     {
         return [
-            [['id', 'item_id', 'created_at', 'updated_at'], 'integer'],
-            [['status', 'release_date', 'end_date'], 'safe'],
+            [['id'], 'integer'],
         ];
     }
 
@@ -53,8 +52,7 @@ class PublicationItemMeta extends PublicationItemMetaModel
      */
     public function search($params)
     {
-        $query = PublicationItemMetaModel::find();
-
+        $query = PublicationTagModel::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -62,21 +60,11 @@ class PublicationItemMeta extends PublicationItemMetaModel
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'item_id' => $this->item_id,
-            'release_date' => $this->release_date,
-            'end_date' => $this->end_date,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+//        $query->andFilterWhere(['LIKE', 'name', $this->name]);
 
-            $query->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

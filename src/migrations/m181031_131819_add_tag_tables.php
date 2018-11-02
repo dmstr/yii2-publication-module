@@ -15,6 +15,7 @@ class m181031_131819_add_tag_tables extends Migration
         $this->createTable('{{%dmstr_publication_tag}}',
             [
                 'id' => $this->primaryKey(),
+                'ref_lang' => $this->char(7)->notNull(),
                 'created_at' => $this->integer(),
                 'updated_at' => $this->integer()
             ]);

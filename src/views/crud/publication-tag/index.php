@@ -7,21 +7,22 @@
 
 
 use dmstr\modules\publication\components\PublicationHelper;
-use dmstr\modules\publication\models\crud\PublicationCategory;
+use dmstr\modules\publication\models\crud\PublicationTag;
 use rmrevin\yii\fontawesome\FA;
 use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\DataColumn;
 
 /**
  *
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var dmstr\modules\publication\models\crud\search\PublicationCategory $searchModel
+ * @var dmstr\modules\publication\models\crud\search\PublicationTag $searchModel
  */
-$this->title = Yii::t('publication', 'Publication Categories');
+
+$this->title = Yii::t('publication', 'Publication Tags');
 $this->params['breadcrumbs'][] = $this->title;
 
 if (isset($actionColumnTemplates)) {
@@ -33,12 +34,12 @@ if (isset($actionColumnTemplates)) {
 }
 $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemplateString . '</div>';
 ?>
-<div class="giiant-crud publication-category-index">
+<div class="giiant-crud publication-tag-index">
 
     <?php \yii\widgets\Pjax::begin(['id' => 'pjax-main', 'enableReplaceState' => false, 'linkSelector' => '#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert("yo")}']]) ?>
 
     <h1>
-        <?php echo Yii::t('publication', 'Publication Categories') ?>
+        <?php echo Yii::t('publication', 'Publication Tags') ?>
         <small>
             <?= Yii::t('publication', 'List') ?>
         </small>
@@ -99,41 +100,7 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
             'columns' => [
                 [
                     'class' => DataColumn::class,
-                    'attribute' => 'title',
-                    'value' => function ($model) {
-                        return $model->title;
-                    },
-                    'format' => 'raw',
-                ],
-
-                [
-                    'class' => DataColumn::class,
-                    'attribute' => 'content_widget_template_id',
-                    'value' => function ($model) {
-                        if ($rel = $model->contentWidgetTemplate) {
-                            return Html::a($rel->name, ['/widgets/crud/widget-template/view', 'id' => $rel->id,], ['data-pjax' => 0]);
-                        } else {
-                            return '';
-                        }
-                    },
-                    'format' => 'raw',
-                ],
-
-                [
-                    'class' => DataColumn::class,
-                    'attribute' => 'teaser_widget_template_id',
-                    'value' => function ($model) {
-                        if ($rel = $model->teaserWidgetTemplate) {
-                            return Html::a($rel->name, ['/widgets/crud/widget-template/view', 'id' => $rel->id,], ['data-pjax' => 0]);
-                        } else {
-                            return '';
-                        }
-                    },
-                    'format' => 'raw',
-                ],
-                [
-                    'class' => DataColumn::class,
-                    'attribute' => 'ref_lang',
+                    'attribute' => 'name',
                 ],
                 [
                     'class' => ActionColumn::class,
@@ -148,7 +115,7 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                             ];
                             return Html::a(FA::icon(FA::_EYE), $url, $options);
                         },
-                        'update' => function ($url, PublicationCategory $model) {
+                        'update' => function ($url, PublicationTag $model) {
                             $options = [
                                 'title' => Yii::t('cruds', 'Update'),
                                 'aria-label' => Yii::t('cruds', 'Update'),
@@ -157,7 +124,7 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                             ];
                             return Html::a(FA::icon(FA::_PENCIL), $url, $options);
                         },
-                        'delete' => function ($url, PublicationCategory $model) {
+                        'delete' => function ($url, PublicationTag $model) {
                             $options = [
                                 'title' => Yii::t('publication', 'Delete'),
                                 'aria-label' => Yii::t('publication', 'Delete'),
@@ -166,17 +133,17 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                                 'class' => 'btn-danger'
                             ];
                             if (PublicationHelper::checkModelAccess($model)) {
-                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication category?');
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication tag?');
                                 return Html::a(FA::icon(FA::_TRASH_O), ['delete-base-model', 'id' => $model->id], $options);
                             }
                             if ($model->hasMethod('getTranslations') && $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
-                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication category translation?');
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication tag translation?');
                                 return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
                             }
                             return '';
                         }
                     ],
-                    'urlCreator' => function ($action, PublicationCategory $model, $key) {
+                    'urlCreator' => function ($action, PublicationTag $model, $key) {
                         $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
                         $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
                         return Url::toRoute($params);

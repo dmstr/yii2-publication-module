@@ -8,14 +8,14 @@
 
 namespace dmstr\modules\publication\models\crud\search;
 
-use dmstr\modules\publication\models\crud\PublicationItemMeta as PublicationItemMetaModel;
+use dmstr\modules\publication\models\crud\PublicationTagTranslation as PublicationTagTranslationModel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * PublicationItemMeta represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationItemMeta`.
+ * PublicationItemTranslation represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationItemTranslation`.
  */
-class PublicationItemMeta extends PublicationItemMetaModel
+class PublicationTagTranslation extends PublicationTagTranslationModel
 {
 
     /**
@@ -26,8 +26,8 @@ class PublicationItemMeta extends PublicationItemMetaModel
     public function rules()
     {
         return [
-            [['id', 'item_id', 'created_at', 'updated_at'], 'integer'],
-            [['status', 'release_date', 'end_date'], 'safe'],
+            [['id', 'tag_id', 'created_at', 'updated_at'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -53,7 +53,7 @@ class PublicationItemMeta extends PublicationItemMetaModel
      */
     public function search($params)
     {
-        $query = PublicationItemMetaModel::find();
+        $query = PublicationTagTranslationModel::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -70,13 +70,11 @@ class PublicationItemMeta extends PublicationItemMetaModel
         $query->andFilterWhere([
             'id' => $this->id,
             'item_id' => $this->item_id,
-            'release_date' => $this->release_date,
-            'end_date' => $this->end_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-            $query->andFilterWhere(['like', 'status', $this->status]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

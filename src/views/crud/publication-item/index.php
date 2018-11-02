@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1>
             <?php echo Yii::t('publication', 'Publication Items') ?>
             <small>
-                List
+                <?= Yii::t('publication', 'List') ?>
             </small>
         </h1>
         <div class="clearfix crud-navigation">
@@ -205,11 +205,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'class' => 'btn-danger'
                                 ];
                                 if (PublicationHelper::checkModelAccess($model)) {
-                                    $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication?');
+                                    $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item?');
                                     return Html::a(FA::icon(FA::_TRASH_O), ['delete-base-model', 'id' => $model->id], $options);
                                 }
                                 if ($model->hasMethod('getTranslations') && $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
-                                    $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication translation?');
+                                    $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item translation?');
                                     return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
                                 }
                                 return '';

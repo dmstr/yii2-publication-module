@@ -15,7 +15,7 @@ use yii\widgets\Pjax;
 /**
  *
  * @var yii\web\View $this
- * @var dmstr\modules\publication\models\crud\PublicationCategory $model
+ * @var dmstr\modules\publication\models\crud\PublicationTag $model
  */
 $copyParams = $model->attributes;
 
@@ -36,9 +36,9 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
     <?php endif; ?>
 
     <h1>
-        <?php echo Yii::t('publication', 'Publication Category') ?>
+        <?php echo Yii::t('publication', 'Publication Tag') ?>
         <small>
-            <?php echo Html::encode($model->label) ?>
+            <?php echo Html::encode($model->name) ?>
         </small>
     </h1>
 
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
 
             <?php echo Html::a(
                 FA::icon(FA::_COPY) . ' ' . Yii::t('publication', 'Copy'),
-                ['create', 'id' => $model->id, 'PublicationCategory' => $copyParams],
+                ['create', 'id' => $model->id, 'PublicationTag' => $copyParams],
                 ['class' => 'btn btn-success']) ?>
 
             <?php echo Html::a(
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
 
     <hr/>
 
-    <?php $this->beginBlock('dmstr\modules\publication\models\crud\PublicationCategory'); ?>
+    <?php $this->beginBlock('dmstr\modules\publication\models\crud\PublicationTag'); ?>
 
 
     <?php echo DetailView::widget([
@@ -79,34 +79,12 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
         'attributes' => [
             [
                 'class' => yii\grid\DataColumn::class,
-                'attribute' => 'title',
-                'value' => function ($model) {
-                    return $model->title;
-                },
-                'format' => 'raw',
+                'attribute' => 'name',
             ],
             [
                 'class' => yii\grid\DataColumn::class,
                 'attribute' => 'ref_lang',
-            ],
-            [
-                'format' => 'html',
-                'attribute' => 'content_widget_template_id',
-                'value' => ($model->contentWidgetTemplate ?
-                    Html::a(FA::icon(FA::_LIST), ['/widgets/crud/widget-template/index']) . ' ' .
-                    Html::a(FA::icon(FA::_CHEVRON_RIGHT) . ' ' . $model->contentWidgetTemplate->name, ['/widgets/crud/widget-template/view', 'id' => $model->contentWidgetTemplate->id,])
-                    : '<span class="label label-warning">?</span>'),
-
-            ],
-
-            [
-                'format' => 'html',
-                'attribute' => 'teaser_widget_template_id',
-                'value' => ($model->teaserWidgetTemplate ?
-                    Html::a(FA::icon(FA::_LIST), ['/widgets/crud/widget-template/index']) . ' ' .
-                    Html::a(FA::icon(FA::_CHEVRON_RIGHT) . ' ' . $model->teaserWidgetTemplate->name, ['/widgets/crud/widget-template/view', 'id' => $model->teaserWidgetTemplate->id,])
-                    : '<span class="label label-warning">?</span>'),
-            ],
+            ]
         ],
     ]); ?>
 
@@ -217,7 +195,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
             'items' => [
                 [
                     'label' => '<b class=""># ' . Html::encode($model->id) . '</b>',
-                    'content' => $this->blocks['dmstr\modules\publication\models\crud\PublicationCategory'],
+                    'content' => $this->blocks['dmstr\modules\publication\models\crud\PublicationTag'],
                     'active' => true,
                 ],
                 [

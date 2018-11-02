@@ -33,7 +33,6 @@ class Index extends Action
         Url::remember();
         $searchModel = new $this->searchModel;
 
-
         return $this->controller->render($this->id, [
             'dataProvider' => $searchModel->search(\Yii::$app->request->get()),
             'searchModel' => $searchModel,

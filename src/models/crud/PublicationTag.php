@@ -10,6 +10,7 @@
 namespace dmstr\modules\publication\models\crud;
 
 
+use dmstr\modules\publication\models\crud\query\PublicationTagQuery;
 use dosamigos\translateable\TranslateableBehavior;
 use yii\behaviors\TimestampBehavior;
 
@@ -52,6 +53,15 @@ class PublicationTag extends ActiveRecord
         return $behaviors;
     }
 
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['crud'] = [
+            'name'
+        ];
+        return $scenarios;
+    }
+
     /**
      * @return array
      */
@@ -75,6 +85,15 @@ class PublicationTag extends ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(PublicationItem::class, ['id' => 'item_id'])->viaTable('{{%dmstr_publication_tag_item}}', ['item_id' => 'id']);
+        return $this->hasMany(PublicationItem::class, ['id' => 'item_id'])->viaTable('{{%dmstr_publication_tag_x_item}}', ['item_id' => 'id']);
+    }
+
+    /**
+     * @inheritdoc
+     * @return PublicationTagQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PublicationTagQuery(get_called_class());
     }
 }

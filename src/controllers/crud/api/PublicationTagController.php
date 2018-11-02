@@ -9,14 +9,14 @@
 namespace dmstr\modules\publication\controllers\crud\api;
 
 /**
- * This is the class for REST controller "PublicationItemController".
+ * This is the class for REST controller "PublicationTagController".
  */
 
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
-class PublicationItemController extends BaseController
+class PublicationTagController extends BaseController
 {
-    public $modelClass = 'dmstr\modules\publication\models\crud\PublicationItem';
+    public $modelClass = 'dmstr\modules\publication\models\crud\PublicationTag';
 
 }
