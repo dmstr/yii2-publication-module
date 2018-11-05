@@ -12,8 +12,9 @@ use yii\web\HttpException;
 class DefaultController extends Controller
 {
     /**
-     * @param $categoryId
      * @return string
+     * @throws BadRequestHttpException
+     * @throws InvalidConfigException
      */
     public function actionIndex()
     {
@@ -32,7 +33,7 @@ class DefaultController extends Controller
             throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param limit'));
         }
 
-        return $this->render('index', ['categoryId' => $param, 'limit' => $limit]);
+        return $this->render($this->action->id, ['categoryId' => $param, 'limit' => $limit]);
     }
 
     private function checkParam($param)
@@ -61,7 +62,7 @@ class DefaultController extends Controller
      */
     public function actionDetail($itemId)
     {
-        $item = PublicationItem::find()->andWhere(['app_dmstr_publication_item.id' => $itemId])->published()->one();
+        $item = PublicationItem::find()->andWhere([PublicationItem::tableName() . '.id' => $itemId])->published()->one();
 
         if ($item === null) {
             throw new HttpException(404, \Yii::t('publication', 'Publication item not found'));
@@ -69,7 +70,7 @@ class DefaultController extends Controller
 
         $item->setScenario('crud');
 
-        return $this->render('detail', ['item' => $item]);
+        return $this->render($this->action->id, ['item' => $item]);
 
     }
 }

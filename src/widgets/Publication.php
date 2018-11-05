@@ -12,9 +12,6 @@ namespace dmstr\modules\publication\widgets;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
-use yii\base\Widget;
-use yii\helpers\Html;
-use yii\helpers\Json;
 
 
 /**
@@ -23,16 +20,12 @@ use yii\helpers\Json;
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  *
  * @property int categoryId
- * @property bool teaser
- * @property int limit
  * @property PublicationItem item
  */
-class Publication extends Widget
+class Publication extends BasePublication
 {
     public $categoryId;
-    public $teaser = true;
     public $item;
-    public $limit;
 
 
     /**
@@ -88,38 +81,6 @@ class Publication extends Widget
         }
         return "<div class='publication-widget publication-item-index'>" . implode(PHP_EOL, $widgets) . '</div>';
 
-    }
-
-    /**
-     * @param PublicationItem|PublicationItemTranslation $publicationItem
-     * @param PublicationCategory $publicationCategory
-     * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function renderHtmlByPublicationItem($publicationItem, $publicationCategory)
-    {
-        if ($this->teaser) {
-            $properties = Json::decode($publicationItem->teaser_widget_json);
-            // allow usage of content variables in teaser
-            $properties['content'] = Json::decode($publicationItem->content_widget_json);
-        } else {
-            $properties = Json::decode($publicationItem->content_widget_json);
-        }
-
-        $properties['model'] = $publicationItem instanceof PublicationItemTranslation ? $publicationItem->item : $publicationItem;
-
-        $publicationWidget = '';
-
-        $publicationWidget .= $publicationCategory->render((array)$properties, $this->teaser);
-
-        if ($this->teaser) {
-            $publicationWidget = Html::a($publicationWidget, ['/publication/default/detail', 'itemId' => $publicationItem->id], ['class' => 'publication-detail-link']);
-        }
-
-        return $publicationWidget;
     }
 
 }

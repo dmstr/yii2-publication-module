@@ -14,6 +14,8 @@ use yii\web\HttpException;
  * @property string teaser_widget_json
  * @property string content_widget_json
  * @property PublicationTag[] tags
+ * @property int $contentSchemaByCategoryId
+ * @property int $teaserSchemaByCategoryId
  * @property array tagIds
  */
 class PublicationItem extends BasePublicationItem
@@ -160,33 +162,24 @@ class PublicationItem extends BasePublicationItem
 
     public function setTagIds($ids = [])
     {
-        $this->link('tags',PublicationTag::class);
-//        $transaction = self::getDb()->beginTransaction();
-//
-//        try {
-//            PublicationItemXTag::deleteAll(['item_id' => $this->id]);
-//
-//            foreach ($ids as $tagId) {
-//
-//                /** @var PublicationItemXTag $junction */
-//                $junction = new PublicationItemXTag(['item_id' => $this->id, 'tag_id' => $tagId]);
-//
-//                if (!$junction->save()) {
-//                    Yii::error('Error while saving publication: ' . print_r($junction->errors,1),__CLASS__);
-//                    throw new HttpException(500,Yii::t('publication','Error while saving publication'));
-//                }
-//            }
-//
-//            $transaction->commit();
-//
-//        } catch (\yii\base\Exception $e) {
-//            $transaction->rollBack();
-//        }
-    }
+        $transaction = self::getDb()->beginTransaction();
+        try {
+            PublicationItemXTag::deleteAll(['item_id' => $this->id]);
 
-    public function beforeSave($insert)
-    {
-        return parent::beforeSave($insert);
+            foreach ($ids as $tagId) {
+
+                /** @var PublicationItemXTag $junction */
+                $junction = new PublicationItemXTag(['item_id' => $this->id, 'tag_id' => $tagId]);
+
+                if (!$junction->save()) {
+                    Yii::error('Error while saving publication: ' . print_r($junction->errors, 1), __CLASS__);
+                    throw new HttpException(500, Yii::t('publication', 'Error while saving publication'));
+                }
+            }
+            $transaction->commit();
+        } catch (\yii\base\Exception $e) {
+            $transaction->rollBack();
+        }
     }
 
     public function attributeLabels()
