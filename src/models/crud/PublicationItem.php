@@ -110,7 +110,7 @@ class PublicationItem extends BasePublicationItem
      */
     public function getTags()
     {
-        return $this->hasMany(PublicationTag::class, ['id' => 'tag_id'])->viaTable('{{%dmstr_publication_tag}}', ['accessory_id' => 'id']);
+        return $this->hasMany(PublicationTag::class, ['id' => 'tag_id'])->viaTable('{{%dmstr_publication_tag_x_item}}', ['item_id' => 'id']);
     }
 
     /**

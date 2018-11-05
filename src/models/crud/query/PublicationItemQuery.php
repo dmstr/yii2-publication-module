@@ -21,6 +21,7 @@ class PublicationItemQuery extends \yii\db\ActiveQuery
         $this->andWhere('release_date <= :todaysDate', [':todaysDate' => $todaysDate]);
         $this->andWhere('status = "' . PublicationItem::STATUS_PUBLISHED . '"');
         $this->andWhere('end_date >= :todaysDate OR end_date IS NULL', [':todaysDate' => $todaysDate]);
+        $this->andWhere(['ref_lang' => Yii::$app->language]);
         return $this;
     }
 }

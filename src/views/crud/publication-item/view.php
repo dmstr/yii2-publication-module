@@ -10,6 +10,10 @@ use dmstr\bootstrap\Tabs;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
+use yii\grid\ActionColumn;
+use yii\helpers\Url;
+use dmstr\modules\publication\components\PublicationHelper;
 
 /**
  *
@@ -135,7 +139,98 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
 
 
 
-
+    <?php $this->beginBlock('PublicationTags'); ?>
+    <div style='position: relative'>
+        <div style='position:absolute; right: 0px; top: 0px;'>
+            <?php echo Html::a(
+                FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication','Publication Tags'),
+                ['/publication/crud/publication-tag/index'],
+                ['class' => 'btn text-muted btn-xs']
+            ) ?>
+            <?php echo Html::a(
+                FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New') . ' '  . Yii::t('publication','Publication Tag'),
+                ['/publication/crud/publication-tag/create'],
+                ['class' => 'btn btn-success btn-xs']
+            ); ?>
+        </div>
+    </div>
+    <?php
+    Pjax::begin(['id' => 'pjax-PublicationTags', 'enableReplaceState' => false, 'linkSelector' => '#pjax-PublicationTags ul.pagination a, th a']) ?>
+    <?php echo
+        '<div class="table-responsive">'
+        . \yii\grid\GridView::widget([
+            'layout' => '{summary}{pager}<br/>{items}{pager}',
+            'dataProvider' => new \yii\data\ActiveDataProvider([
+                'query' => $model->getTags(),
+                'pagination' => [
+                    'pageSize' => 20,
+                    'pageParam' => 'page-publication-tags',
+                ]
+            ]),
+            'pager' => [
+                'class' => yii\widgets\LinkPager::class,
+                'firstPageLabel' => Yii::t('publication', 'First'),
+                'lastPageLabel' => Yii::t('publication', 'Last')
+            ],
+            'columns' => [
+                [
+                    'class' => yii\grid\DataColumn::class,
+                    'attribute' => 'name'
+                ],
+                [
+                    'class' => ActionColumn::class,
+                    'template' => '{view} {update} {delete}',
+                    'buttons' => [
+                        'view' => function ($url) {
+                            $options = [
+                                'title' => Yii::t('cruds', 'View'),
+                                'aria-label' => Yii::t('cruds', 'View'),
+                                'data-pjax' => '0',
+                                'class' => 'btn-primary'
+                            ];
+                            return Html::a(FA::icon(FA::_EYE), $url, $options);
+                        },
+                        'update' => function ($url, $model) {
+                            $options = [
+                                'title' => Yii::t('cruds', 'Update'),
+                                'aria-label' => Yii::t('cruds', 'Update'),
+                                'data-pjax' => '0',
+                                'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
+                            ];
+                            return Html::a(FA::icon(FA::_PENCIL), $url, $options);
+                        },
+                        'delete' => function ($url, $model) {
+                            $options = [
+                                'title' => Yii::t('publication', 'Delete'),
+                                'aria-label' => Yii::t('publication', 'Delete'),
+                                'data-method' => 'post',
+                                'data-pjax' => '0',
+                                'class' => 'btn-danger'
+                            ];
+                            if (PublicationHelper::checkModelAccess($model)) {
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item?');
+                                return Html::a(FA::icon(FA::_TRASH_O), ['delete-base-model', 'id' => $model->id], $options);
+                            }
+                            if ($model->hasMethod('getTranslations') && $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item translation?');
+                                return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
+                            }
+                            return '';
+                        }
+                    ],
+                    'urlCreator' => function ($action, $model, $key) {
+                        $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
+                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
+                        return Url::toRoute($params);
+                    },
+                    'contentOptions' => ['nowrap' => 'nowrap']
+                ],
+            ]
+        ])
+        . '</div>'
+    ?>
+    <?php Pjax::end() ?>
+    <?php $this->endBlock() ?>
 
 
 
@@ -148,6 +243,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                     'label' => '<b class=""># ' . Html::encode($model->id) . '</b>',
                     'content' => $this->blocks['dmstr\modules\publication\models\crud\PublicationItem'],
                     'active' => true,
+                ],
+                [
+                    'content' => $this->blocks['PublicationTags'],
+                    'label' => '<small>' . Yii::t('publication', 'Publication Tags') . ' <span class="badge badge-default">' . $model->getTags()->count() . '</span></small>',
+                    'active' => false,
                 ]
             ]
         ]

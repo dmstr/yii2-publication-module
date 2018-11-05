@@ -65,14 +65,9 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                         'encodeLabels' => false,
                         'items' => [
                             [
-                                'url' => ['/widgets/crud/widget-template/index'],
-                                'label' => FA::icon(FA::_CHEVRON_LEFT) . ' ' . Yii::t('publication', 'TWIG Templates'),
-                            ],
-                            [
                                 'url' => ['/publication/crud/publication-item/index'],
-                                'label' => FA::icon(FA::_CHEVRON_RIGHT) . ' ' . Yii::t('publication', 'Publication Item'),
-                            ],
-
+                                'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Publication Item'),
+                            ]
                         ]
                     ],
                     'options' => [

@@ -56,14 +56,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'label' => FA::icon(FA::_ARROW_LEFT) . ' ' . Yii::t('publication', 'Publication Category'),
                                 ],
                                 [
-                                    'url' => ['/publication/crud/publication-item-meta/index'],
-                                    'label' => FA::icon(FA::_ARROW_RIGHT) . ' ' . Yii::t('publication', 'Publication Item Meta'),
+                                    'url' => ['/publication/crud/publication-tag/index'],
+                                    'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Publication Tag'),
                                 ],
-                                [
-                                    'url' => ['/publication/crud/publication-item-translation/index'],
-                                    'label' => FA::icon(FA::_ARROW_RIGHT) . ' ' . Yii::t('publication', 'Publication Item Translation'),
-                                ],
-
                             ]
                         ],
                         'options' => [

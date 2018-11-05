@@ -20,6 +20,7 @@ use yii\behaviors\TimestampBehavior;
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  *
  * @property string name
+ * @property string label
  * @property PublicationTagTranslation[] translations
  * @property PublicationItem[] items
  */
@@ -85,7 +86,7 @@ class PublicationTag extends ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(PublicationItem::class, ['id' => 'item_id'])->viaTable('{{%dmstr_publication_tag_x_item}}', ['item_id' => 'id']);
+        return $this->hasMany(PublicationItem::class, ['id' => 'item_id'])->viaTable('{{%dmstr_publication_tag_x_item}}', ['tag_id' => 'id']);
     }
 
     /**
@@ -94,6 +95,11 @@ class PublicationTag extends ActiveRecord
      */
     public static function find()
     {
-        return new PublicationTagQuery(get_called_class());
+        return new PublicationTagQuery(static::class);
+    }
+
+    public function getLabel()
+    {
+        return $this->name;
     }
 }

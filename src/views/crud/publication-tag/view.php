@@ -11,6 +11,9 @@ use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
+use dmstr\modules\publication\components\PublicationHelper;
+use yii\helpers\Url;
+use yii\grid\ActionColumn;
 
 /**
  *
@@ -19,8 +22,8 @@ use yii\widgets\Pjax;
  */
 $copyParams = $model->attributes;
 
-$this->title = Yii::t('publication', 'Publication Category');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('publication', 'Publication Categories'), 'url' => ['index']];
+$this->title = Yii::t('publication', 'Publication Tag');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('publication', 'Publication Tags'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
 ?>
@@ -104,13 +107,13 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
     <div style='position: relative'>
         <div style='position:absolute; right: 0px; top: 0px;'>
             <?php echo Html::a(
-                FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' Publication Items',
+                FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication','Publication Items'),
                 ['/publication/crud/publication-item/index'],
                 ['class' => 'btn text-muted btn-xs']
             ) ?>
             <?php echo Html::a(
-                FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New') . ' Publication Item',
-                ['/publication/crud/publication-item/create', 'PublicationItem' => ['category_id' => $model->id]],
+                FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New') . ' ' . Yii::t('publication','Publication Item'),
+                ['/publication/crud/publication-item/create'],
                 ['class' => 'btn btn-success btn-xs']
             ); ?>
         </div>
@@ -133,21 +136,6 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 'lastPageLabel' => Yii::t('publication', 'Last')
             ],
             'columns' => [
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update}',
-                    'contentOptions' => ['nowrap' => 'nowrap'],
-                    'urlCreator' => function ($action, $model, $key) {
-                        $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
-                        $params[0] = '/publication/crud/publication-item' . '/' . $action;
-                        $params['PublicationItem'] = ['category_id' => $model->primaryKey()[0]];
-                        return $params;
-                    },
-                    'buttons' => [
-
-                    ],
-                    'controller' => '/publication/crud/publication-item'
-                ],
                 [
                     'class' => yii\grid\DataColumn::class,
                     'attribute' => 'status',
@@ -180,6 +168,54 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                     },
                     'format' => 'raw',
                 ],
+                [
+                    'class' => ActionColumn::class,
+                    'template' => '{view} {update} {delete}',
+                    'buttons' => [
+                        'view' => function ($url) {
+                            $options = [
+                                'title' => Yii::t('cruds', 'View'),
+                                'aria-label' => Yii::t('cruds', 'View'),
+                                'data-pjax' => '0',
+                                'class' => 'btn-primary'
+                            ];
+                            return Html::a(FA::icon(FA::_EYE), $url, $options);
+                        },
+                        'update' => function ($url, $model) {
+                            $options = [
+                                'title' => Yii::t('cruds', 'Update'),
+                                'aria-label' => Yii::t('cruds', 'Update'),
+                                'data-pjax' => '0',
+                                'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
+                            ];
+                            return Html::a(FA::icon(FA::_PENCIL), $url, $options);
+                        },
+                        'delete' => function ($url, $model) {
+                            $options = [
+                                'title' => Yii::t('publication', 'Delete'),
+                                'aria-label' => Yii::t('publication', 'Delete'),
+                                'data-method' => 'post',
+                                'data-pjax' => '0',
+                                'class' => 'btn-danger'
+                            ];
+                            if (PublicationHelper::checkModelAccess($model)) {
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item?');
+                                return Html::a(FA::icon(FA::_TRASH_O), ['delete-base-model', 'id' => $model->id], $options);
+                            }
+                            if ($model->hasMethod('getTranslations') && $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item translation?');
+                                return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
+                            }
+                            return '';
+                        }
+                    ],
+                    'urlCreator' => function ($action, $model, $key) {
+                        $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
+                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
+                        return Url::toRoute($params);
+                    },
+                    'contentOptions' => ['nowrap' => 'nowrap']
+                ],
             ]
         ])
         . '</div>'
@@ -200,7 +236,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 ],
                 [
                     'content' => $this->blocks['PublicationItems'],
-                    'label' => '<small>Publication Items <span class="badge badge-default">' . $model->getItems()->count() . '</span></small>',
+                    'label' => '<small>' . Yii::t('publication','Publication Items') . ' <span class="badge badge-default">' . $model->getItems()->count() . '</span></small>',
                     'active' => false,
                 ],
             ]
