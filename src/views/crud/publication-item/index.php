@@ -53,11 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'items' => [
                                 [
                                     'url' => ['/publication/crud/publication-category/index'],
-                                    'label' => FA::icon(FA::_ARROW_LEFT) . ' ' . Yii::t('publication', 'Publication Category'),
+                                    'label' => FA::icon(FA::_CHEVRON_LEFT) . ' ' . Yii::t('publication', 'Category'),
                                 ],
                                 [
                                     'url' => ['/publication/crud/publication-tag/index'],
-                                    'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Publication Tag'),
+                                    'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Tag'),
                                 ],
                             ]
                         ],

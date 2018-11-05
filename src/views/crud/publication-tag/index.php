@@ -66,7 +66,7 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                         'items' => [
                             [
                                 'url' => ['/publication/crud/publication-item/index'],
-                                'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Publication Item'),
+                                'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Item'),
                             ]
                         ]
                     ],

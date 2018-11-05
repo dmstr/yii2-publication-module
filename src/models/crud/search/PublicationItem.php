@@ -12,6 +12,7 @@ use dmstr\modules\publication\models\crud\PublicationCategoryTranslation;
 use dmstr\modules\publication\models\crud\PublicationItem as PublicationItemModel;
 use dmstr\modules\publication\models\crud\PublicationItemMeta;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
@@ -142,14 +143,15 @@ class PublicationItem extends PublicationItemModel
         }
 
         $query->andWhere(['OR',
-                [PublicationItemModel::tableName() . '.ref_lang' => $this->ref_lang ?? \Yii::$app->language],
-                isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationItemModel::tableName() . '.ref_lang' => $this->ref_lang ?? \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
+                [PublicationItemModel::tableName() . '.ref_lang' => !empty($this->ref_lang) ? $this->ref_lang : \Yii::$app->language],
+                isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationItemModel::tableName() . '.ref_lang' => !empty($this->ref_lang) ? $this->ref_lang : \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
         );
 
-        $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
+        if (!empty($this->ref_lang)) {
+            $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
+        }
 
         $query->orderBy($orderBy);
-
 
         return $dataProvider;
     }

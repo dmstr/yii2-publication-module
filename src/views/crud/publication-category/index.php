@@ -69,7 +69,7 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                             ],
                             [
                                 'url' => ['/publication/crud/publication-item/index'],
-                                'label' => FA::icon(FA::_CHEVRON_RIGHT) . ' ' . Yii::t('publication', 'Publication Item'),
+                                'label' => FA::icon(FA::_CHEVRON_RIGHT) . ' ' . Yii::t('publication', 'Item'),
                             ],
 
                         ]
