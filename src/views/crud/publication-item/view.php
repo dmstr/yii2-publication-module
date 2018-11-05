@@ -171,8 +171,8 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
             },
             'pager' => [
                 'class' => yii\widgets\LinkPager::class,
-                'firstPageLabel' => Yii::t('publication', 'First'),
-                'lastPageLabel' => Yii::t('publication', 'Last')
+                'firstPageLabel' => FA::icon(FA::_CHEVRON_LEFT),
+                'lastPageLabel' => FA::icon(FA::_CHEVRON_RIGHT),
             ],
             'columns' => [
                 [

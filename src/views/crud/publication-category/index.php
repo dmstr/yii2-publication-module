@@ -84,8 +84,8 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
             'dataProvider' => $dataProvider,
             'pager' => [
                 'class' => yii\widgets\LinkPager::class,
-                'firstPageLabel' => Yii::t('publication', 'First'),
-                'lastPageLabel' => Yii::t('publication', 'Last'),
+                'firstPageLabel' => FA::icon(FA::_CHEVRON_LEFT),
+                'lastPageLabel' => FA::icon(FA::_CHEVRON_RIGHT),
             ],
             'filterModel' => $searchModel,
             'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],

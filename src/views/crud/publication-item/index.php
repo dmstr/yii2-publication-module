@@ -78,8 +78,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $dataProvider,
                 'pager' => [
                     'class' => LinkPager::class,
-                    'firstPageLabel' => FA::icon(FA::_CHEVRON_RIGHT),
-                    'lastPageLabel' => FA::icon(FA::_CHEVRON_LEFT),
+                    'firstPageLabel' => FA::icon(FA::_CHEVRON_LEFT),
+                    'lastPageLabel' => FA::icon(FA::_CHEVRON_RIGHT),
                 ],
                 'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-striped table-hover'],
