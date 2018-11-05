@@ -8,6 +8,7 @@
 
 namespace dmstr\modules\publication\controllers\crud;
 
+use dmstr\modules\publication\controllers\crud\actions\DeleteAttachment;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
 
@@ -42,5 +43,12 @@ class PublicationItemController extends BaseController
         $script = "window.CKCONFIG = {$ckeditorConfiguration};";
         \Yii::$app->view->registerJs($script, \yii\web\View::POS_HEAD);
         return parent::beforeAction($action);
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['delete-tag-attachment'] = DeleteAttachment::class;
+        return $actions;
     }
 }

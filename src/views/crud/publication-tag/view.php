@@ -119,7 +119,9 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
         </div>
     </div>
     <?php Pjax::begin(['id' => 'pjax-PublicationItems', 'enableReplaceState' => false, 'linkSelector' => '#pjax-PublicationItems ul.pagination a, th a']) ?>
-    <?php echo
+    <?php
+    $tagModel = $model;
+    echo
         '<div class="table-responsive">'
         . \yii\grid\GridView::widget([
             'layout' => '{summary}{pager}<br/>{items}{pager}',
@@ -190,7 +192,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                             ];
                             return Html::a(FA::icon(FA::_PENCIL), $url, $options);
                         },
-                        'delete' => function ($url, $model) {
+                        'delete' => function ($url, $model) use ($tagModel) {
                             $options = [
                                 'title' => Yii::t('publication', 'Delete'),
                                 'aria-label' => Yii::t('publication', 'Delete'),
@@ -198,13 +200,9 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                                 'data-pjax' => '0',
                                 'class' => 'btn-danger'
                             ];
-                            if (PublicationHelper::checkModelAccess($model)) {
-                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item?');
-                                return Html::a(FA::icon(FA::_TRASH_O), ['delete-base-model', 'id' => $model->id], $options);
-                            }
-                            if ($model->hasMethod('getTranslations') && $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
-                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item translation?');
-                                return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
+                            if ($model->ref_lang === Yii::$app->language) {
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this attachment?');
+                                return Html::a(FA::icon(FA::_UNLINK), ['delete-item-attachment', 'tagId' => $tagModel->id,'itemId' => $model->id], $options);
                             }
                             return '';
                         }
