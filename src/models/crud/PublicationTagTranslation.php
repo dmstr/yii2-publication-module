@@ -35,6 +35,15 @@ class PublicationTagTranslation extends ActiveRecord
 
     /**
      * @inheritdoc
+     * @return PublicationTagTranslationQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PublicationTagTranslationQuery(get_called_class());
+    }
+
+    /**
+     * @inheritdoc
      */
     public function behaviors()
     {
@@ -74,15 +83,6 @@ class PublicationTagTranslation extends ActiveRecord
     public function getTag()
     {
         return $this->hasOne(PublicationTag::class, ['id' => 'tag_id']);
-    }
-
-    /**
-     * @inheritdoc
-     * @return PublicationTagTranslationQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new PublicationTagTranslationQuery(get_called_class());
     }
 
 }

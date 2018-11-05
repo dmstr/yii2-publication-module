@@ -1,10 +1,4 @@
 <?php
-/**
- * /app/src/../runtime/giiant/fcd70a9bfdf8de75128d795dfc948a74
- *
- * @package default
- */
-
 
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Html;

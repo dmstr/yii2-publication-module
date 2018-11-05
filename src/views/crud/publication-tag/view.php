@@ -1,19 +1,12 @@
 <?php
-/**
- * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee
- *
- * @package default
- */
-
 
 use dmstr\bootstrap\Tabs;
 use rmrevin\yii\fontawesome\FA;
+use yii\grid\ActionColumn;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
-use dmstr\modules\publication\components\PublicationHelper;
-use yii\helpers\Url;
-use yii\grid\ActionColumn;
 
 /**
  *
@@ -107,12 +100,12 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
     <div style='position: relative'>
         <div style='position:absolute; right: 0px; top: 0px;'>
             <?php echo Html::a(
-                FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication','Publication Items'),
+                FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication', 'Publication Items'),
                 ['/publication/crud/publication-item/index'],
                 ['class' => 'btn text-muted btn-xs']
             ) ?>
             <?php echo Html::a(
-                FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New') . ' ' . Yii::t('publication','Publication Item'),
+                FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New') . ' ' . Yii::t('publication', 'Publication Item'),
                 ['/publication/crud/publication-item/create'],
                 ['class' => 'btn btn-success btn-xs']
             ); ?>
@@ -202,7 +195,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                             ];
                             if ($model->ref_lang === Yii::$app->language) {
                                 $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this attachment?');
-                                return Html::a(FA::icon(FA::_UNLINK), ['delete-item-attachment', 'tagId' => $tagModel->id,'itemId' => $model->id], $options);
+                                return Html::a(FA::icon(FA::_UNLINK), ['delete-item-attachment', 'tagId' => $tagModel->id, 'itemId' => $model->id], $options);
                             }
                             return '';
                         }
@@ -234,7 +227,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 ],
                 [
                     'content' => $this->blocks['PublicationItems'],
-                    'label' => '<small>' . Yii::t('publication','Publication Items') . ' <span class="badge badge-default">' . $model->getItems()->count() . '</span></small>',
+                    'label' => '<small>' . Yii::t('publication', 'Publication Items') . ' <span class="badge badge-default">' . $model->getItems()->count() . '</span></small>',
                     'active' => false,
                 ],
             ]

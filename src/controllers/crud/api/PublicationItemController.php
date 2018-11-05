@@ -1,22 +1,14 @@
 <?php
-/**
- * /app/src/../runtime/giiant/f197ab8e55d1e29a2dea883e84983544
- *
- * @package default
- */
-
 
 namespace dmstr\modules\publication\controllers\crud\api;
+
+use dmstr\modules\publication\models\crud\PublicationItem;
 
 /**
  * This is the class for REST controller "PublicationItemController".
  */
-
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
-
 class PublicationItemController extends BaseController
 {
-    public $modelClass = 'dmstr\modules\publication\models\crud\PublicationItem';
+    public $modelClass = PublicationItem::class;
 
 }

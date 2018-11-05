@@ -1,10 +1,4 @@
 <?php
-/**
- * /app/src/../runtime/giiant/fccccf4deb34aed738291a9c38e87215
- *
- * @package default
- */
-
 
 use yii\helpers\Html;
 

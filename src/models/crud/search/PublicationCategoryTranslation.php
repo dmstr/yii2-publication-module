@@ -1,10 +1,4 @@
 <?php
-/**
- * /app/src/../runtime/giiant/e0080b9d6ffa35acb85312bf99a557f2
- *
- * @package default
- */
-
 
 namespace dmstr\modules\publication\models\crud\search;
 

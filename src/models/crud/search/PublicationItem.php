@@ -1,10 +1,4 @@
 <?php
-/**
- * /app/src/../runtime/giiant/e0080b9d6ffa35acb85312bf99a557f2
- *
- * @package default
- */
-
 
 namespace dmstr\modules\publication\models\crud\search;
 
@@ -12,7 +6,6 @@ use dmstr\modules\publication\models\crud\PublicationCategoryTranslation;
 use dmstr\modules\publication\models\crud\PublicationItem as PublicationItemModel;
 use dmstr\modules\publication\models\crud\PublicationItemMeta;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;

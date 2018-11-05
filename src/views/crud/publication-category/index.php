@@ -1,19 +1,13 @@
 <?php
-/**
- * /app/src/../runtime/giiant/a0a12d1bd32eaeeb8b2cff56d511aa22
- *
- * @package default
- */
-
 
 use dmstr\modules\publication\components\PublicationHelper;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use rmrevin\yii\fontawesome\FA;
 use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\DataColumn;
 
 /**
  *

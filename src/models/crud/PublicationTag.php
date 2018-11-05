@@ -36,6 +36,15 @@ class PublicationTag extends ActiveRecord
 
     /**
      * @inheritdoc
+     * @return PublicationTagQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PublicationTagQuery(static::class);
+    }
+
+    /**
+     * @inheritdoc
      */
     public function behaviors()
     {
@@ -87,15 +96,6 @@ class PublicationTag extends ActiveRecord
     public function getItems()
     {
         return $this->hasMany(PublicationItem::class, ['id' => 'item_id'])->viaTable('{{%dmstr_publication_tag_x_item}}', ['tag_id' => 'id']);
-    }
-
-    /**
-     * @inheritdoc
-     * @return PublicationTagQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new PublicationTagQuery(static::class);
     }
 
     public function getLabel()

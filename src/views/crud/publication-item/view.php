@@ -1,19 +1,12 @@
 <?php
-/**
- * /app/src/../runtime/giiant/d4b4964a63cc95065fa0ae19074007ee
- *
- * @package default
- */
-
 
 use dmstr\bootstrap\Tabs;
 use rmrevin\yii\fontawesome\FA;
+use yii\grid\ActionColumn;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
-use yii\grid\ActionColumn;
-use yii\helpers\Url;
-use dmstr\modules\publication\components\PublicationHelper;
 
 /**
  *
@@ -143,12 +136,12 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
     <div style='position: relative'>
         <div style='position:absolute; right: 0px; top: 0px;'>
             <?php echo Html::a(
-                FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication','Publication Tags'),
+                FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication', 'Publication Tags'),
                 ['/publication/crud/publication-tag/index'],
                 ['class' => 'btn text-muted btn-xs']
             ) ?>
             <?php echo Html::a(
-                FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New') . ' '  . Yii::t('publication','Publication Tag'),
+                FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New') . ' ' . Yii::t('publication', 'Publication Tag'),
                 ['/publication/crud/publication-tag/create'],
                 ['class' => 'btn btn-success btn-xs']
             ); ?>
@@ -211,7 +204,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                             ];
                             if ($itemModel->ref_lang === Yii::$app->language) {
                                 $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this attachment?');
-                                return Html::a(FA::icon(FA::_UNLINK), ['delete-tag-attachment', 'tagId' => $model->id,'itemId' => $itemModel->id], $options);
+                                return Html::a(FA::icon(FA::_UNLINK), ['delete-tag-attachment', 'tagId' => $model->id, 'itemId' => $itemModel->id], $options);
                             }
                             return '';
                         }

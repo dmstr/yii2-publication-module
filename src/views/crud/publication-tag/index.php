@@ -1,10 +1,4 @@
 <?php
-/**
- * /app/src/../runtime/giiant/a0a12d1bd32eaeeb8b2cff56d511aa22
- *
- * @package default
- */
-
 
 use dmstr\modules\publication\components\PublicationHelper;
 use dmstr\modules\publication\models\crud\PublicationTag;

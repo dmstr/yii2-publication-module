@@ -37,7 +37,7 @@ class DeleteAttachment extends BaseAction
             $transaction = ActiveRecord::getDb()->beginTransaction();
             try {
                 // no null pointer exception because if also checks if model not null
-                $attachment = PublicationItemXTag::findOne(['tag_id' => $tagId,'item_id' => $itemId]);
+                $attachment = PublicationItemXTag::findOne(['tag_id' => $tagId, 'item_id' => $itemId]);
                 if ($attachment !== null) {
                     $attachment->delete();
                     $transaction->commit();
