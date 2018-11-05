@@ -132,12 +132,12 @@ use yii\helpers\Html;
         </div>
     </div>
 
-    <?php if ($model->ref_lang === Yii::$app->language): ?>
     <div class="panel panel-success">
         <div class="panel-heading">
             <h3 class="panel-title"><?= Yii::t('publication', 'Additions') ?></h3>
         </div>
         <div class="panel-body">
+            <?php if ($model->ref_lang === Yii::$app->language || $model->isNewRecord): ?>
             <?php echo $form->field($model, 'tagIds')->widget(\kartik\select2\Select2::class, [
                 'name' => 'tagIds',
                 'attribute' => 'tagIds',
@@ -150,11 +150,15 @@ use yii\helpers\Html;
                     'placeholder' => Yii::t('publication', 'Select tags'),
                 ]
             ]); ?>
-
+            <?php else: ?>
+            <p class="text-muted"><?=Yii::t('publication','Attached tags for this item. Click to see further informations.')?></p>
+                <?php foreach ($model->tags as $tag) {
+                   echo ' ' . Html::a($tag->label,['/publication/crud/publication-tag/view','id' => $tag->id],['class' => 'label label-primary','target' => '_blank']);
+                }?>
+            <?php endif; ?>
         </div>
     </div>
 
-    <?php endif; ?>
     <?php echo $form->errorSummary($model); ?>
 
     <?php echo Html::submitButton(
