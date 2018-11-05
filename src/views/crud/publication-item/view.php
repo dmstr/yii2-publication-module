@@ -1,6 +1,7 @@
 <?php
 
 use dmstr\bootstrap\Tabs;
+use dmstr\modules\publication\models\crud\PublicationTag;
 use rmrevin\yii\fontawesome\FA;
 use yii\grid\ActionColumn;
 use yii\helpers\Html;
@@ -162,6 +163,12 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                     'pageParam' => 'page-publication-tags',
                 ]
             ]),
+            'rowOptions' => function (PublicationTag $model) {
+                if ($model->hasMethod('getTranslations')) {
+                    return ['class' => $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() === null ? 'warning' : ''];
+                }
+                return [];
+            },
             'pager' => [
                 'class' => yii\widgets\LinkPager::class,
                 'firstPageLabel' => Yii::t('publication', 'First'),
@@ -178,8 +185,8 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                     'buttons' => [
                         'view' => function ($url) {
                             $options = [
-                                'title' => Yii::t('cruds', 'View'),
-                                'aria-label' => Yii::t('cruds', 'View'),
+                                'title' => Yii::t('publication', 'View'),
+                                'aria-label' => Yii::t('publication', 'View'),
                                 'data-pjax' => '0',
                                 'class' => 'btn-primary'
                             ];
@@ -187,8 +194,8 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                         },
                         'update' => function ($url, $model) {
                             $options = [
-                                'title' => Yii::t('cruds', 'Update'),
-                                'aria-label' => Yii::t('cruds', 'Update'),
+                                'title' => Yii::t('publication', 'Update'),
+                                'aria-label' => Yii::t('publication', 'Update'),
                                 'data-pjax' => '0',
                                 'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
                             ];
@@ -206,7 +213,8 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                                 $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this attachment?');
                                 return Html::a(FA::icon(FA::_UNLINK), ['delete-tag-attachment', 'tagId' => $model->id, 'itemId' => $itemModel->id], $options);
                             }
-                            return '';
+                            Yii::$app->controller->view->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
+                            return Html::tag('div',FA::icon(FA::_TRASH_O),['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled','title' => Yii::t('publication','You are not allowed to delete this attachment.')]);
                         }
                     ],
                     'urlCreator' => function ($action, $model, $key) {

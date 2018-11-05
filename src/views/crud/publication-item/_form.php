@@ -64,7 +64,7 @@ use yii\helpers\Html;
                 'attribute' => 'category_id',
                 'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategory::find()->all(), 'id', 'title'),
                 'options' => [
-                    'placeholder' => Yii::t('cruds', 'Type to autocomplete'),
+                    'placeholder' => Yii::t('publication', 'Type to autocomplete'),
                     'multiple' => false,
                     'disabled' => !$model->isNewRecord,
                 ]

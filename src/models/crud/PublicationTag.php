@@ -20,6 +20,7 @@ use yii\behaviors\TimestampBehavior;
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  *
  * @property string name
+ * @property string ref_lang
  * @property string label
  * @property PublicationTagTranslation[] translations
  * @property PublicationItem[] items

@@ -89,7 +89,12 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
             ],
             'filterModel' => $searchModel,
             'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
-            'headerRowOptions' => ['class' => 'x'],
+            'rowOptions' => function (PublicationCategory $model) {
+                if ($model->hasMethod('getTranslations')) {
+                    return ['class' => $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() === null ? 'warning' : ''];
+                }
+                return [];
+            },
             'columns' => [
                 [
                     'class' => DataColumn::class,
@@ -106,9 +111,9 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                     'value' => function ($model) {
                         if ($rel = $model->contentWidgetTemplate) {
                             return Html::a($rel->name, ['/widgets/crud/widget-template/view', 'id' => $rel->id,], ['data-pjax' => 0]);
-                        } else {
-                            return '';
                         }
+
+                        return '';
                     },
                     'format' => 'raw',
                 ],
@@ -119,9 +124,9 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                     'value' => function ($model) {
                         if ($rel = $model->teaserWidgetTemplate) {
                             return Html::a($rel->name, ['/widgets/crud/widget-template/view', 'id' => $rel->id,], ['data-pjax' => 0]);
-                        } else {
-                            return '';
                         }
+
+                        return '';
                     },
                     'format' => 'raw',
                 ],
@@ -135,8 +140,8 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                     'buttons' => [
                         'view' => function ($url) {
                             $options = [
-                                'title' => Yii::t('cruds', 'View'),
-                                'aria-label' => Yii::t('cruds', 'View'),
+                                'title' => Yii::t('publication', 'View'),
+                                'aria-label' => Yii::t('publication', 'View'),
                                 'data-pjax' => '0',
                                 'class' => 'btn-primary'
                             ];
@@ -144,8 +149,8 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                         },
                         'update' => function ($url, PublicationCategory $model) {
                             $options = [
-                                'title' => Yii::t('cruds', 'Update'),
-                                'aria-label' => Yii::t('cruds', 'Update'),
+                                'title' => Yii::t('publication', 'Update'),
+                                'aria-label' => Yii::t('publication', 'Update'),
                                 'data-pjax' => '0',
                                 'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
                             ];
@@ -167,7 +172,8 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                                 $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication category translation?');
                                 return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
                             }
-                            return '';
+                            Yii::$app->controller->view->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
+                            return Html::tag('div',FA::icon(FA::_TRASH_O),['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled','title' => Yii::t('publication','You are not allowed to delete this record.')]);
                         }
                     ],
                     'urlCreator' => function ($action, PublicationCategory $model, $key) {

@@ -1,8 +1,12 @@
 <?php
 
 use dmstr\bootstrap\Tabs;
+use dmstr\modules\publication\components\PublicationHelper;
+use dmstr\modules\publication\models\crud\PublicationItem;
 use rmrevin\yii\fontawesome\FA;
+use yii\grid\ActionColumn;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 
@@ -148,22 +152,13 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 'firstPageLabel' => Yii::t('publication', 'First'),
                 'lastPageLabel' => Yii::t('publication', 'Last')
             ],
+            'rowOptions' => function (PublicationItem $model) {
+                if ($model->hasMethod('getTranslations')) {
+                    return ['class' => $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() === null ? 'warning' : ''];
+                }
+                return [];
+            },
             'columns' => [
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update}',
-                    'contentOptions' => ['nowrap' => 'nowrap'],
-                    'urlCreator' => function ($action, $model, $key) {
-                        $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
-                        $params[0] = '/publication/crud/publication-item' . '/' . $action;
-                        $params['PublicationItem'] = ['category_id' => $model->primaryKey()[0]];
-                        return $params;
-                    },
-                    'buttons' => [
-
-                    ],
-                    'controller' => '/publication/crud/publication-item'
-                ],
                 [
                     'class' => yii\grid\DataColumn::class,
                     'attribute' => 'status',
@@ -195,6 +190,55 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                         return \Yii::$app->formatter->asDatetime($model->end_date);
                     },
                     'format' => 'raw',
+                ],
+                [
+                    'class' => ActionColumn::class,
+                    'template' => '{view} {update} {delete}',
+                    'buttons' => [
+                        'view' => function ($url) {
+                            $options = [
+                                'title' => Yii::t('publication', 'View'),
+                                'aria-label' => Yii::t('publication', 'View'),
+                                'data-pjax' => '0',
+                                'class' => 'btn-primary'
+                            ];
+                            return Html::a(FA::icon(FA::_EYE), $url, $options);
+                        },
+                        'update' => function ($url, PublicationItem $model) {
+                            $options = [
+                                'title' => Yii::t('publication', 'Update'),
+                                'aria-label' => Yii::t('publication', 'Update'),
+                                'data-pjax' => '0',
+                                'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
+                            ];
+                            return Html::a(FA::icon(FA::_PENCIL), $url, $options);
+                        },
+                        'delete' => function ($url, PublicationItem $model) {
+                            $options = [
+                                'title' => Yii::t('publication', 'Delete'),
+                                'aria-label' => Yii::t('publication', 'Delete'),
+                                'data-method' => 'post',
+                                'data-pjax' => '0',
+                                'class' => 'btn-danger'
+                            ];
+                            if (PublicationHelper::checkModelAccess($model)) {
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item?');
+                                return Html::a(FA::icon(FA::_TRASH_O), ['delete-base-model', 'id' => $model->id], $options);
+                            }
+                            if ($model->hasMethod('getTranslations') && $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null) {
+                                $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item translation?');
+                                return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
+                            }
+                            Yii::$app->controller->view->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
+                            return Html::tag('div',FA::icon(FA::_TRASH_O),['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled','title' => Yii::t('publication','You are not allowed to delete this record.')]);
+                        }
+                    ],
+                    'urlCreator' => function ($action, PublicationItem $model, $key) {
+                        $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
+                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
+                        return Url::toRoute($params);
+                    },
+                    'contentOptions' => ['nowrap' => 'nowrap']
                 ],
             ]
         ])

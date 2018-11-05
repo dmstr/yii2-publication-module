@@ -7,6 +7,7 @@ use yii\bootstrap\ButtonDropdown;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
@@ -33,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </h1>
         <div class="clearfix crud-navigation">
             <div class="pull-left">
-                <?php echo Html::a(FA::icon(FA::_PLUS) . ' ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?php echo Html::a(FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New'), ['create'], ['class' => 'btn btn-success']) ?>
             </div>
 
             <div class="pull-right">
@@ -44,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'id' => 'giiant-relations',
                         'encodeLabel' => false,
-                        'label' => FA::icon(FA::_PAPERCLIP) . ' ' . Yii::t('cruds', 'Relations'),
+                        'label' => FA::icon(FA::_PAPERCLIP) . ' ' . Yii::t('publication', 'Relations'),
                         'dropdown' => [
                             'options' => [
                                 'class' => 'dropdown-menu-right'
@@ -171,12 +172,51 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class' => ActionColumn::class,
+                        'template' => '{tags}',
+                        'buttons' => [
+                            'tags' => function ($url, PublicationItem $model, $key) {
+
+                                $items = [];
+
+                                foreach (ArrayHelper::map($model->tags,'id','label') as $id => $label) {
+                                    $items[] = [
+                                            'label' => $label,
+                                        'url' => ['/publication/crud/publication-tag/view','id' => $id]
+                                    ];
+                                }
+
+                                if (!empty($items)) {
+                                    return ButtonDropdown::widget(
+                                        [
+                                            'id' => 'tags-' . $key,
+                                            'encodeLabel' => false,
+                                            'label' => FA::icon(FA::_TAGS) . ' ' . Yii::t('publication', 'Tags ({tagCount})',['tagCount' => \count($items)]),
+                                            'dropdown' => [
+                                                'options' => [
+                                                    'class' => 'dropdown-menu-right'
+                                                ],
+                                                'encodeLabels' => false,
+                                                'items' => $items
+                                            ],
+                                            'options' => [
+                                                'class' => 'btn-default'
+                                            ]
+                                        ]
+                                    );
+                                }
+                                return Html::tag('div',FA::icon(FA::_TAGS) . ' ' . Yii::t('publication', 'No Tags'),['data-toggle' => 'tooltip', 'class' => 'btn btn-default disabled', 'title' => Yii::t('publication', 'No attached tags')]);
+                            }
+                        ],
+                        'contentOptions' => ['nowrap' => 'nowrap']
+                    ],
+                    [
+                        'class' => ActionColumn::class,
                         'template' => '{view} {update} {delete}',
                         'buttons' => [
                             'view' => function ($url) {
                                 $options = [
-                                    'title' => Yii::t('cruds', 'View'),
-                                    'aria-label' => Yii::t('cruds', 'View'),
+                                    'title' => Yii::t('publication', 'View'),
+                                    'aria-label' => Yii::t('publication', 'View'),
                                     'data-pjax' => '0',
                                     'class' => 'btn-primary'
                                 ];
@@ -184,8 +224,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                             'update' => function ($url, PublicationItem $model) {
                                 $options = [
-                                    'title' => Yii::t('cruds', 'Update'),
-                                    'aria-label' => Yii::t('cruds', 'Update'),
+                                    'title' => Yii::t('publication', 'Update'),
+                                    'aria-label' => Yii::t('publication', 'Update'),
                                     'data-pjax' => '0',
                                     'class' => $model->hasMethod('getTranslations') ? $model->getTranslations()->andWhere(['language' => Yii::$app->language])->one() !== null ? 'btn-success' : 'btn-warning' : ''
                                 ];
@@ -207,7 +247,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item translation?');
                                     return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
                                 }
-                                return '';
+                                Yii::$app->controller->view->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
+                                return Html::tag('div', FA::icon(FA::_TRASH_O), ['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled', 'title' => Yii::t('publication', 'You are not allowed to delete this record.')]);
                             }
                         ],
                         'urlCreator' => function ($action, PublicationItem $model, $key) {

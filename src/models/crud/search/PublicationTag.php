@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider;
 
 /**
  * PublicationTag represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationTag`.
+ *
+ *
  */
 class PublicationTag extends PublicationTagModel
 {
@@ -15,12 +17,12 @@ class PublicationTag extends PublicationTagModel
     /**
      *
      * @inheritdoc
-     * @return unknown
+     * @return array
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['name', 'ref_lang'], 'safe'],
         ];
     }
 
@@ -28,7 +30,7 @@ class PublicationTag extends PublicationTagModel
     /**
      *
      * @inheritdoc
-     * @return unknown
+     * @return array
      */
     public function scenarios()
     {
@@ -47,9 +49,13 @@ class PublicationTag extends PublicationTagModel
     public function search($params)
     {
         $query = PublicationTagModel::find();
+        $query->leftJoin(
+            PublicationTagTranslation::tableName(),
+            PublicationTagModel::tableName() . '.id = ' . PublicationTagTranslation::tableName() . '.tag_id');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
 
         $this->load($params);
 
@@ -57,7 +63,14 @@ class PublicationTag extends PublicationTagModel
             return $dataProvider;
         }
 
-//        $query->andFilterWhere(['LIKE', 'name', $this->name]);
+        $query->andWhere(['OR',
+                [PublicationTagModel::tableName() . '.ref_lang' => !empty($this->ref_lang) ? $this->ref_lang : \Yii::$app->language],
+                isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationTagModel::tableName() . '.ref_lang' => !empty($this->ref_lang) ? $this->ref_lang : \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
+        );
+
+        $query->andFilterWhere(['LIKE', PublicationTagTranslation::tableName() . '.name', $this->name]);
+
+        $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
 
 
         return $dataProvider;
