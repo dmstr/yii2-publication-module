@@ -33,12 +33,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
         </span>
     <?php endif; ?>
 
-    <h1>
-        <?php echo Yii::t('publication', 'Publication Category') ?>
+    <h2>
         <small>
             <?php echo Html::encode($model->label) ?>
         </small>
-    </h1>
+    </h2>
 
 
     <div class="clearfix crud-navigation">
@@ -123,6 +122,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
     <?php $this->beginBlock('PublicationItems'); ?>
     <div style='position: relative'>
         <div style='position:absolute; right: 0px; top: 0px;'>
+            <?php if(Yii::$app->user->can('publication_crud_publication-item_index') || Yii::$app->user->can('publication_crud_publication-item')): ?>
             <?php echo Html::a(
                 FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' Publication Items',
                 ['/publication/crud/publication-item/index'],
@@ -133,6 +133,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 ['/publication/crud/publication-item/create', 'PublicationItem' => ['category_id' => $model->id]],
                 ['class' => 'btn btn-success btn-xs']
             ); ?>
+            <?php endif; ?>
         </div>
     </div>
     <?php Pjax::begin(['id' => 'pjax-PublicationItems', 'enableReplaceState' => false, 'linkSelector' => '#pjax-PublicationItems ul.pagination a, th a']) ?>

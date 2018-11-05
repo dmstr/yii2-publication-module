@@ -36,6 +36,31 @@ class DefaultController extends Controller
         return $this->render($this->action->id, ['categoryId' => $param, 'limit' => $limit]);
     }
 
+    /**
+     * @return string
+     * @throws BadRequestHttpException
+     * @throws InvalidConfigException
+     */
+    public function actionTag()
+    {
+        $param = Yii::$app->request->get('tagId');
+        $limit = Yii::$app->request->get('limit');
+
+        if ($param === null) {
+            throw new BadRequestHttpException(Yii::t('publication', 'Tag ID must be set'));
+        }
+
+        if (!$this->checkParam($param)) {
+            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param tag id'));
+        }
+
+        if ($limit !== null && (!is_numeric($limit) || $limit < 1)) {
+            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param limit'));
+        }
+
+        return $this->render($this->action->id, ['tagId' => $param, 'limit' => $limit]);
+    }
+
     private function checkParam($param)
     {
         if (!\is_array($param)) {

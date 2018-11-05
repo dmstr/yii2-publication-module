@@ -13,12 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giiant-crud publication-category-create">
 
-    <h1>
+    <h2>
         <?php echo Yii::t('publication', 'Publication Category') ?>
         <small>
             <?php echo Html::encode($model->label) ?>
         </small>
-    </h1>
+    </h2>
 
     <div class="clearfix crud-navigation">
         <div class="pull-left">

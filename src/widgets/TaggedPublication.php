@@ -27,7 +27,12 @@ class TaggedPublication extends BasePublication
 
     public function run()
     {
-        $itemXTags = PublicationItemXTag::find()->where(['tag_id' => $this->tagId])->all();
+        $query = PublicationItemXTag::find();
+        if ($this->tagId !== 'all') {
+            $query->where(['tag_id' => $this->tagId]);
+        }
+        $itemXTags = $query->all();
+
         $items = PublicationItem::find()->where([PublicationItem::tableName() . '.id' => ArrayHelper::map($itemXTags, 'item_id', 'item_id')])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
 
         $html = '';

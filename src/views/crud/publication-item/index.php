@@ -28,12 +28,6 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
 
         <?php Pjax::begin(['id' => 'pjax-main', 'enableReplaceState' => false, 'linkSelector' => '#pjax-main ul.pagination a, th a']) ?>
 
-        <h1>
-            <?php echo Yii::t('publication', 'Publication Items') ?>
-            <small>
-                <?= Yii::t('publication', 'List') ?>
-            </small>
-        </h1>
         <div class="clearfix crud-navigation">
             <div class="pull-left">
                 <?php echo Html::a(FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New'), ['create'], ['class' => 'btn btn-success']) ?>

@@ -1,0 +1,29 @@
+.publication-item-attach .list-group {
+  position: relative;
+  min-height: 46px;
+  list-style-type: none;
+  .placeholder {
+    min-height: 46px;
+    background-color: #eeeeee;
+  }
+  &:empty {
+    padding-bottom: 1px; // for border
+    border-width: 2px;
+    &:after {
+      position: absolute;
+      left: 15px;
+      top: 12px;
+    }
+  }
+  .tag-item {
+    cursor: grab;
+    &.active {
+      border-radius: 4px;
+    }
+    &:not(.list-group-item-info):not(.list-group-item-success):not(.active):hover {
+      background-color: #eeeeee;
+    }
+  }
+}
+
+

@@ -31,12 +31,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
         </span>
     <?php endif; ?>
 
-    <h1>
-        <?php echo Yii::t('publication', 'Publication Tag') ?>
+    <h2>
         <small>
             <?php echo Html::encode($model->name) ?>
         </small>
-    </h1>
+    </h2>
 
 
     <div class="clearfix crud-navigation">
@@ -46,11 +45,6 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
             <?php echo Html::a(FA::icon(FA::_PENCIL) . ' ' . Yii::t('publication', 'Edit'),
                 ['update', 'id' => $model->id],
                 ['class' => 'btn btn-info']) ?>
-
-            <?php echo Html::a(
-                FA::icon(FA::_COPY) . ' ' . Yii::t('publication', 'Copy'),
-                ['create', 'id' => $model->id, 'PublicationTag' => $copyParams],
-                ['class' => 'btn btn-success']) ?>
 
             <?php echo Html::a(
                 FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New'),
@@ -87,18 +81,19 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
 
     <hr/>
 
-    <?php echo Html::a(FA::icon(FA::_TRASH_O) . ' ' . Yii::t('publication', 'Delete'), ['delete', 'id' => $model->id],
+    <?php echo $model->ref_lang === Yii::$app->language ? Html::a(FA::icon(FA::_TRASH_O) . ' ' . Yii::t('publication', 'Delete'), ['delete', 'id' => $model->id],
         [
             'class' => 'btn btn-danger',
             'data-confirm' => '' . Yii::t('publication', 'Are you sure to delete this item?') . '',
             'data-method' => 'post',
-        ]); ?>
+        ]) : ''; ?>
     <?php $this->endBlock(); ?>
 
 
     <?php $this->beginBlock('PublicationItems'); ?>
     <div style='position: relative'>
         <div style='position:absolute; right: 0px; top: 0px;'>
+            <?php if(Yii::$app->user->can('publication_crud_publication-item_index') || Yii::$app->user->can('publication_crud_publication-item')): ?>
             <?php echo Html::a(
                 FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication', 'Publication Items'),
                 ['/publication/crud/publication-item/index'],
@@ -109,6 +104,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 ['/publication/crud/publication-item/create'],
                 ['class' => 'btn btn-success btn-xs']
             ); ?>
+            <?php endif; ?>
         </div>
     </div>
     <?php Pjax::begin(['id' => 'pjax-PublicationItems', 'enableReplaceState' => false, 'linkSelector' => '#pjax-PublicationItems ul.pagination a, th a']) ?>
@@ -204,7 +200,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                                 return Html::a(FA::icon(FA::_UNLINK), ['delete-item-attachment', 'tagId' => $tagModel->id, 'itemId' => $model->id], $options);
                             }
                             Yii::$app->controller->view->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
-                            return Html::tag('div', FA::icon(FA::_TRASH_O), ['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled', 'title' => Yii::t('publication', 'You are not allowed to delete this attachment.')]);
+                            return Html::tag('div', FA::icon(FA::_UNLINK), ['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled', 'title' => Yii::t('publication', 'You are not allowed to delete this attachment.')]);
                         }
                     ],
                     'urlCreator' => function ($action, $model, $key) {

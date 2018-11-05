@@ -15,12 +15,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'Edit');
 ?>
 <div class="giiant-crud publication-item-update">
 
-    <h1>
-        <?php echo Yii::t('publication', 'Publication Item') ?>
+    <h2>
         <small>
-            <?php echo Html::encode($model->id) ?>
+            <?php echo Html::encode($model->title) ?>
         </small>
-    </h1>
+    </h2>
 
     <div class="crud-navigation">
         <?php echo Html::a(FA::icon(FA::_FILE_O) . ' ' . Yii::t('publication', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>

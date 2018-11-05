@@ -32,12 +32,6 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
 
     <?php \yii\widgets\Pjax::begin(['id' => 'pjax-main', 'enableReplaceState' => false, 'linkSelector' => '#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert("yo")}']]) ?>
 
-    <h1>
-        <?php echo Yii::t('publication', 'Publication Tags') ?>
-        <small>
-            <?= Yii::t('publication', 'List') ?>
-        </small>
-    </h1>
     <div class="clearfix crud-navigation">
         <div class="pull-left">
             <?php echo Html::a(FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New'), ['create'], ['class' => 'btn btn-success']) ?>

@@ -9,29 +9,31 @@
 
 namespace dmstr\modules\publication\assets;
 
-use yii\web\JqueryAsset;
-use dosamigos\ckeditor\CKEditorAsset;
 
+use yii\jui\JuiAsset;
 
 /**
- * Class PublicationItemAssetBundle
+ * Class PublicationAttachAssetBundle
  * @package dmstr\modules\publication\assets
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  */
-class PublicationItemAssetBundle extends \dmstr\web\AssetBundle
+class PublicationAttachAssetBundle extends \dmstr\web\AssetBundle
 {
     /**
      * @var string
      */
-    public $sourcePath = __DIR__ . '/web/item';
+    public $sourcePath = __DIR__ . '/web/attach';
 
 
     /**
      * @var array
      */
     public $js = [
-        'js/publiction-switch-schema.js',
-        'js/init.js'
+        'js/main.js'
+    ];
+
+    public $css = [
+      'css/tags-sortable.less'
     ];
 
 
@@ -39,7 +41,6 @@ class PublicationItemAssetBundle extends \dmstr\web\AssetBundle
      * @var array
      */
     public $depends = [
-        CKEditorAsset::class,
-        JqueryAsset::class
+        JuiAsset::class
     ];
 }

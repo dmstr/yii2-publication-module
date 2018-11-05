@@ -13,12 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giiant-crud publication-item-create">
 
-    <h1>
+    <h2>
         <?php echo Yii::t('publication', 'Publication Item') ?>
         <small>
             <?php echo Html::encode($model->id) ?>
         </small>
-    </h1>
+    </h2>
 
     <div class="clearfix crud-navigation">
         <div class="pull-left">

@@ -132,6 +132,7 @@ use yii\helpers\Html;
         </div>
     </div>
 
+    <?php if ($model->ref_lang === Yii::$app->language): ?>
     <div class="panel panel-success">
         <div class="panel-heading">
             <h3 class="panel-title"><?= Yii::t('publication', 'Additions') ?></h3>
@@ -152,6 +153,8 @@ use yii\helpers\Html;
 
         </div>
     </div>
+
+    <?php endif; ?>
     <?php echo $form->errorSummary($model); ?>
 
     <?php echo Html::submitButton(

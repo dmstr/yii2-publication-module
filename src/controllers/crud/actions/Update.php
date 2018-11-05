@@ -10,15 +10,17 @@
 namespace dmstr\modules\publication\controllers\crud\actions;
 
 
-use yii\helpers\Url;
-
 /**
  * Class Update
  * @package dmstr\modules\publication\controllers\crud\actions
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
+ *
+ * @property string redirectAction
  */
 class Update extends BaseAction
 {
+    public $redirectAction = 'view';
+
     /**
      * @param $id
      * @return string
@@ -29,7 +31,7 @@ class Update extends BaseAction
         $model = $this->findModel($id);
 
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            return $this->controller->redirect(Url::previous());
+            return $this->controller->redirect([$this->redirectAction, 'id' => $model->id]);
         }
         return $this->controller->render($this->id, [
             'model' => $model,

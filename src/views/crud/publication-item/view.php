@@ -32,12 +32,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
         </span>
     <?php endif; ?>
 
-    <h1>
-        <?php echo Yii::t('publication', 'Publication Item') ?>
+    <h2>
         <small>
-            <?php echo Html::encode($model->id) ?>
+            <?php echo Html::encode($model->title) ?>
         </small>
-    </h1>
+    </h2>
 
 
     <div class="clearfix crud-navigation">
@@ -54,6 +53,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New'),
                 ['create'],
                 ['class' => 'btn btn-success']) ?>
+
+            <?php echo $model->ref_lang === Yii::$app->language ? Html::a(
+                FA::icon(FA::_LINK) . ' ' . Yii::t('publication', 'Attach'),
+                ['attach', 'id' => $model->id],
+                ['class' => 'btn btn-primary']) : '' ?>
         </div>
 
         <div class="pull-right">
@@ -136,6 +140,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
     <?php $this->beginBlock('PublicationTags'); ?>
     <div style='position: relative'>
         <div style='position:absolute; right: 0px; top: 0px;'>
+            <?php if (Yii::$app->user->can('publication_crud_publication-tag_index') || Yii::$app->user->can('publication_crud_publication-tag')):?>
             <?php echo Html::a(
                 FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'List All') . ' ' . Yii::t('publication', 'Publication Tags'),
                 ['/publication/crud/publication-tag/index'],
@@ -146,6 +151,12 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 ['/publication/crud/publication-tag/create'],
                 ['class' => 'btn btn-success btn-xs']
             ); ?>
+            <?php echo $model->ref_lang === Yii::$app->language ? Html::a(
+                FA::icon(FA::_LINK) . ' ' . Yii::t('publication', 'Attach') . ' ' . Yii::t('publication', 'Publication Tags'),
+                ['/publication/crud/publication-tag/attach','id' => $model->id],
+                ['class' => 'btn btn-success btn-xs']
+            ) : ''; ?>
+            <?php endif; ?>
         </div>
     </div>
     <?php
@@ -214,12 +225,12 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                                 return Html::a(FA::icon(FA::_UNLINK), ['delete-tag-attachment', 'tagId' => $model->id, 'itemId' => $itemModel->id], $options);
                             }
                             Yii::$app->controller->view->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
-                            return Html::tag('div',FA::icon(FA::_TRASH_O),['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled','title' => Yii::t('publication','You are not allowed to delete this attachment.')]);
+                            return Html::tag('div',FA::icon(FA::_UNLINK),['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled','title' => Yii::t('publication','You are not allowed to delete this attachment.')]);
                         }
                     ],
                     'urlCreator' => function ($action, $model, $key) {
                         $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
-                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
+                        $params[0] = 'crud/publication-tag/' . $action;
                         return Url::toRoute($params);
                     },
                     'contentOptions' => ['nowrap' => 'nowrap']
