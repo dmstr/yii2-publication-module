@@ -42,7 +42,7 @@ class DeleteAttachment extends BaseAction
                     $attachment->delete();
                     $transaction->commit();
                 } else {
-                    \Yii::$app->session->addFlash('warning', Yii::t('bikeadmin', 'Relation between item and tag bet does not exist'));
+                    \Yii::$app->session->addFlash('warning', Yii::t('publication', 'Relation between item and tag bet does not exist'));
                 }
 
             } catch (\Exception $e) {
@@ -50,7 +50,7 @@ class DeleteAttachment extends BaseAction
                 \Yii::$app->session->addFlash('error', $e->errorInfo[2] ?? $e->getMessage());
             }
         } else {
-            \Yii::$app->session->addFlash('warning', Yii::t('bikeadmin', 'You are not allowed to remove the attached item or tag'));
+            \Yii::$app->session->addFlash('warning', Yii::t('publication', 'You are not allowed to remove the attached item or tag'));
         }
 
 

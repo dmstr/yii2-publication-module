@@ -12,8 +12,6 @@ use dmstr\modules\publication\models\crud\PublicationTag;
 use dmstr\modules\publication\models\crud\search\PublicationItem as PublicationItemSearch;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\helpers\VarDumper;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
@@ -125,7 +123,7 @@ class PublicationItemController extends BaseController
         $model = PublicationItem::findOne($id);
 
         if ($model->ref_lang !== Yii::$app->language) {
-            throw new HttpException(500,Yii::t('publication','You are not allowed to do that.'));
+            throw new HttpException(500, Yii::t('publication', 'You are not allowed to do that.'));
         }
 
         if ($model === null) {
@@ -135,7 +133,7 @@ class PublicationItemController extends BaseController
 
         $attachedTags = $model->tags;
 
-        $otherTags = PublicationTag::find()->where(['NOT IN','id',ArrayHelper::map($attachedTags,'id','id')])->all();
+        $otherTags = PublicationTag::find()->where(['NOT IN', 'id', ArrayHelper::map($attachedTags, 'id', 'id')])->all();
 
         PublicationAttachAssetBundle::register($this->view);
 

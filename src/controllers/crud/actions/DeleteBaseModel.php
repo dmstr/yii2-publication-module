@@ -41,7 +41,7 @@ class DeleteBaseModel extends BaseAction
                 \Yii::$app->session->addFlash('error', $e->errorInfo[2] ?? $e->getMessage());
             }
         } else {
-            \Yii::$app->session->addFlash('warning', Yii::t('bikeadmin', 'You are not allowed to delete the base record'));
+            \Yii::$app->session->addFlash('warning', Yii::t('publication', 'You are not allowed to delete the base record'));
         }
 
 

@@ -6,6 +6,9 @@ use rmrevin\yii\fontawesome\FA;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\JsExpression;
+
 
 /**
  *
@@ -137,24 +140,38 @@ use yii\helpers\Html;
             <h3 class="panel-title"><?= Yii::t('publication', 'Additions') ?></h3>
         </div>
         <div class="panel-body">
-            <?php if ($model->ref_lang === Yii::$app->language || $model->isNewRecord): ?>
-            <?php echo $form->field($model, 'tagIds')->widget(\kartik\select2\Select2::class, [
-                'name' => 'tagIds',
-                'attribute' => 'tagIds',
-                'model' => $model,
-                'data' => ArrayHelper::map(PublicationTag::find()->all(), 'id', 'label'),
-                'theme' => Select2::THEME_BOOTSTRAP,
-                'pluginOptions' => [
-                    'allowClear' => true,
-                    'multiple' => true,
-                    'placeholder' => Yii::t('publication', 'Select tags'),
-                ]
-            ]); ?>
+            <?php if ($model->ref_lang === Yii::$app->language || $model->isNewRecord):
+
+
+                echo $form->field($model, 'tagIds')->widget(\kartik\select2\Select2::class, [
+                    'name' => 'tagIds',
+                    'attribute' => 'tagIds',
+                    'model' => $model,
+                    'data' => ArrayHelper::map(PublicationTag::find()->all(), 'id', 'label'),
+                    'theme' => Select2::THEME_BOOTSTRAP,
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'multiple' => true,
+                        'ajax' => [
+                            'url' => Url::to(['/publication/crud/publication-item/get-tags']),
+                            'dataType' => 'json',
+                            'data' => new JsExpression('function(params) { return {q:params.label}; }')
+                        ],
+                        'placeholder' => Yii::t('publication', 'Select tags'),
+                    ]
+                ]);
+
+                if (Yii::$app->user->can('publication_crud_publication-tag_index') || Yii::$app->user->can('publication_crud_publication-tag')) {
+                    echo Html::a(Yii::t('publication', 'Add New Tag'), ['/publication/crud/publication-tag/create'],['class' => 'btn btn-xs btn-success pull-right','target' => '_blank']);
+                    echo Html::tag('span',null,['class' => 'clearfix']);
+                }
+
+                ?>
             <?php else: ?>
-            <p class="text-muted"><?=Yii::t('publication','Attached tags for this item. Click to see further informations.')?></p>
+                <p class="text-muted"><?= Yii::t('publication', 'Attached tags for this item. Click to see further informations.') ?></p>
                 <?php foreach ($model->tags as $tag) {
-                   echo ' ' . Html::a($tag->label,['/publication/crud/publication-tag/view','id' => $tag->id],['class' => 'label label-primary','target' => '_blank']);
-                }?>
+                    echo ' ' . Html::a($tag->label, ['/publication/crud/publication-tag/view', 'id' => $tag->id], ['class' => 'label label-primary', 'target' => '_blank']);
+                } ?>
             <?php endif; ?>
         </div>
     </div>

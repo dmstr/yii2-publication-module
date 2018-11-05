@@ -54,6 +54,6 @@ class Create extends Action
             }
             return $this->controller->render($this->id, ['model' => $model]);
         }
-        throw new HttpException(403, \Yii::t('bikeadmin', 'Access denied'));
+        throw new HttpException(403, \Yii::t('publication', 'Access denied'));
     }
 }

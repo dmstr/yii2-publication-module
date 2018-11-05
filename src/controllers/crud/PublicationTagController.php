@@ -3,6 +3,7 @@
 
 namespace dmstr\modules\publication\controllers\crud;
 
+use dmstr\modules\publication\controllers\crud\actions\CreateAjax;
 use dmstr\modules\publication\controllers\crud\actions\DeleteAttachment;
 use dmstr\modules\publication\models\crud\PublicationTag;
 use dmstr\modules\publication\models\crud\search\PublicationTag as PublicationTagSearch;

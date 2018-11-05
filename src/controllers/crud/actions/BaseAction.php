@@ -10,6 +10,7 @@
 namespace dmstr\modules\publication\controllers\crud\actions;
 
 
+use Yii;
 use yii\base\Action;
 use yii\db\ActiveRecord;
 use yii\web\HttpException;
@@ -36,6 +37,6 @@ class BaseAction extends Action
         if (($model = $this->model::findOne($id)) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('publication','The requested page does not exist.'));
     }
 }
