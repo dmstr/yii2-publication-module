@@ -21,6 +21,8 @@ use yii\widgets\Pjax;
  */
 $this->title = Yii::t('publication', 'Publication Items');
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
+
 ?>
     <div class="publication-item-index">
 
@@ -247,7 +249,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $options['data-confirm'] = Yii::t('publication', 'Are you sure to delete this publication item translation?');
                                     return Html::a(FA::icon(FA::_TRASH_O), $url, $options);
                                 }
-                                Yii::$app->controller->view->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                                 return Html::tag('div', FA::icon(FA::_TRASH_O), ['data-toggle' => 'tooltip', 'class' => 'btn btn-danger disabled', 'title' => Yii::t('publication', 'You are not allowed to delete this record.')]);
                             }
                         ],
