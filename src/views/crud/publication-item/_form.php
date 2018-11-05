@@ -6,8 +6,11 @@
  */
 
 
+use dmstr\modules\publication\models\crud\PublicationTag;
+use kartik\select2\Select2;
 use rmrevin\yii\fontawesome\FA;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
@@ -62,7 +65,7 @@ use yii\helpers\Html;
 
             <!-- attribute category_id -->
             <?php echo $form->field($model, 'category_id')->widget(\kartik\select2\Select2::class, [
-                'name' => 'class_name',
+                'id' => 'categoryId',
                 'model' => $model,
                 'attribute' => 'category_id',
                 'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationCategory::find()->all(), 'id', 'title'),
@@ -131,6 +134,27 @@ use yii\helpers\Html;
             ?>
             <?php echo $form->field($model, 'status')->widget(\kartik\select2\Select2::class, [
                 'data' => [$model::STATUS_PUBLISHED => \Yii::t('crud', 'Published'), $model::STATUS_DRAFT => \Yii::t('crud', 'Draft')]]); ?>
+
+        </div>
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title"><?= Yii::t('publication', 'Additions') ?></h3>
+        </div>
+        <div class="panel-body">
+            <?php echo $form->field($model, 'tagIds')->widget(\kartik\select2\Select2::class, [
+                'name' => 'tagIds',
+                'attribute' => 'tagIds',
+                'model' => $model,
+                'data' => ArrayHelper::map(PublicationTag::find()->all(), 'id', 'label'),
+                'theme' => Select2::THEME_BOOTSTRAP,
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'multiple' => true,
+                    'placeholder' => Yii::t('publication', 'Select tags'),
+                ]
+            ]); ?>
 
         </div>
     </div>

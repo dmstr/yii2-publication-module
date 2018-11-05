@@ -4,6 +4,9 @@ namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\base\PublicationItem as BasePublicationItem;
 use dosamigos\translateable\TranslateableBehavior;
+use Yii;
+use yii\helpers\ArrayHelper;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "{{%dmstr_publication_item}}".
@@ -11,6 +14,7 @@ use dosamigos\translateable\TranslateableBehavior;
  * @property string teaser_widget_json
  * @property string content_widget_json
  * @property PublicationTag[] tags
+ * @property array tagIds
  */
 class PublicationItem extends BasePublicationItem
 {
@@ -91,7 +95,7 @@ class PublicationItem extends BasePublicationItem
     {
         $rules = parent::rules();
         $rules['requiredAttributes'] = [['release_date', 'title', 'ref_lang'], 'required'];
-        $rules['safeAttributes'] = ['end_date', 'safe'];
+        $rules['safeAttributes'] = [['end_date', 'tagIds'], 'safe'];
         $rules['stringAttributes'] = [['content_widget_json', 'teaser_widget_json', 'status'], 'string'];
         $rules['stringLengthAttributes'] = ['title', 'string', 'max' => 255];
         $rules['inRangeAttributes'] = [
@@ -147,6 +151,49 @@ class PublicationItem extends BasePublicationItem
                 $this->teaser_widget_schema = json_decode($teaserWidgetTemplate->json_schema, 1);
             }
         }
+    }
+
+    public function getTagIds()
+    {
+        return ArrayHelper::map($this->tags, 'id', 'id');
+    }
+
+    public function setTagIds($ids = [])
+    {
+        $this->link('tags',PublicationTag::class);
+//        $transaction = self::getDb()->beginTransaction();
+//
+//        try {
+//            PublicationItemXTag::deleteAll(['item_id' => $this->id]);
+//
+//            foreach ($ids as $tagId) {
+//
+//                /** @var PublicationItemXTag $junction */
+//                $junction = new PublicationItemXTag(['item_id' => $this->id, 'tag_id' => $tagId]);
+//
+//                if (!$junction->save()) {
+//                    Yii::error('Error while saving publication: ' . print_r($junction->errors,1),__CLASS__);
+//                    throw new HttpException(500,Yii::t('publication','Error while saving publication'));
+//                }
+//            }
+//
+//            $transaction->commit();
+//
+//        } catch (\yii\base\Exception $e) {
+//            $transaction->rollBack();
+//        }
+    }
+
+    public function beforeSave($insert)
+    {
+        return parent::beforeSave($insert);
+    }
+
+    public function attributeLabels()
+    {
+        $attributeLabels = parent::attributeLabels();
+        $attributeLabels['tagIds'] = Yii::t('publication', 'Tags');
+        return $attributeLabels;
     }
 
 }
