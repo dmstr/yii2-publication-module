@@ -153,8 +153,8 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
             ); ?>
             <?php echo $model->ref_lang === Yii::$app->language ? Html::a(
                 FA::icon(FA::_LINK) . ' ' . Yii::t('publication', 'Attach') . ' ' . Yii::t('publication', 'Publication Tags'),
-                ['/publication/crud/publication-tag/attach','id' => $model->id],
-                ['class' => 'btn btn-success btn-xs']
+                    ['attach', 'id' => $model->id],
+                ['class' => 'btn btn-primary btn-xs']
             ) : ''; ?>
             <?php endif; ?>
         </div>

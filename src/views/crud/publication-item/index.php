@@ -172,35 +172,16 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                         'buttons' => [
                             'tags' => function ($url, PublicationItem $model, $key) {
 
-                                $items = [];
+                                $tags = [];
 
                                 foreach (ArrayHelper::map($model->tags,'id','label') as $id => $label) {
-                                    $items[] = [
-                                            'label' => $label,
-                                        'url' => ['/publication/crud/publication-tag/view','id' => $id]
-                                    ];
+                                    $tags[] =  Html::a($label,['/publication/crud/publication-tag/view','id' => $id],['class' => 'label label-default']);
                                 }
 
-                                if (!empty($items)) {
-                                    return ButtonDropdown::widget(
-                                        [
-                                            'id' => 'tags-' . $key,
-                                            'encodeLabel' => false,
-                                            'label' => FA::icon(FA::_TAGS) . ' ' . Yii::t('publication', 'Tags ({tagCount})',['tagCount' => \count($items)]),
-                                            'dropdown' => [
-                                                'options' => [
-                                                    'class' => 'dropdown-menu-right'
-                                                ],
-                                                'encodeLabels' => false,
-                                                'items' => $items
-                                            ],
-                                            'options' => [
-                                                'class' => 'btn-default'
-                                            ]
-                                        ]
-                                    );
-                                }
-                                return Html::tag('div',FA::icon(FA::_TAGS) . ' ' . Yii::t('publication', 'No Tags'),['data-toggle' => 'tooltip', 'class' => 'btn btn-default disabled', 'title' => Yii::t('publication', 'No attached tags')]);
+                                $tags[] =  Html::a(FA::icon(FA::_PLUS),['/publication/crud/publication-item/attach','id' => $model->id],['class' => 'label label-success']);
+
+                                return implode(' ', $tags);
+
                             }
                         ],
                         'contentOptions' => ['nowrap' => 'nowrap']

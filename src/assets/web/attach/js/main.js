@@ -18,8 +18,9 @@ $(function() {
       });
       $.post($('span[data-url]').data('url'),{tagIds: tagIds,itemId: $('span[data-item-id]').data('item-id')},function(resp) {
         if (resp === '1') {
+          ui.item.addClass('list-group-item-success')
           setTimeout(function() {
-            ui.item.removeClass('list-group-item-success').addClass('list-group-item-info');
+            ui.item.removeClass('list-group-item-success');
           }, 500);
           if (tagIds.length === 0) {
             location.reload();
