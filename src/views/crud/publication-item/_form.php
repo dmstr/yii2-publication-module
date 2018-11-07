@@ -152,11 +152,6 @@ use yii\web\JsExpression;
                     'pluginOptions' => [
                         'allowClear' => true,
                         'multiple' => true,
-                        'ajax' => [
-                            'url' => Url::to(['/publication/crud/publication-item/get-tags']),
-                            'dataType' => 'json',
-                            'data' => new JsExpression('function(params) { return {q:params.label}; }')
-                        ],
                         'placeholder' => Yii::t('publication', 'Select tags'),
                     ]
                 ]);

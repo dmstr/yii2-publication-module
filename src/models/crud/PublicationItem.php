@@ -166,14 +166,16 @@ class PublicationItem extends BasePublicationItem
         try {
             PublicationItemXTag::deleteAll(['item_id' => $this->id]);
 
-            foreach ($ids as $tagId) {
+            if (is_array($ids)) {
+                foreach ($ids as $tagId) {
 
-                /** @var PublicationItemXTag $junction */
-                $junction = new PublicationItemXTag(['item_id' => $this->id, 'tag_id' => $tagId]);
+                    /** @var PublicationItemXTag $junction */
+                    $junction = new PublicationItemXTag(['item_id' => $this->id, 'tag_id' => $tagId]);
 
-                if (!$junction->save()) {
-                    Yii::error('Error while saving publication: ' . print_r($junction->errors, 1), __CLASS__);
-                    throw new HttpException(500, Yii::t('publication', 'Error while saving publication'));
+                    if (!$junction->save()) {
+                        Yii::error('Error while saving publication: ' . print_r($junction->errors, 1), __CLASS__);
+                        throw new HttpException(500, Yii::t('publication', 'Error while saving publication'));
+                    }
                 }
             }
             $transaction->commit();

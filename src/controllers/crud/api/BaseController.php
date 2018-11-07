@@ -10,6 +10,7 @@
 namespace dmstr\modules\publication\controllers\crud\api;
 
 
+use yii\filters\AccessControl;
 use yii\rest\ActiveController;
 
 /**
