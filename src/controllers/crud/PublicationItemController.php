@@ -74,6 +74,8 @@ class PublicationItemController extends BaseController
         $model->setContentSchemaByCategoryId($publicationCategoryId);
         $model->setTeaserSchemaByCategoryId($publicationCategoryId);
 
+        $model->ref_lang = Yii::$app->language;
+
         try {
             if ($model->load($_POST) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
