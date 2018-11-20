@@ -28,6 +28,7 @@ class Publication extends BasePublication
 {
     public $categoryId;
     public $item;
+    public $pagination = false;
 
 
     /**
@@ -43,25 +44,42 @@ class Publication extends BasePublication
         /** @var PublicationCategory $publicationCategory */
 
         if ($this->categoryId === 'all') {
-            /** @var PublicationItem $publicationItemsBase */
-            $publicationItemsQuery = PublicationItem::find()->published()->limit($this->limit);
-            $count = $publicationItemsQuery->count();
-            $pagination = new Pagination(['totalCount' => $count, 'defaultPageSize' => 60, 'pageSizeLimit' => [1, 60]]);
-            $publicationItemsBase = $publicationItemsQuery->orderBy(['release_date' => SORT_DESC])->offset($pagination->offset)->limit($pagination->limit)->all();
+            if ($this->pagination) {
+                /** @var PublicationItem $publicationItemsBase */
+                $publicationItemsQuery = PublicationItem::find()->published()->limit($this->limit);
+                $count = $publicationItemsQuery->count();
+                $pagination = new Pagination(['totalCount' => $count, 'defaultPageSize' => 60, 'pageSizeLimit' => [1, 60]]);
+                $publicationItemsBase = $publicationItemsQuery->orderBy(['release_date' => SORT_DESC])->offset($pagination->offset)->limit($pagination->limit)->all();
 
-            $publicationItems = [];
-            foreach ($publicationItemsBase as $publicationItemBase) {
-                $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
-            }
+                $publicationItems = [];
+                foreach ($publicationItemsBase as $publicationItemBase) {
+                    $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
+                }
 
-            $html = '';
-            /** @var PublicationItemTranslation $publicationItemTranslation */
-            foreach ($publicationItems as $publicationItemTranslation) {
-                $html .= $this->renderHtmlByPublicationItem($publicationItemTranslation, $publicationItemTranslation->item->category);
+                $html = '';
+                /** @var PublicationItemTranslation $publicationItemTranslation */
+                foreach ($publicationItems as $publicationItemTranslation) {
+                    $html .= $this->renderHtmlByPublicationItem($publicationItemTranslation, $publicationItemTranslation->item->category);
+                }
+                return "<div class='publication-widget publication-item-index'>" . $html . '</div>' . '<div class="publication-pagination">' . LinkPager::widget([
+                        'pagination' => $pagination,
+                    ]) . '</div>';
+            } else {
+                /** @var PublicationItem $publicationItemsBase */
+                $publicationItemsBase = PublicationItem::find()->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
+
+                $publicationItems = [];
+                foreach ($publicationItemsBase as $publicationItemBase) {
+                    $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
+                }
+
+                $html = '';
+                /** @var PublicationItemTranslation $publicationItemTranslation */
+                foreach ($publicationItems as $publicationItemTranslation) {
+                    $html .= $this->renderHtmlByPublicationItem($publicationItemTranslation, $publicationItemTranslation->item->category);
+                }
+                return "<div class='publication-widget publication-item-index'>" . $html . '</div>';
             }
-            return "<div class='publication-widget publication-item-index'>" . $html . '</div>' . '<div class="publication-pagination">' . LinkPager::widget([
-                    'pagination' => $pagination,
-                ]) . '</div>';
         }
 
         $publicationCategories = PublicationCategory::findAll($this->categoryId);

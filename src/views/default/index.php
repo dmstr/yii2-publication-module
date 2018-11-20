@@ -13,6 +13,6 @@ $this->title = Yii::$app->settings->get('site', 'publication.default-index') ?: 
 ?>
 <div class="publication-default-index">
     <?= Cell::widget(['id' => 'publication_index_top', 'requestParam' => 'publication_index_top']) ?>
-    <?= Publication::widget(['categoryId' => $categoryId, 'limit' => $limit]) ?>
+    <?= Publication::widget(['categoryId' => $categoryId, 'limit' => $limit,'pagination' => true]) ?>
     <?= Cell::widget(['id' => 'publication_index_bottom', 'requestParam' => 'publication_index_bottom']) ?>
 </div>
