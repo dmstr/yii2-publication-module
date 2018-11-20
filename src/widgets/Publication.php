@@ -12,6 +12,8 @@ namespace dmstr\modules\publication\widgets;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
+use yii\data\Pagination;
+use yii\widgets\LinkPager;
 
 
 /**
@@ -42,7 +44,10 @@ class Publication extends BasePublication
 
         if ($this->categoryId === 'all') {
             /** @var PublicationItem $publicationItemsBase */
-            $publicationItemsBase = PublicationItem::find()->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
+            $publicationItemsQuery = PublicationItem::find()->published()->limit($this->limit);
+            $count = $publicationItemsQuery->count();
+            $pagination = new Pagination(['totalCount' => $count, 'defaultPageSize' => 60, 'pageSizeLimit' => [1, 60]]);
+            $publicationItemsBase = $publicationItemsQuery->orderBy(['release_date' => SORT_DESC])->offset($pagination->offset)->limit($pagination->limit)->all();
 
             $publicationItems = [];
             foreach ($publicationItemsBase as $publicationItemBase) {
@@ -54,7 +59,9 @@ class Publication extends BasePublication
             foreach ($publicationItems as $publicationItemTranslation) {
                 $html .= $this->renderHtmlByPublicationItem($publicationItemTranslation, $publicationItemTranslation->item->category);
             }
-            return "<div class='publication-widget publication-item-index'>" . $html . '</div>';
+            return "<div class='publication-widget publication-item-index'>" . $html . '</div>' . '<div class="publication-pagination">' . LinkPager::widget([
+                    'pagination' => $pagination,
+                ]) . '</div>';
         }
 
         $publicationCategories = PublicationCategory::findAll($this->categoryId);

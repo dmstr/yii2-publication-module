@@ -166,7 +166,7 @@ class PublicationItem extends BasePublicationItem
         try {
             PublicationItemXTag::deleteAll(['item_id' => $this->id]);
 
-            if (is_array($ids)) {
+            if (\is_array($ids)) {
                 foreach ($ids as $tagId) {
 
                     /** @var PublicationItemXTag $junction */
@@ -189,6 +189,17 @@ class PublicationItem extends BasePublicationItem
         $attributeLabels = parent::attributeLabels();
         $attributeLabels['tagIds'] = Yii::t('publication', 'Tags');
         return $attributeLabels;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            if (!$this->load(Yii::$app->request->post())) {
+                Yii::error('cannot add tags to publication item');
+            }
+        }
     }
 
 }
