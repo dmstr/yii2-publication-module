@@ -2,7 +2,7 @@
 
 use dmstr\modules\publication\models\crud\PublicationTag;
 use kartik\select2\Select2;
-use project\modules\bikeadmin\models\PublicationItem;
+use dmstr\modules\publication\models\crud\PublicationItem;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
