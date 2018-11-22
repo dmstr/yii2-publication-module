@@ -58,6 +58,7 @@ class PublicationItem extends PublicationItemModel
         $query->select([
             PublicationItemModel::tableName() . '.*',
             PublicationItemTranslation::tableName() . '.title',
+            PublicationItemMeta::tableName() . '.release_date',
         ]);
 
         $dataProvider = new ActiveDataProvider([
