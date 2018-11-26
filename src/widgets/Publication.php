@@ -11,7 +11,6 @@ namespace dmstr\modules\publication\widgets;
 
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
-use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
 
@@ -23,12 +22,16 @@ use yii\widgets\LinkPager;
  *
  * @property int categoryId
  * @property PublicationItem item
+ * @property bool pagination
+ * @property string wrapperCssClass
  */
 class Publication extends BasePublication
 {
     public $categoryId;
     public $item;
     public $pagination = false;
+
+    private $wrapperCssClass = 'publication-widget publication-item-index';
 
 
     /**
@@ -39,73 +42,55 @@ class Publication extends BasePublication
     {
 
         if ($this->item) {
-            return "<div class='publication-widget publication-item-index'>" . $this->renderHtmlByPublicationItem($this->item, $this->item->category) . '</div>';
+            return "<div class='{$this->wrapperCssClass}'>" . $this->renderHtmlByPublicationItem($this->item) . '</div>';
         }
-        /** @var PublicationCategory $publicationCategory */
+
+        // the base Query is defined to be sure we always have the base constrains
+        // for different cases use a clone of this!!!!
+        $publicationItemsBaseQuery = PublicationItem::find()->published()->limit($this->limit);
+
+        $paginationHtml = null;
 
         if ($this->categoryId === 'all') {
+
             if ($this->pagination) {
-                /** @var PublicationItem $publicationItemsBase */
-                $publicationItemsQuery = PublicationItem::find()->published()->limit($this->limit);
+                $publicationItemsQuery = clone $publicationItemsBaseQuery;
                 $count = $publicationItemsQuery->count();
                 $pagination = new Pagination(['totalCount' => $count, 'defaultPageSize' => 60, 'pageSizeLimit' => [1, 60]]);
-                $publicationItemsBase = $publicationItemsQuery->orderBy(['release_date' => SORT_DESC])->offset($pagination->offset)->limit($pagination->limit)->all();
-
-                $publicationItems = [];
-                foreach ($publicationItemsBase as $publicationItemBase) {
-                    $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
-                }
-
-                $html = '';
-                /** @var PublicationItemTranslation $publicationItemTranslation */
-                foreach ($publicationItems as $publicationItemTranslation) {
-                    $html .= $this->renderHtmlByPublicationItem($publicationItemTranslation, $publicationItemTranslation->item->category);
-                }
-                return "<div class='publication-widget publication-item-index'>" . $html . '</div>' . '<div class="publication-pagination">' . LinkPager::widget([
+                $publicationItemsQuery->offset($pagination->offset);
+                $paginationHtml = '<div class="publication-pagination">' . LinkPager::widget([
                         'pagination' => $pagination,
                     ]) . '</div>';
-            } else {
-                /** @var PublicationItem $publicationItemsBase */
-                $publicationItemsBase = PublicationItem::find()->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
-
-                $publicationItems = [];
-                foreach ($publicationItemsBase as $publicationItemBase) {
-                    $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
-                }
-
-                $html = '';
-                /** @var PublicationItemTranslation $publicationItemTranslation */
-                foreach ($publicationItems as $publicationItemTranslation) {
-                    $html .= $this->renderHtmlByPublicationItem($publicationItemTranslation, $publicationItemTranslation->item->category);
-                }
-                return "<div class='publication-widget publication-item-index'>" . $html . '</div>';
             }
+
+            $publicationItemsQuery = clone $publicationItemsBaseQuery;
+            $html = $this->renderItemsHtml($publicationItemsQuery->all());
+
+        } else {
+            /** @var PublicationCategory[] $publicationCategories */
+            $publicationCategories = PublicationCategory::find()->andWhere(['id' => $this->categoryId])->all();
+
+            $widgets = [];
+            foreach ($publicationCategories as $publicationCategory) {
+                $publicationItemsQuery = clone $publicationItemsBaseQuery;
+                $publicationItems = $publicationItemsQuery->andWhere(['category_id' => $publicationCategory->id])->all();
+                $widgets[] = $this->renderItemsHtml($publicationItems);
+            }
+
+            $html = implode(PHP_EOL, $widgets);
         }
 
-        $publicationCategories = PublicationCategory::findAll($this->categoryId);
+        return "<div class='{$this->wrapperCssClass}'>" . $html . '</div>' . $paginationHtml;
+    }
 
-        $widgets = [];
-        foreach ($publicationCategories as $publicationCategory) {
-
-            $categoryId = $publicationCategory->id;
-
-
-            /** @var PublicationItem $publicationItemsBase */
-            $publicationItemsBase = PublicationItem::find()->where(['category_id' => $categoryId])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
-
-            $publicationItems = [];
-            foreach ($publicationItemsBase as $publicationItemBase) {
-                $publicationItems[] = $publicationItemBase->getTranslations()->published()->one();
-            }
-
-            $html = '';
-            foreach ($publicationItems as $publicationItem) {
-                $html .= $this->renderHtmlByPublicationItem($publicationItem, $publicationCategory);
-            }
-            $widgets[] = $html;
+    protected function renderItemsHtml($publicationItems = [])
+    {
+        $html = '';
+        /** @var PublicationItem[] $publicationItems */
+        foreach ($publicationItems as $publicationItem) {
+            $html .= $this->renderHtmlByPublicationItem($publicationItem);
         }
-        return "<div class='publication-widget publication-item-index'>" . implode(PHP_EOL, $widgets) . '</div>';
-
+        return $html;
     }
 
 }

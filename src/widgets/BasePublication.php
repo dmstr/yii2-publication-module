@@ -32,7 +32,7 @@ abstract class BasePublication extends Widget
     public $limit = null;
 
     /**
-     * @param PublicationItem|PublicationItemTranslation $publicationItem
+     * @param PublicationItem $publicationItem
      * @param PublicationCategory $publicationCategory
      * @return string
      * @throws \Twig_Error_Loader
@@ -40,7 +40,7 @@ abstract class BasePublication extends Widget
      * @throws \Twig_Error_Syntax
      * @throws \yii\base\InvalidConfigException
      */
-    protected function renderHtmlByPublicationItem($publicationItem, $publicationCategory)
+    protected function renderHtmlByPublicationItem($publicationItem)
     {
         if ($this->teaser) {
             $properties = Json::decode($publicationItem->teaser_widget_json);
@@ -54,10 +54,11 @@ abstract class BasePublication extends Widget
 
         $publicationWidget = '';
 
-        $publicationWidget .= $publicationCategory->render((array)$properties, $this->teaser);
+        $publicationWidget .= $publicationItem->category->render((array)$properties, $this->teaser);
 
         if ($this->teaser) {
-            $publicationWidget = Html::a($publicationWidget, ['/publication/default/detail', 'itemId' => $publicationItem->id], ['class' => 'publication-detail-link']);
+            $itemId = $publicationItem instanceof PublicationItem ? $publicationItem->id : $publicationItem->item_id;
+            $publicationWidget = Html::a($publicationWidget, ['/publication/default/detail', 'itemId' => $itemId], ['class' => 'publication-detail-link']);
         }
 
         return $publicationWidget;

@@ -37,7 +37,7 @@ class TaggedPublication extends BasePublication
 
         $html = '';
         foreach ($items as $item) {
-            $html .= $this->renderHtmlByPublicationItem($item, $item->category);
+            $html .= $this->renderHtmlByPublicationItem($item);
         }
         return "<div class='publication-widget publication-item-tagged'>" . $html . '</div>';
     }
