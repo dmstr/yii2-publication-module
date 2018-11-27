@@ -24,12 +24,16 @@ use yii\widgets\LinkPager;
  * @property PublicationItem item
  * @property bool pagination
  * @property string wrapperCssClass
+ * @property string paginationNextLabel
+ * @property string paginationPrevLabel
  */
 class Publication extends BasePublication
 {
     public $categoryId;
     public $item;
     public $pagination = false;
+    public $paginationNextLabel = '&raquo;';
+    public $paginationPrevLabel = '&laquo;';
 
     private $wrapperCssClass = 'publication-widget publication-item-index';
 
@@ -60,6 +64,8 @@ class Publication extends BasePublication
                 $publicationItemsQuery->offset($pagination->offset);
                 $paginationHtml = '<div class="publication-pagination">' . LinkPager::widget([
                         'pagination' => $pagination,
+                        'nextPageLabel' => $this->paginationNextLabel,
+                        'prevPageLabel' => $this->paginationPrevLabel
                     ]) . '</div>';
             }
 
