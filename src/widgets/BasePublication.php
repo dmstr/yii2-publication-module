@@ -48,6 +48,7 @@ abstract class BasePublication extends Widget
             $properties['content'] = Json::decode($publicationItem->content_widget_json);
         } else {
             $properties = Json::decode($publicationItem->content_widget_json);
+            $properties['teaser'] = Json::decode($publicationItem->teaser_widget_json);
         }
 
         $properties['model'] = $publicationItem instanceof PublicationItemTranslation ? $publicationItem->item : $publicationItem;
