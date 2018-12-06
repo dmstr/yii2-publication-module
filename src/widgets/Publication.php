@@ -12,6 +12,7 @@ namespace dmstr\modules\publication\widgets;
 use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use yii\data\Pagination;
+use yii\helpers\VarDumper;
 use yii\widgets\LinkPager;
 
 
@@ -34,6 +35,7 @@ class Publication extends BasePublication
     public $pagination = false;
     public $paginationNextLabel = '&raquo;';
     public $paginationPrevLabel = '&laquo;';
+    public $pageSize = 60;
 
     private $wrapperCssClass = 'publication-widget publication-item-index';
 
@@ -60,16 +62,21 @@ class Publication extends BasePublication
             if ($this->pagination) {
                 $publicationItemsQuery = clone $publicationItemsBaseQuery;
                 $count = $publicationItemsQuery->count();
-                $pagination = new Pagination(['totalCount' => $count, 'defaultPageSize' => 60, 'pageSizeLimit' => [1, 60]]);
+                $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $this->pageSize]);
                 $publicationItemsQuery->offset($pagination->offset);
+                $publicationItemsQuery->limit($pagination->limit);
                 $paginationHtml = '<div class="publication-pagination">' . LinkPager::widget([
                         'pagination' => $pagination,
                         'nextPageLabel' => $this->paginationNextLabel,
-                        'prevPageLabel' => $this->paginationPrevLabel
+                        'prevPageLabel' => $this->paginationPrevLabel,
+//                        'firstPageLabel' => $this->paginationPrevLabel,
+//                        'lastPageLabel' => $this->paginationNextLabel,
                     ]) . '</div>';
+
+            } else {
+                $publicationItemsQuery = clone $publicationItemsBaseQuery;
             }
 
-            $publicationItemsQuery = clone $publicationItemsBaseQuery;
             $html = $this->renderItemsHtml($publicationItemsQuery->all());
 
         } else {
