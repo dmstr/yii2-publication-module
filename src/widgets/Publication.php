@@ -30,7 +30,17 @@ use yii\widgets\LinkPager;
  */
 class Publication extends BasePublication
 {
+    /**
+     * can be:
+     * - null (no category constraint)
+     * - 'all' (explicitly no category constraint)
+     * - positiv integer (select items IN category ID)
+     * - negativ integer (select items NOT IN category ID)
+     * - array of positiv|negativ integers (same IN/NOT IN rules as for simple integer)
+     * @var mixed
+     */
     public $categoryId;
+
     public $item;
     public $pagination = false;
     public $paginationNextLabel = '&raquo;';
@@ -51,47 +61,54 @@ class Publication extends BasePublication
             return "<div class='{$this->wrapperCssClass}'>" . $this->renderHtmlByPublicationItem($this->item) . '</div>';
         }
 
-        // the base Query is defined to be sure we always have the base constrains
-        // for different cases use a clone of this!!!!
-        $publicationItemsBaseQuery = PublicationItem::find()->published()->limit($this->limit);
+        $publicationItemsQuery = PublicationItem::find()->published()->limit($this->limit);
 
         $paginationHtml = null;
 
-        if ($this->categoryId === 'all') {
-
-            if ($this->pagination) {
-                $publicationItemsQuery = clone $publicationItemsBaseQuery;
-                $count = $publicationItemsQuery->count();
-                $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $this->pageSize]);
-                $publicationItemsQuery->offset($pagination->offset);
-                $publicationItemsQuery->limit($pagination->limit);
-                $paginationHtml = '<div class="publication-pagination">' . LinkPager::widget([
-                        'pagination' => $pagination,
+        if ($this->pagination) {
+            $count      = $publicationItemsQuery->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $this->pageSize]);
+            $publicationItemsQuery->offset($pagination->offset);
+            $publicationItemsQuery->limit($pagination->limit);
+            $paginationHtml = '<div class="publication-pagination">' . LinkPager::widget(
+                    [
+                        'pagination'    => $pagination,
                         'nextPageLabel' => $this->paginationNextLabel,
                         'prevPageLabel' => $this->paginationPrevLabel,
-//                        'firstPageLabel' => $this->paginationPrevLabel,
-//                        'lastPageLabel' => $this->paginationNextLabel,
-                    ]) . '</div>';
+                        // 'firstPageLabel' => $this->paginationPrevLabel,
+                        // 'lastPageLabel' => $this->paginationNextLabel,
+                    ]
+                ) . '</div>';
 
-            } else {
-                $publicationItemsQuery = clone $publicationItemsBaseQuery;
-            }
-
-            $html = $this->renderItemsHtml($publicationItemsQuery->all());
-
-        } else {
-            /** @var PublicationCategory[] $publicationCategories */
-            $publicationCategories = PublicationCategory::find()->andWhere(['id' => $this->categoryId])->all();
-
-            $widgets = [];
-            foreach ($publicationCategories as $publicationCategory) {
-                $publicationItemsQuery = clone $publicationItemsBaseQuery;
-                $publicationItems = $publicationItemsQuery->andWhere(['category_id' => $publicationCategory->id])->all();
-                $widgets[] = $this->renderItemsHtml($publicationItems);
-            }
-
-            $html = implode(PHP_EOL, $widgets);
         }
+
+        // if we get one or a list of category_ids build constraint
+        // to exclude IDs they can be dafined as negative int
+        if (!empty($this->categoryId) && $this->categoryId !== 'all') {
+            $inIds = [];
+            $notInIds = [];
+            if (is_array($this->categoryId)) {
+                foreach($this->categoryId as $id) {
+                    if (is_numeric($id)) {
+                        (int)$id < 0 ? $notInIds[] = -(int)$id : $inIds[] = (int)$id;
+                    }
+                }
+            } else {
+                (int)$this->categoryId < 0 ? $notInIds[] = -(int)$this->categoryId : $inIds[] = (int)$this->categoryId;
+            }
+
+            if (!empty($inIds)) {
+                $publicationItemsQuery->andWhere(['category_id' => $inIds]);
+            }
+
+            if (!empty($notInIds)) {
+                $publicationItemsQuery->andWhere(['not', ['category_id' => $notInIds]]);
+            }
+
+
+        }
+
+        $html = $this->renderItemsHtml($publicationItemsQuery->all());
 
         return "<div class='{$this->wrapperCssClass}'>" . $html . '</div>' . $paginationHtml;
     }
