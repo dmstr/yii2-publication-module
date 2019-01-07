@@ -108,3 +108,8 @@ use yii\helpers\Html;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+// TODO: this is just a positioning workaround
+// see: https://github.com/dmstr/yii2-widgets2-module/blob/e3bddeb560fd37a023e8d4adccda7567d1510d74/src/views/crud/widget/_form.php#L221
+$js = file_get_contents(Yii::getAlias('@hrzg/widget/assets/web/widgets-init.js'));
+$this->registerJs($js);
