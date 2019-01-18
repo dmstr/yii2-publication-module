@@ -141,6 +141,11 @@ class PublicationItem extends PublicationItemModel
                 isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationItemModel::tableName() . '.ref_lang' => !empty($this->ref_lang) ? $this->ref_lang : \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
         );
 
+        $query->andWhere(['OR',
+                [PublicationItemTranslation::tableName() . '.language' => \Yii::$app->language],
+                isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationItemTranslation::tableName() . '.language' => \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
+        );
+
         if (!empty($this->ref_lang)) {
             $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
         }
