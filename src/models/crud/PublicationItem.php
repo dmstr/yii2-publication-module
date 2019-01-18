@@ -202,4 +202,9 @@ class PublicationItem extends BasePublicationItem
         }
     }
 
+    public function getLabel()
+    {
+        return $this->title;
+    }
+
 }
