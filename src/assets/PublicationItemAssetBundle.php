@@ -32,6 +32,7 @@ class PublicationItemAssetBundle extends \dmstr\web\AssetBundle
      */
     public $js = [
         'js/publiction-switch-schema.js',
+        'js/utc-to-mez.js',
     ];
 
 
