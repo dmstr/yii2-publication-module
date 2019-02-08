@@ -28,7 +28,7 @@ class PublicationCategory extends BasePublicationCategory
      */
     public function getLabel()
     {
-        return $this->title;
+        return $this->title . ($this->isNewRecord ? '' : ' (#' . $this->id.')');
     }
 
     /**

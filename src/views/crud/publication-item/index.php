@@ -95,7 +95,6 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                     [
                         'class' => DataColumn::class,
                         'attribute' => 'title',
-                        'label' => '',
                         'value' => function ($model) {
                             return $model->title;
                         },
@@ -103,19 +102,6 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                     [
                         'class' => DataColumn::class,
                         'attribute' => 'release_date',
-                        'label' => '',
-                        'filter' => Html::activeDropDownList(
-                            $searchModel,
-                            'release_date',
-                            [
-                                2 => Yii::t('publication', 'Latest first'),
-                                1 => Yii::t('publication', 'Oldest first')
-                            ],
-                            [
-                                'class' => 'form-control',
-                                'prompt' => Yii::t('publication', 'Release Date')
-                            ]
-                        ),
                         'value' => function ($model) {
                             return \Yii::$app->formatter->asDatetime($model->release_date);
                         },
@@ -124,19 +110,6 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                     [
                         'class' => DataColumn::class,
                         'attribute' => 'category_id',
-                        'label' => '',
-                        'filter' => Html::activeDropDownList(
-                            $searchModel,
-                            'category_id',
-                            [
-                                1 => Yii::t('publication', 'A-Z'),
-                                2 => Yii::t('publication', 'Z-A')
-                            ],
-                            [
-                                'class' => 'form-control',
-                                'prompt' => Yii::t('publication', 'Category')
-                            ]
-                        ),
                         'value' => function ($model) {
                             return Html::a($model->category->label, ['/publication/crud/publication-category/view', 'id' => $model->category->id,], ['data-pjax' => 0]);
                         },
@@ -145,19 +118,6 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                     [
                         'class' => DataColumn::class,
                         'attribute' => 'id',
-                        'label' => '',
-                        'filter' => Html::activeDropDownList(
-                            $searchModel,
-                            'id',
-                            [
-                                1 => Yii::t('publication', '0-9'),
-                                2 => Yii::t('publication', '9-0')
-                            ],
-                            [
-                                'class' => 'form-control',
-                                'prompt' => Yii::t('publication', 'ID')
-                            ]
-                        ),
                         'value' => function ($model) {
                             return $model->id;
                         },
