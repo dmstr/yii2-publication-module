@@ -55,8 +55,7 @@ class CrudController extends Controller
                 throw new ErrorException(\Yii::t('publication', 'Unable to save item'));
             }
 
-
-            return $this->redirect(['/' . $this->module->id . '/' . $this->id . '/publication-item/index']);
+            return $this->goBack('/' . $this->module->id . '/' . $this->id . '/publication-item/index');
         }
         return $this->redirect(['/' . $this->module->id]);
     }
