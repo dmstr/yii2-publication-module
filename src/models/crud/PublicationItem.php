@@ -112,6 +112,25 @@ class PublicationItem extends BasePublicationItem
     }
 
     /**
+     * We must get/set release_date and (optional) end_date from translation_meta from ref_lang.
+     * Otherwise we would destroy this information from "fallback language" because translation_meta
+     * does not have fallback from translatable behaviour!
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        if (! $this->release_date) {
+            $fallback_meta = $this->getMetas()->andWhere(['language' => strtolower($this->ref_lang)])->one();
+            $this->release_date = $fallback_meta ? $fallback_meta->release_date : date('Y-m-d H:i:00');
+        }
+        if (! $this->end_date) {
+            $fallback_meta = $this->getMetas()->andWhere(['language' => strtolower($this->ref_lang)])->one();
+            $this->end_date = $fallback_meta ? $fallback_meta->end_date : null;
+        }
+
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getTags()

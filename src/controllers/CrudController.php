@@ -48,7 +48,6 @@ class CrudController extends Controller
             }
 
             $item->status = $item->status === PublicationItem::STATUS_PUBLISHED ? PublicationItem::STATUS_DRAFT : PublicationItem::STATUS_PUBLISHED;
-            $item->release_date = $item->publicationItemMetas[0]->release_date ?? date('Y-m-d');
 
             $item->scenario = 'meta';
             if (!$item->save()) {
