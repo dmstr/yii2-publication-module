@@ -30,15 +30,17 @@ class Delete extends BaseAction
         try {
             $model = $this->findModel($id);
             /** @var ActiveRecord $translation */
-            $translation = $model->getTranslations()->andWhere(['language' => \Yii::$app->language])->one();
+            $translation = $model->getTranslations()->andWhere(['language' =>  strtolower(\Yii::$app->language)])->one();
 
-            $translation->delete();
-            $transaction->commit();
+            if ($translation) {
+                $translation->delete();
+            }
         } catch (\Exception $e) {
             $transaction->rollBack();
             \Yii::$app->getSession()->addFlash('error', $e->errorInfo[2] ?? $e->getMessage());
         }
 
+        $transaction->commit();
         return $this->controller->redirect(\Yii::$app->request->referrer);
     }
 }
