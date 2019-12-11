@@ -1,6 +1,7 @@
 <?php
 
 use dmstr\modules\publication\components\PublicationHelper;
+use dmstr\modules\publication\models\crud\PublicationCategory;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use rmrevin\yii\fontawesome\FA;
 use yii\bootstrap\ButtonDropdown;
@@ -114,6 +115,7 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                             return Html::a($model->category->label, ['/publication/crud/publication-category/view', 'id' => $model->category->id,], ['data-pjax' => 0]);
                         },
                         'format' => 'raw',
+                        'filter' => ArrayHelper::map(PublicationCategory::find()->all(), 'id', 'label'),
                     ],
                     [
                         'class' => DataColumn::class,
