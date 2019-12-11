@@ -59,7 +59,9 @@ abstract class BasePublication extends Widget
 
         if ($this->teaser) {
             $itemId = $publicationItem instanceof PublicationItem ? $publicationItem->id : $publicationItem->item_id;
-            $publicationWidget = Html::a($publicationWidget, ['/publication/default/detail', 'itemId' => $itemId], ['class' => 'publication-detail-link']);
+            $urlParts = ['/publication/default/detail', 'itemId' => $itemId];
+            !empty($publicationItem->title) ? $urlParts['title'] = $publicationItem->title : null;
+            $publicationWidget = Html::a($publicationWidget, $urlParts, ['class' => 'publication-detail-link']);
         }
 
         return $publicationWidget;
