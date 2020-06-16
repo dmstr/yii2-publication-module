@@ -9,6 +9,7 @@
 
 namespace dmstr\modules\publication\assets;
 
+use dmstr\jsoneditor\JsonEditorPluginsAsset;
 use dosamigos\selectize\SelectizeAsset;
 use yii\web\JqueryAsset;
 use dosamigos\ckeditor\CKEditorAsset;
@@ -42,6 +43,7 @@ class PublicationItemAssetBundle extends \dmstr\web\AssetBundle
     public $depends = [
         SelectizeAsset::class,
         CKEditorAsset::class,
-        JqueryAsset::class
+        JqueryAsset::class,
+        JsonEditorPluginsAsset::class,
     ];
 }
