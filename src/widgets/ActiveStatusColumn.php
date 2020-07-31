@@ -33,8 +33,6 @@ use yii\helpers\Html;
  */
 class ActiveStatusColumn extends Column
 {
-
-
     /**
      * Name of the status attribute
      */
@@ -80,8 +78,15 @@ class ActiveStatusColumn extends Column
     public function renderDataCellContent($model, $key, $index)
     {
         // Check if status checked is true or false and use either the default label or the label defined in the labelChecked or labelUnchecked attribute
-        return Html::a($model->{$this->attribute} === $this->activeValue ? $this->labelChecked ?? FA::icon(FA::_CHECK) : $this->labelUnchecked ?? FA::icon(FA::_TIMES), $this->endpoint, [
-            'class' => 'status-toggle btn-' . ($model->{$this->attribute} === $this->activeValue ? 'success' : 'danger'),
+
+        if ($model->{$this->attribute} === $this->activeValue) {
+            $label = $this->labelChecked ?? (string)FA::icon(FA::_CHECK);
+        } else {
+            $label = $this->labelUnchecked ?? (string)FA::icon(FA::_TIMES);
+        }
+
+        return Html::a($label , $this->endpoint, [
+            'class' => ['status-toggle', 'btn-' . ($model->{$this->attribute} === $this->activeValue ? 'success' : 'danger')],
             'data' => [
                 'method' => 'post',
                 'params' => [$this->inputName => $model->{$this->valueAttribute}],

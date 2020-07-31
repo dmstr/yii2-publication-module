@@ -2,75 +2,69 @@
 
 namespace dmstr\modules\publication\controllers;
 
+use dmstr\modules\publication\components\PublicationHelper;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use Yii;
-use yii\base\InvalidConfigException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
     /**
-     * @return string
+     * @param string $categoryId
+     *
      * @throws BadRequestHttpException
-     * @throws InvalidConfigException
+     * @return string
      */
-    public function actionIndex()
+    public function actionIndex($categoryId = PublicationHelper::ALL)
     {
-        $param = Yii::$app->request->get('categoryId');
+        $tagId = Yii::$app->request->get('tagId', PublicationHelper::ALL);
         $limit = Yii::$app->request->get('limit');
 
-        if ($param === null) {
-            throw new BadRequestHttpException(Yii::t('publication', 'Category ID must be set'));
-        }
-
-        if (!$this->checkParam($param)) {
-            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param category id'));
+        if (!$this->checkParam($categoryId)) {
+            throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param category id'));
         }
 
         if ($limit !== null && (!is_numeric($limit) || $limit < 1)) {
-            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param limit'));
+            throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param limit'));
         }
 
-        return $this->render($this->action->id, ['categoryId' => $param, 'limit' => $limit]);
+        return $this->render('index', ['categoryId' => $categoryId,'tagId' => $tagId, 'limit' => $limit]);
     }
 
     /**
-     * @return string
+     * @param $tagId
+     *
      * @throws BadRequestHttpException
-     * @throws InvalidConfigException
+     * @return string
      */
-    public function actionTag()
+    public function actionTag($tagId = PublicationHelper::ALL)
     {
-        $param = Yii::$app->request->get('tagId');
+        $categoryId = Yii::$app->request->get('categoryId', PublicationHelper::ALL);
         $limit = Yii::$app->request->get('limit');
 
-        if ($param === null) {
-            throw new BadRequestHttpException(Yii::t('publication', 'Tag ID must be set'));
+
+        if (!$this->checkParam($tagId)) {
+            throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param tag id'));
         }
 
-        if (!$this->checkParam($param)) {
-            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param tag id'));
+        if (!$this->checkParam($categoryId)) {
+            throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param category id'));
         }
 
         if ($limit !== null && (!is_numeric($limit) || $limit < 1)) {
-            throw new InvalidConfigException(Yii::t('publication', 'Invalid config for param limit'));
+            throw new BadRequestHttpException(422, Yii::t('publication', 'Invalid config for param limit'));
         }
 
-        return $this->render($this->action->id, ['tagId' => $param, 'limit' => $limit]);
+        return $this->render('tag', ['tagId' => $tagId, 'limit' => $limit, 'categoryId' => $categoryId]);
     }
 
     private function checkParam($param)
     {
         if (!\is_array($param)) {
-            if (is_numeric($param)) {
-                return true;
-            }
-            if ($param === 'all') {
-                return true;
-            }
-            return false;
+            return is_numeric($param) || $param === PublicationHelper::ALL;
         }
         foreach ($param as $item) {
             if (!is_numeric($item)) {
@@ -82,20 +76,21 @@ class DefaultController extends Controller
 
     /**
      * @param $itemId
-     * @return string
+     *
      * @throws HttpException
+     * @return string
      */
     public function actionDetail($itemId)
     {
         $item = PublicationItem::find()->andWhere([PublicationItem::tableName() . '.id' => $itemId])->published()->one();
 
         if ($item === null) {
-            throw new HttpException(404, \Yii::t('publication', 'Publication item not found'));
+            throw new NotFoundHttpException(\Yii::t('publication', 'Publication item not found'));
         }
 
         $item->setScenario('crud');
 
-        return $this->render($this->action->id, ['item' => $item]);
+        return $this->render('detail', ['item' => $item]);
 
     }
 }

@@ -5,6 +5,9 @@ namespace dmstr\modules\publication\models\crud;
 use dmstr\modules\publication\models\crud\base\PublicationItem as BasePublicationItem;
 use dosamigos\translateable\TranslateableBehavior;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
 
@@ -16,13 +19,14 @@ use yii\web\HttpException;
  * @property PublicationTag[] tags
  * @property int $contentSchemaByCategoryId
  * @property int $teaserSchemaByCategoryId
+ * @property-read mixed $label
  * @property array tagIds
  */
 class PublicationItem extends BasePublicationItem
 {
 
-    const STATUS_DRAFT = 'draft';
-    const STATUS_PUBLISHED = 'published';
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_PUBLISHED = 'published';
     public $content_widget_schema = [];
     public $teaser_widget_schema = [];
 
@@ -131,7 +135,8 @@ class PublicationItem extends BasePublicationItem
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @throws InvalidConfigException
+     * @return ActiveQuery
      */
     public function getTags()
     {
@@ -185,10 +190,9 @@ class PublicationItem extends BasePublicationItem
         try {
             PublicationItemXTag::deleteAll(['item_id' => $this->id]);
 
-            if (\is_array($ids)) {
+            if (is_array($ids)) {
                 foreach ($ids as $tagId) {
 
-                    /** @var PublicationItemXTag $junction */
                     $junction = new PublicationItemXTag(['item_id' => $this->id, 'tag_id' => $tagId]);
 
                     if (!$junction->save()) {
@@ -197,9 +201,14 @@ class PublicationItem extends BasePublicationItem
                     }
                 }
             }
-            $transaction->commit();
-        } catch (\yii\base\Exception $e) {
-            $transaction->rollBack();
+            if ($transaction && $transaction->isActive) {
+                $transaction->commit();
+            }
+        } catch (Exception $e) {
+            if ($transaction && $transaction->isActive) {
+                $transaction->rollBack();
+            }
+            Yii::error($e->getMessage(),__METHOD__);
         }
     }
 
@@ -214,10 +223,8 @@ class PublicationItem extends BasePublicationItem
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($insert) {
-            if (!$this->load(Yii::$app->request->post())) {
-                Yii::error('cannot add tags to publication item');
-            }
+        if ($insert && !$this->load(Yii::$app->request->post())) {
+            Yii::error('cannot add tags to publication item',__METHOD__);
         }
     }
 

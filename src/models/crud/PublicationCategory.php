@@ -4,12 +4,18 @@ namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublicationCategory;
 use dosamigos\translateable\TranslateableBehavior;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use Twig\Loader\ArrayLoader;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\twig\ViewRenderer;
 
 /**
  * This is the model class for table "{{%dmstr_publication_category}}".
  *
+ * @property-read string|mixed $label
  * @property string title
  */
 class PublicationCategory extends BasePublicationCategory
@@ -32,13 +38,14 @@ class PublicationCategory extends BasePublicationCategory
     }
 
     /**
-     * @param $properties
+     * @param array $properties
      * @param $teaser
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws InvalidConfigException
      * @return null|string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     * @throws \yii\base\InvalidConfigException
      */
     public function render(array $properties, $teaser)
     {
@@ -53,7 +60,7 @@ class PublicationCategory extends BasePublicationCategory
             'globals' => $appTwig['globals']
         ]);
 
-        $twigRenderer->twig->setLoader(new \Twig_Loader_Array([
+        $twigRenderer->twig->setLoader(new ArrayLoader([
             'publication' => $widgetTemplate->twig_template,
         ]));
         $twig = $twigRenderer->twig;

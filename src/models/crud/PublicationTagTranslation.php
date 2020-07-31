@@ -12,6 +12,8 @@ namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\query\PublicationTagTranslationQuery;
 use yii\behaviors\TimestampBehavior;
+use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * Class PublicationTagTranslation
@@ -39,7 +41,7 @@ class PublicationTagTranslation extends ActiveRecord
      */
     public static function find()
     {
-        return new PublicationTagTranslationQuery(get_called_class());
+        return new PublicationTagTranslationQuery(static::class);
     }
 
     /**
@@ -78,7 +80,7 @@ class PublicationTagTranslation extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTag()
     {

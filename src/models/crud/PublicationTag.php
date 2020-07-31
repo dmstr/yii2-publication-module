@@ -12,7 +12,9 @@ namespace dmstr\modules\publication\models\crud;
 
 use dmstr\modules\publication\models\crud\query\PublicationTagQuery;
 use dosamigos\translateable\TranslateableBehavior;
+use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 
 /**
  * Class PublicationTag
@@ -84,7 +86,7 @@ class PublicationTag extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTranslations()
     {
@@ -92,7 +94,8 @@ class PublicationTag extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @throws InvalidConfigException
+     * @return ActiveQuery
      */
     public function getItems()
     {

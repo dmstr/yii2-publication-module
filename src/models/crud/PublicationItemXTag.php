@@ -11,6 +11,7 @@ namespace dmstr\modules\publication\models\crud;
 
 
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 
 /**
  * Class PublicationItemXTag
@@ -54,7 +55,7 @@ class PublicationItemXTag extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getItem()
     {
@@ -62,7 +63,7 @@ class PublicationItemXTag extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTag()
     {

@@ -14,30 +14,31 @@ use yii\base\InvalidConfigException;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use Yii;
 
 
 /**
  * Class DisplayWidgetContent
  * @package dmstr\modules\publication\widgets
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
+ *
+ * @property WidgetContent $widget
  */
 class DisplayWidgetContent extends Widget
 {
     public $widget;
 
     /**
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\base\InvalidParamException
+     * @throws InvalidConfigException
      */
     public function run()
     {
         if (!($this->widget instanceof WidgetContent)) {
-            throw new InvalidConfigException(\Yii::t('publication', '\$widget must be an instance of hrzg\widget\models\crud\WidgetContent'));
+            throw new InvalidConfigException(Yii::t('publication', '\$widget must be an instance of hrzg\widget\models\crud\WidgetContent'));
         }
-        /** @var WidgetContent $widget */
         $widget = $this->widget;
         $properties = Json::decode($widget->default_properties_json);
-        $class = \Yii::createObject($widget->template->php_class);
+        $class = Yii::createObject($widget->template->php_class);
         $class->setView($widget->getViewFile());
 
         if ($properties) {

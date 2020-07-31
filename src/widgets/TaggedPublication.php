@@ -9,10 +9,9 @@
 
 namespace dmstr\modules\publication\widgets;
 
-
-use dmstr\modules\publication\models\crud\PublicationItem;
-use dmstr\modules\publication\models\crud\PublicationItemXTag;
-use yii\helpers\ArrayHelper;
+use Exception;
+use yii\helpers\Html;
+use Yii;
 
 /**
  * Class TaggedPublication
@@ -23,22 +22,17 @@ use yii\helpers\ArrayHelper;
  */
 class TaggedPublication extends BasePublication
 {
-    public $tagId;
 
     public function run()
     {
-        $query = PublicationItemXTag::find();
-        if ($this->tagId !== 'all') {
-            $query->where(['tag_id' => $this->tagId]);
-        }
-        $itemXTags = $query->all();
-
-        $items = PublicationItem::find()->where([PublicationItem::tableName() . '.id' => ArrayHelper::map($itemXTags, 'item_id', 'item_id')])->published()->limit($this->limit)->orderBy(['release_date' => SORT_DESC])->all();
-
         $html = '';
-        foreach ($items as $item) {
-            $html .= $this->renderHtmlByPublicationItem($item);
+        foreach ($this->itemsQuery->all() as $item) {
+            try {
+                $html .= $this->renderHtmlByPublicationItem($item);
+            } catch (Exception $e) {
+                Yii::error($e->getMessage(), __METHOD__);
+            }
         }
-        return "<div class='publication-widget publication-item-tagged'>" . $html . '</div>';
+        return Html::tag('div', $html, ['class' => 'publication-widget publication-item-tagged']);
     }
 }

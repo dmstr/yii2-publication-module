@@ -10,9 +10,15 @@
 namespace dmstr\modules\publication\widgets;
 
 
-use dmstr\modules\publication\models\crud\PublicationCategory;
+use dmstr\modules\publication\components\PublicationHelper;
 use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
+use dmstr\modules\publication\models\crud\PublicationItemXTag;
+use dmstr\modules\publication\models\crud\query\PublicationItemQuery;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use yii\base\InvalidConfigException;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Json;
@@ -24,21 +30,101 @@ use yii\helpers\Json;
  *
  * @property bool teaser
  * @property int|null limit
+ * @property PublicationItemQuery itemsQuery
+ * @property int categoryId
  */
 abstract class BasePublication extends Widget
 {
 
     public $teaser = true;
-    public $limit = null;
+    public $limit;
+    protected $itemsQuery;
+
+    /**
+     * can be:
+     * - null (no category constraint)
+     * - 'all' (explicitly no category constraint)
+     * - positiv integer (select items IN category ID)
+     * - negativ integer (select items NOT IN category ID)
+     * - array of positiv|negativ integers (same IN/NOT IN rules as for simple integer)
+     * @var mixed
+     */
+    public $categoryId;
+
+    public $tagId;
+
+
+    public function init()
+    {
+        $this->itemsQuery = PublicationItem::find()
+            ->published()
+            ->limit($this->limit);
+
+        foreach ($this->filterConditions('categoryId', 'category_id') as $condition) {
+            $this->itemsQuery->andWhere($condition);
+        }
+
+        if (!empty($this->tagId)) {
+            $this->itemsQuery->leftJoin(['x' => PublicationItemXTag::tableName()], PublicationItem::tableName() . '.id = x.item_id');
+            $this->itemsQuery->groupBy(PublicationItem::tableName() . '.id');
+
+            foreach ($this->filterConditions('tagId', 'tag_id') as $condition) {
+                $this->itemsQuery->andWhere($condition);
+            }
+        }
+
+
+        $this->itemsQuery->orderBy(['release_date' => SORT_DESC]);
+
+//        var_dump($this->itemsQuery->createCommand()->rawSql);
+    }
+
+    /**
+     * @param string $attributeName
+     * @param string $columnName
+     *
+     * @return array
+     *
+     * if we get one or a list of category_ids build constraint
+     * to exclude IDs they can be dafined as negative int
+     */
+    protected function filterConditions(string $attributeName, string $columnName): array
+    {
+        $conditions = [];
+        if (!empty($this->$attributeName) && $this->$attributeName !== PublicationHelper::ALL) {
+            $inIds = [];
+            $notInIds = [];
+            if (is_array($this->$attributeName)) {
+                foreach ($this->$attributeName as $id) {
+                    if (is_numeric($id)) {
+                        (int)$id < 0 ? $notInIds[] = -(int)$id : $inIds[] = (int)$id;
+                    }
+                }
+            } else {
+                (int)$this->$attributeName < 0 ? $notInIds[] = -(int)$this->$attributeName : $inIds[] = (int)$this->$attributeName;
+            }
+
+            if (!empty($inIds)) {
+                $conditions[] = [$columnName => $inIds];
+            }
+
+            if (!empty($notInIds)) {
+                $conditions[] = ['NOT', [$columnName => $notInIds]];
+
+            }
+        }
+        return $conditions;
+    }
+
 
     /**
      * @param PublicationItem $publicationItem
-     * @param PublicationCategory $publicationCategory
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws InvalidConfigException
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     * @throws \yii\base\InvalidConfigException
      */
     protected function renderHtmlByPublicationItem($publicationItem)
     {
