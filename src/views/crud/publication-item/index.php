@@ -97,7 +97,7 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                         'class' => DataColumn::class,
                         'attribute' => 'title',
                         'value' => function ($model) {
-                            return $model->title;
+                            return Html::encode($model->title);
                         },
                     ],
                     [
@@ -137,7 +137,7 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                                 $tags = [];
 
                                 foreach (ArrayHelper::map($model->tags,'id','label') as $id => $label) {
-                                    $tags[] =  Html::a($label,['/publication/crud/publication-tag/view','id' => $id],['class' => 'label label-default']);
+                                    $tags[] =  Html::a(Html::encode($label),['/publication/crud/publication-tag/view','id' => $id],['class' => 'label label-default']);
                                 }
 
                                 $tags[] =  Html::a(FA::icon(FA::_PLUS),['/publication/crud/publication-item/attach','id' => $model->id],['class' => 'label label-success']);

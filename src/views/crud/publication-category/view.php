@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 'class' => yii\grid\DataColumn::class,
                 'attribute' => 'title',
                 'value' => function ($model) {
-                    return $model->title;
+                    return Html::encode($model->title);
                 },
                 'format' => 'raw',
             ],

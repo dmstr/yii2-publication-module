@@ -2,6 +2,7 @@
 
 namespace dmstr\modules\publication\models\crud;
 
+use dmstr\modules\prototype\models\Html;
 use dmstr\modules\publication\models\crud\base\PublicationCategory as BasePublicationCategory;
 use dosamigos\translateable\TranslateableBehavior;
 use Twig\Error\LoaderError;
@@ -34,7 +35,7 @@ class PublicationCategory extends BasePublicationCategory
      */
     public function getLabel()
     {
-        return $this->title . ($this->isNewRecord ? '' : ' (#' . $this->id.')');
+        return \yii\helpers\Html::encode($this->title) . ($this->isNewRecord ? '' : ' (#' . $this->id.')');
     }
 
     /**
