@@ -37,7 +37,16 @@ abstract class BasePublication extends Widget
 {
 
     public $teaser = true;
+    /**
+     * Limit num items
+     * @var
+     */
     public $limit;
+
+    /**
+     * The ActiveQuery for pubItem search
+     * @var PublicationItemQuery
+     */
     protected $itemsQuery;
 
     /**
@@ -51,8 +60,25 @@ abstract class BasePublication extends Widget
      */
     public $categoryId;
 
+    /**
+     * can be:
+     * - null (no category constraint)
+     * - 'all' (explicitly no category constraint)
+     * - positiv integer (select items IN category ID)
+     * - negativ integer (select items NOT IN category ID)
+     * - array of positiv|negativ integers (same IN/NOT IN rules as for simple integer)
+     * @var mixed
+     */
     public $tagId;
 
+    /**
+     * can be:
+     * - null (no NOT IN item-id constraint)
+     * - integer|integer[] (select items NOT IN item-ids)
+     *
+     * @var mixed
+     */
+    public $excludeId;
 
     public function init()
     {
@@ -73,10 +99,16 @@ abstract class BasePublication extends Widget
             }
         }
 
+        if (!empty($this->excludeId)) {
+            // make all given ids negative integers to trigger NOT IN inside self:filterConditions()
+            $this->excludeId = array_map(function($id) { return (int)$id > 0 ? -(int)$id : $id; }, is_array($this->excludeId) ? $this->excludeId : [$this->excludeId]);
+            foreach ($this->filterConditions('excludeId', PublicationItem::tableName() . '.id') as $condition) {
+                $this->itemsQuery->andWhere($condition);
+            }
+        }
 
         $this->itemsQuery->orderBy(['release_date' => SORT_DESC]);
 
-//        var_dump($this->itemsQuery->createCommand()->rawSql);
     }
 
     /**
