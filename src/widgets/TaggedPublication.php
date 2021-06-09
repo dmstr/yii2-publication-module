@@ -23,16 +23,7 @@ use Yii;
 class TaggedPublication extends BasePublication
 {
 
-    public function run()
-    {
-        $html = '';
-        foreach ($this->itemsQuery->all() as $item) {
-            try {
-                $html .= $this->renderHtmlByPublicationItem($item);
-            } catch (Exception $e) {
-                Yii::error($e->getMessage(), __METHOD__);
-            }
-        }
-        return Html::tag('div', $html, ['class' => 'publication-widget publication-item-tagged']);
-    }
+    public $pagination = true;
+    public $wrapperCssClass = 'publication-widget publication-item-tagged';
+
 }

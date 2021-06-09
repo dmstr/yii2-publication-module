@@ -15,31 +15,71 @@ use dmstr\modules\publication\models\crud\PublicationItem;
 use dmstr\modules\publication\models\crud\PublicationItemTranslation;
 use dmstr\modules\publication\models\crud\PublicationItemXTag;
 use dmstr\modules\publication\models\crud\query\PublicationItemQuery;
+use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Widget;
+use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\widgets\LinkPager;
 
 /**
  * Class BasePublication
  * @package dmstr\modules\publication\widgets
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  *
- * @property bool teaser
- * @property int|null limit
- * @property PublicationItemQuery itemsQuery
- * @property int categoryId
  */
 abstract class BasePublication extends Widget
 {
 
+    /**
+     * @var PublicationItem|null
+     */
+    public $item;
+
+    /**
+     * en|disable pagination in list views
+     *
+     * @var bool
+     */
+    public $pagination = false;
+
+    /**
+     * next label for pagination links
+     * @var string
+     */
+    public $paginationNextLabel = '&raquo;';
+
+    /**
+     * prev label for pagination links
+     * @var string
+     */
+    public $paginationPrevLabel = '&laquo;';
+
+    /**
+     * page size for paginated lists
+     * @var int
+     */
+    public $pageSize = 60;
+
+    /**
+     * Css class used within the wrapper container
+     * @var string
+     */
+    public $wrapperCssClass = 'publication-widget publication-item-index';
+
+    /**
+     * @var bool
+     */
     public $teaser = true;
+
     /**
      * Limit num items
-     * @var
+     * @var int|null
      */
     public $limit;
 
@@ -91,7 +131,7 @@ abstract class BasePublication extends Widget
         }
 
         if (!empty($this->tagId)) {
-            $this->itemsQuery->leftJoin(['x' => PublicationItemXTag::tableName()], PublicationItem::tableName() . '.id = x.item_id');
+            $this->itemsQuery->innerJoin(['x' => PublicationItemXTag::tableName()], PublicationItem::tableName() . '.id = x.item_id');
             $this->itemsQuery->groupBy(PublicationItem::tableName() . '.id');
 
             foreach ($this->filterConditions('tagId', 'tag_id') as $condition) {
@@ -112,13 +152,61 @@ abstract class BasePublication extends Widget
     }
 
     /**
+     * @throws Exception
+     * @return PublicationItem|string
+     */
+    public function run()
+    {
+
+        if ($this->item) {
+            return Html::tag('div', $this->renderHtmlByPublicationItem($this->item), ['class' => $this->wrapperCssClass]);
+        }
+
+        $publicationItemsQuery = $this->itemsQuery;
+
+        $paginationHtml = null;
+
+        if ($this->pagination) {
+            $count = $publicationItemsQuery->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $this->pageSize]);
+            $publicationItemsQuery->offset($pagination->offset);
+            $publicationItemsQuery->limit($pagination->limit);
+            $paginationHtml = Html::beginTag('div', ['class' => 'publication-pagination']) . LinkPager::widget(
+                    [
+                        'pagination' => $pagination,
+                        'nextPageLabel' => $this->paginationNextLabel,
+                        'prevPageLabel' => $this->paginationPrevLabel,
+                        // 'firstPageLabel' => $this->paginationPrevLabel,
+                        // 'lastPageLabel' => $this->paginationNextLabel,
+                    ]
+                ) . Html::endTag('div');
+        }
+
+        return Html::tag('div', $this->renderItemsHtml($publicationItemsQuery->all()), ['class' => $this->wrapperCssClass]) . $paginationHtml;
+    }
+
+    protected function renderItemsHtml($publicationItems = [])
+    {
+        $html = '';
+        /** @var PublicationItem[] $publicationItems */
+        foreach ($publicationItems as $publicationItem) {
+            try {
+                $html .= $this->renderHtmlByPublicationItem($publicationItem);
+            } catch (Exception $e) {
+                Yii::error($e->getMessage(), __METHOD__);
+            }
+        }
+        return $html;
+    }
+
+    /**
      * @param string $attributeName
      * @param string $columnName
      *
      * @return array
      *
      * if we get one or a list of category_ids build constraint
-     * to exclude IDs they can be dafined as negative int
+     * to exclude IDs they can be defined as negative int
      */
     protected function filterConditions(string $attributeName, string $columnName): array
     {
