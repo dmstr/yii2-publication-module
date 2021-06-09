@@ -13,18 +13,22 @@ use yii\web\NotFoundHttpException;
 class DefaultController extends Controller
 {
     /**
-     * @param string $categoryId
      *
      * @throws BadRequestHttpException
      * @return string
      */
-    public function actionIndex($categoryId = PublicationHelper::ALL)
+    public function actionIndex()
     {
-        $tagId = Yii::$app->request->get('tagId', PublicationHelper::ALL);
+        $categoryId = Yii::$app->request->get('categoryId', PublicationHelper::ALL);
+        $tagId = Yii::$app->request->get('tagId', null);
         $limit = Yii::$app->request->get('limit');
 
-        if (!$this->checkParam($categoryId)) {
+        if ($categoryId !== null && !$this->checkParam($categoryId)) {
             throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param category id'));
+        }
+
+        if ($tagId !== null && !$this->checkParam($tagId)) {
+            throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param tag id'));
         }
 
         if ($limit !== null && (!is_numeric($limit) || $limit < 1)) {
@@ -35,22 +39,22 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param $tagId
      *
      * @throws BadRequestHttpException
      * @return string
      */
-    public function actionTag($tagId = PublicationHelper::ALL)
+    public function actionTag()
     {
-        $categoryId = Yii::$app->request->get('categoryId', PublicationHelper::ALL);
+        $tagId = Yii::$app->request->get('tagId', PublicationHelper::ALL);
+        $categoryId = Yii::$app->request->get('categoryId', null);
         $limit = Yii::$app->request->get('limit');
 
 
-        if (!$this->checkParam($tagId)) {
+        if ($tagId !== null && !$this->checkParam($tagId)) {
             throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param tag id'));
         }
 
-        if (!$this->checkParam($categoryId)) {
+        if ($categoryId !== null && !$this->checkParam($categoryId)) {
             throw new BadRequestHttpException(Yii::t('publication', 'Invalid config for param category id'));
         }
 
