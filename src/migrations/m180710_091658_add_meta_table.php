@@ -12,16 +12,28 @@ class m180710_091658_add_meta_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = $this->db->getDriverName() === 'mysql' ? 'CHARACTER SET utf8 COLLATE utf8_unicode_ci' : null;
+
+        if ($this->db->getDriverName() === 'pgsql') {
+            $this->execute(<<<SQL
+CREATE TYPE pim_status AS ENUM ('draft','published');
+SQL
+            );
+            $enumColumnConfig = "pim_status default 'draft'";
+        } else {
+            $enumColumnConfig = "ENUM('draft', 'published') NOT NULL DEFAULT 'draft'";
+        }
+
         $this->createTable('{{%dmstr_publication_item_meta}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer()->notNull(),
             'language_code' => $this->string(8)->notNull(),
-            'status' => "ENUM('draft', 'published') NOT NULL DEFAULT 'draft'",
+            'status' => $enumColumnConfig,
             'release_date' => $this->dateTime()->notNull(),
             'end_date' => $this->dateTime(),
             'created_at' => $this->integer(),
             'updated_at' => $this->integer()
-        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
+        ], $tableOptions);
 
         $this->addForeignKey(
             'fk_publication_translation_meta_id',
