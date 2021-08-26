@@ -47,6 +47,10 @@ class m180119_151608_add_initial_publication_tables extends Migration
 
         if ($this->db->getDriverName() === 'pgsql') {
             $this->execute(<<<SQL
+DROP TYPE IF EXISTS pit_status;
+SQL
+);
+            $this->execute(<<<SQL
 CREATE TYPE pit_status AS ENUM ('draft','published');
 SQL
 );

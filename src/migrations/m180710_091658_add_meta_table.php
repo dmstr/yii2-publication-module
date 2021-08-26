@@ -16,6 +16,9 @@ class m180710_091658_add_meta_table extends Migration
 
         if ($this->db->getDriverName() === 'pgsql') {
             $this->execute(<<<SQL
+DROP TYPE IF EXISTS pim_status;
+SQL
+            );            $this->execute(<<<SQL
 CREATE TYPE pim_status AS ENUM ('draft','published');
 SQL
             );
