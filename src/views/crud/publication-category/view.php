@@ -236,7 +236,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                     ],
                     'urlCreator' => function ($action, PublicationItem $model, $key) {
                         $params = is_array($key) ? $key : [$model::primaryKey()[0] => (string)$key];
-                        $params[0] = \Yii::$app->controller->id ? \Yii::$app->controller->id . '/' . $action : $action;
+                        $params[0] = 'crud/publication-item/' . $action;
                         return Url::toRoute($params);
                     },
                     'contentOptions' => ['nowrap' => 'nowrap']
