@@ -135,7 +135,14 @@ class PublicationItemController extends BaseController
 
         $attachedTags = $model->tags;
 
-        $otherTags = PublicationTag::find()->where(['NOT IN', 'id', ArrayHelper::map($attachedTags, 'id', 'id')])->all();
+        $otherTagsQuery = PublicationTag::find()->where(['NOT IN', 'id', ArrayHelper::map($attachedTags, 'id', 'id')]);
+        $qLangs = [Yii::$app->language];
+        if (!empty(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language])) {
+            $qLangs[] = \Yii::$app->params['fallbackLanguages'][\Yii::$app->language];
+        }
+        $otherTagsQuery->andWhere(['ref_lang' => $qLangs]);
+
+        $otherTags = $otherTagsQuery->all();
 
         PublicationAttachAssetBundle::register($this->view);
 
