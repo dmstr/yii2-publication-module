@@ -140,7 +140,11 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                                     $tags[] =  Html::a(Html::encode($label),['/publication/crud/publication-tag/view','id' => $id],['class' => 'label label-default']);
                                 }
 
-                                $tags[] =  Html::a(FA::icon(FA::_PLUS),['/publication/crud/publication-item/attach','id' => $model->id],['class' => 'label label-success']);
+                                // attach tags is only allowed for "own" items
+                                // see: \dmstr\modules\publication\controllers\crud\PublicationItemController::actionAttach()
+                                if ($model->ref_lang === Yii::$app->language) {
+                                    $tags[] =  Html::a(FA::icon(FA::_PLUS),['/publication/crud/publication-item/attach','id' => $model->id],['class' => 'label label-success']);
+                                }
 
                                 return implode(' ', $tags);
 

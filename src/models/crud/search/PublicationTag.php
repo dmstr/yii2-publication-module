@@ -48,10 +48,23 @@ class PublicationTag extends PublicationTagModel
      */
     public function search($params)
     {
+
         $query = PublicationTagModel::find();
         $query->leftJoin(
             PublicationTagTranslation::tableName(),
-            PublicationTagModel::tableName() . '.id = ' . PublicationTagTranslation::tableName() . '.tag_id');
+            PublicationTagModel::tableName() . '.id = ' . PublicationTagTranslation::tableName() . '.tag_id '
+            . ' AND ' . PublicationTagTranslation::tableName() . '.language = ' . \Yii::$app->db->quoteValue(\Yii::$app->language));
+        if (!empty(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language])) {
+            $query->leftJoin(
+                PublicationTagTranslation::tableName() . ' as fbt',
+                PublicationTagModel::tableName() . '.id = fbt.tag_id '
+                . ' AND fbt.language = ' . \Yii::$app->db->quoteValue(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]));
+            $query->select(PublicationTag::tableName() . '.*, COALESCE(' . PublicationTagTranslation::tableName() . '.`name`, `fbt`.`name`) as `name`' );
+        } else {
+            $query->select(PublicationTag::tableName() . '.*, ' . PublicationTagTranslation::tableName() . '.`name` as `name`');
+        }
+        $query->addGroupBy(PublicationTag::tableName() . '.id');
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -68,7 +81,7 @@ class PublicationTag extends PublicationTagModel
                 isset(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language]) ? [PublicationTagModel::tableName() . '.ref_lang' => !empty($this->ref_lang) ? $this->ref_lang : \Yii::$app->params['fallbackLanguages'][\Yii::$app->language]] : '']
         );
 
-        $query->andFilterWhere(['LIKE', PublicationTagTranslation::tableName() . '.name', $this->name]);
+        $query->andFilterHaving(['LIKE', 'name', $this->name]);
 
         $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
 
