@@ -17,7 +17,7 @@
         "kartik-v/yii2-widget-select2": "^2",
         "insolita/yii2-adminlte-widgets": "~1.1",
         "2amigos/yii2-translateable-behavior": "^1.0.4",
-        "twig/twig": "2.*",
+        "yiisoft/yii2-twig": "^2.0.4",
         "dmstr/yii2-json-editor": "^1.0.0"
     },
     "repositories": {
