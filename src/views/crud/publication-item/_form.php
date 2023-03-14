@@ -118,11 +118,8 @@ use yii\helpers\Html;
             <div class="panel-body">
 
                 <!-- attribute status -->
-                <?php
-                $model->status = dmstr\modules\publication\models\crud\PublicationItem::STATUS_PUBLISHED;
-                ?>
                 <?php echo $form->field($model, 'status')->widget(\kartik\select2\Select2::class, [
-                    'data' => [$model::STATUS_PUBLISHED => \Yii::t('crud', 'Published'), $model::STATUS_DRAFT => \Yii::t('crud', 'Draft')]]); ?>
+                    'data' => [$model::STATUS_DRAFT => \Yii::t('crud', 'Draft'), $model::STATUS_PUBLISHED => \Yii::t('crud', 'Published')]]); ?>
 
                 <!-- attribute release_date -->
                 <?php echo $form->field($model, 'release_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>
