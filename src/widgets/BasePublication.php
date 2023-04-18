@@ -250,10 +250,22 @@ abstract class BasePublication extends Widget
     {
         if ($this->teaser) {
             $properties = Json::decode($publicationItem->teaser_widget_json);
+
+            // Check if properties is an array
+            if (empty($properties) || !is_array($properties)) {
+                $properties = [];
+            }
+
             // allow usage of content variables in teaser
             $properties['content'] = Json::decode($publicationItem->content_widget_json);
         } else {
             $properties = Json::decode($publicationItem->content_widget_json);
+
+            // Check if properties is an array
+            if (empty($properties) || !is_array($properties)) {
+                $properties = [];
+            }
+
             $properties['teaser'] = Json::decode($publicationItem->teaser_widget_json);
         }
 
