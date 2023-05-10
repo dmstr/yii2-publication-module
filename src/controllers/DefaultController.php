@@ -10,6 +10,9 @@ use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
+/**
+ * @property \dmstr\modules\publication\Module $module
+*/
 class DefaultController extends Controller
 {
     /**
@@ -86,7 +89,13 @@ class DefaultController extends Controller
      */
     public function actionDetail($itemId)
     {
-        $item = PublicationItem::find()->andWhere([PublicationItem::tableName() . '.id' => $itemId])->published()->one();
+        $query = PublicationItem::find()->andWhere([PublicationItem::tableName() . '.id' => $itemId]);
+
+        // Check if user is allowed to access the item by defined role from module
+        if (empty($this->module->previewItemRole) || !Yii::$app->getUser()->can($this->module->previewItemRole)) {
+            $query->published();
+        }
+        $item = $query->one();
 
         if ($item === null) {
             throw new NotFoundHttpException(\Yii::t('publication', 'Publication item not found'));
