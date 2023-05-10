@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
 
             <?php echo !empty($this->context->module->previewItemRole) && Yii::$app->getUser()->can($this->context->module->previewItemRole) ? Html::a(
                     FA::icon(FA::_EYE) . ' ' . Yii::t('publication', 'View in frontend'),
-                    ['default/index', 'itemId' => $model->id],
+                    ['default/detail', 'itemId' => $model->id],
                     ['class' => 'btn btn-warning']) : ''; ?>
         </div>
 
