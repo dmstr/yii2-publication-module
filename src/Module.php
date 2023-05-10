@@ -15,6 +15,13 @@ class Module extends \yii\base\Module
     public $backendLayout = '@backend/views/layouts/box';
 
     /**
+     * If defined, this role grants the user who assigned it access to items with the status "draft"
+     *
+     * @var null|string
+     */
+    public $previewItemRole = null;
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool
