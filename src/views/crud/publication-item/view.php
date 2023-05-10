@@ -58,6 +58,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 FA::icon(FA::_LINK) . ' ' . Yii::t('publication', 'Attach'),
                 ['attach', 'id' => $model->id],
                 ['class' => 'btn btn-primary']) : '' ?>
+
+            <?php echo Html::a(
+                FA::icon(FA::_EYE) . ' ' . Yii::t('publication', 'View in frontend'),
+                ['default/index', 'itemId' => $model->id],
+                ['class' => 'btn btn-warning']) ?>
         </div>
 
         <div class="pull-right">
