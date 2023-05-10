@@ -59,10 +59,10 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 ['attach', 'id' => $model->id],
                 ['class' => 'btn btn-primary']) : '' ?>
 
-            <?php echo Html::a(
-                FA::icon(FA::_EYE) . ' ' . Yii::t('publication', 'View in frontend'),
-                ['default/index', 'itemId' => $model->id],
-                ['class' => 'btn btn-warning']) ?>
+            <?php echo !empty($this->context->module->previewItemRole) && Yii::$app->getUser()->can($this->context->module->previewItemRole) ? Html::a(
+                    FA::icon(FA::_EYE) . ' ' . Yii::t('publication', 'View in frontend'),
+                    ['default/index', 'itemId' => $model->id],
+                    ['class' => 'btn btn-warning']) : ''; ?>
         </div>
 
         <div class="pull-right">
