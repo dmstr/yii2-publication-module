@@ -41,7 +41,8 @@ Once the extension is installed, simply use it in your code by adding the two mo
 ```php
 'modules' => [
     'publication' => [
-        'class' => dmstr\modules\publication\Module::class
+        'class' => dmstr\modules\publication\Module::class,
+        'previewItemRole' => null // This describes a rbac role which allowed the user which has grants for this privilege to access the default detail action even if the item is not published
     ]
 ]
 ```
