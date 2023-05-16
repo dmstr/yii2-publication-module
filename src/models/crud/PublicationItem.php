@@ -126,14 +126,22 @@ class PublicationItem extends BasePublicationItem
     {
         parent::afterFind();
         if (! $this->release_date) {
-            $fallback_meta = $this->getMetas()->andWhere(['language' => strtolower($this->ref_lang)])->one();
+            $fallback_meta = $this->getFallbackMeta();
             $this->release_date = $fallback_meta ? $fallback_meta->release_date : date('Y-m-d H:i:00');
         }
         if (! $this->end_date) {
-            $fallback_meta = $this->getMetas()->andWhere(['language' => strtolower($this->ref_lang)])->one();
+            $fallback_meta = $this->getFallbackMeta();
             $this->end_date = $fallback_meta ? $fallback_meta->end_date : null;
         }
 
+    }
+
+    /**
+     * @return PublicationItem|null
+     */
+    public function getFallbackMeta()
+    {
+        return $this->getMetas()->andWhere(['language' => strtolower($this->ref_lang)])->one();
     }
 
     /**
