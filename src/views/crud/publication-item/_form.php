@@ -125,6 +125,16 @@ use yii\helpers\Html;
 
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
+                        <?php echo $form->field($model, 'item_start_date')->widget(DateTimePickerTimezone::class) ?>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <?php echo $form->field($model, 'item_end_date')->widget(DateTimePickerTimezone::class) ?>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
                         <?php echo $form->field($model, 'release_date')->widget(DateTimePickerTimezone::class) ?>
                     </div>
                     <div class="col-xs-12 col-md-6">
