@@ -64,7 +64,9 @@ class PublicationItem extends BasePublicationItem
             'translationAttributes' => [
                 'status',
                 'release_date',
-                'end_date'
+                'end_date',
+                'item_start_date',
+                'item_end_date'
             ],
             'deleteEvent' => ActiveRecord::EVENT_BEFORE_DELETE
         ];
@@ -101,7 +103,7 @@ class PublicationItem extends BasePublicationItem
     {
         $rules = parent::rules();
         $rules['requiredAttributes'] = [['release_date', 'title', 'ref_lang'], 'required'];
-        $rules['safeAttributes'] = [['end_date', 'tagIds'], 'safe'];
+        $rules['safeAttributes'] = [['end_date', 'tagIds','item_start_date', 'item_end_date'], 'safe'];
         $rules['stringAttributes'] = [['content_widget_json', 'teaser_widget_json', 'status'], 'string'];
         $rules['stringLengthAttributes'] = ['title', 'string', 'max' => 255];
         $rules['inRangeAttributes'] = [

@@ -15,6 +15,8 @@ use yii\behaviors\TimestampBehavior;
  * @property string $status
  * @property string $release_date
  * @property string $end_date
+ * @property string $item_start_date
+ * @property string $item_end_date
  * @property integer $created_at
  * @property integer $updated_at
  *
@@ -96,7 +98,7 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
             [['item_id', 'language', 'release_date'], 'required'],
             [['item_id'], 'integer'],
             [['status'], 'string'],
-            [['release_date', 'end_date'], 'safe'],
+            [['release_date', 'end_date','item_start_date', 'item_end_date'], 'safe'],
             [['language'], 'string', 'max' => 7],
             [['item_id', 'language'], 'unique', 'targetAttribute' => ['item_id', 'language']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => \dmstr\modules\publication\models\crud\PublicationItem::class, 'targetAttribute' => ['item_id' => 'id']],
@@ -120,6 +122,8 @@ abstract class PublicationItemMeta extends \dmstr\modules\publication\models\cru
             'status' => Yii::t('publication', 'Status'),
             'release_date' => Yii::t('publication', 'Release Date'),
             'end_date' => Yii::t('publication', 'End Date'),
+            'item_start_date' => Yii::t('publication', 'Item Start Date'),
+            'item_end_date' => Yii::t('publication', 'Item End Date'),
             'created_at' => Yii::t('publication', 'Created At'),
             'updated_at' => Yii::t('publication', 'Updated At'),
         ];
