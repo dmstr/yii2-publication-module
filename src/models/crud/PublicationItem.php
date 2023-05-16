@@ -230,14 +230,6 @@ class PublicationItem extends BasePublicationItem
         return $attributeLabels;
     }
 
-    public function attributeHints()
-    {
-        $attributeHints = parent::attributeHints();
-        $attributeHints['release_date'] = Yii::t('publication', 'Selected UTC end date time corresponds to CEST {offset} hours', ['offset' => Html::tag('span', null, ['id' => 'release-date-mez-offset'])]);
-        $attributeHints['end_date'] = Yii::t('publication', 'Selected UTC end date time corresponds to CEST {offset} hours', ['offset' => Html::tag('span', null, ['id' => 'end-date-mez-offset'])]);
-        return $attributeHints;
-    }
-
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);

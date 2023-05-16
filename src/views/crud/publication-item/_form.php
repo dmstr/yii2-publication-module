@@ -1,6 +1,7 @@
 <?php
 
 use dmstr\modules\publication\models\crud\PublicationTag;
+use dmstr\modules\publication\widgets\DateTimePickerTimezone;
 use kartik\select2\Select2;
 use rmrevin\yii\fontawesome\FA;
 use yii\bootstrap\ActiveForm;
@@ -124,18 +125,10 @@ use yii\helpers\Html;
 
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
-                        <?php echo $form->field($model, 'release_date', [
-                            'hintOptions' => [
-                                'class' => 'help-block mez-info'
-                            ]
-                        ])->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>
+                        <?php echo $form->field($model, 'release_date')->widget(DateTimePickerTimezone::class) ?>
                     </div>
                     <div class="col-xs-12 col-md-6">
-                        <?php echo $form->field($model, 'end_date', [
-                            'hintOptions' => [
-                                'class' => 'help-block mez-info'
-                            ]
-                        ])->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>
+                        <?php echo $form->field($model, 'end_date')->widget(DateTimePickerTimezone::class) ?>
                     </div>
                 </div>
             </div>
