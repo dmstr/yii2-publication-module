@@ -110,6 +110,30 @@ $this->registerJs('$(function () {$(\'[data-toggle="tooltip"]\').tooltip()})');
                     ],
                     [
                         'class' => DataColumn::class,
+                        'attribute' => 'end_date',
+                        'value' => function ($model) {
+                            return \Yii::$app->formatter->asDatetime($model->end_date);
+                        },
+                        'format' => 'raw'
+                    ],
+                    [
+                        'class' => DataColumn::class,
+                        'attribute' => 'item_start_date',
+                        'value' => function ($model) {
+                            return \Yii::$app->formatter->asDatetime($model->item_start_date);
+                        },
+                        'format' => 'raw'
+                    ],
+                    [
+                        'class' => DataColumn::class,
+                        'attribute' => 'item_end_date',
+                        'value' => function ($model) {
+                            return \Yii::$app->formatter->asDatetime($model->item_end_date);
+                        },
+                        'format' => 'raw'
+                    ],
+                    [
+                        'class' => DataColumn::class,
                         'attribute' => 'category_id',
                         'value' => function ($model) {
                             return Html::a($model->category->label, ['/publication/crud/publication-category/view', 'id' => $model->category->id,], ['data-pjax' => 0]);
