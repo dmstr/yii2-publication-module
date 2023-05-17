@@ -120,6 +120,15 @@ abstract class BasePublication extends Widget
      */
     public $excludeId;
 
+    /**
+     * Column and direction to be ordered by
+     * Columns can be specified in either a string (e.g. `"item_start_date ASC"`) or an array
+     * (e.g. `['item_start_date' => SORT_ASC]`).
+     *
+     * @var array
+     */
+    public $sortOrder = ['release_date' => SORT_DESC];
+
     public function init()
     {
         $this->itemsQuery = PublicationItem::find()
@@ -147,7 +156,7 @@ abstract class BasePublication extends Widget
             }
         }
 
-        $this->itemsQuery->orderBy(['release_date' => SORT_DESC]);
+        $this->itemsQuery->orderBy($this->sortOrder);
 
     }
 
