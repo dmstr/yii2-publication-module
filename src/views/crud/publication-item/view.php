@@ -263,6 +263,11 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                     'content' => $this->blocks['PublicationTags'],
                     'label' => '<small>' . Yii::t('publication', 'Publication Tags') . ' <span class="badge badge-default">' . $model->getTags()->count() . '</span></small>',
                     'active' => false,
+                ],
+                [
+                    'content' => $this->render('_versions', ['model' => $model]),
+                    'label' => '<small>' . Yii::t('publication', 'Versions') . '</small>',
+                    'active' => false,
                 ]
             ]
         ]
