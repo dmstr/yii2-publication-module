@@ -27,7 +27,7 @@ class PublicationItem extends PublicationItemModel
     {
         return [
             [['id'], 'integer'],
-            [['release_date', 'title', 'category_id', 'ref_lang'], 'safe'],
+            [['release_date', 'end_date', 'item_start_date', 'item_end_date', 'title', 'category_id', 'ref_lang'], 'safe'],
         ];
     }
 
@@ -61,7 +61,7 @@ class PublicationItem extends PublicationItemModel
 
         $query = PublicationItemModel::find();
 
-        $query->select(["{$model_table}.*", 'meta.release_date as release_date', 'trans.title as title']);
+        $query->select(["{$model_table}.*", 'meta.release_date as release_date', 'trans.title as title', 'meta.end_date as end_date', 'meta.item_start_date as item_start_date', 'meta.item_end_date as item_end_date']);
 
         if (!empty(\Yii::$app->params['fallbackLanguages'][\Yii::$app->language])) {
             $query->select(["{$model_table}.*", 'COALESCE(meta.release_date, fbmeta.release_date) as release_date', 'COALESCE(trans.title, fbtrans.title) as title']);
@@ -117,6 +117,18 @@ class PublicationItem extends PublicationItemModel
                         'asc' => ['release_date' => SORT_ASC],
                         'desc' => ['release_date' => SORT_DESC]
                     ],
+                    'end_date' => [
+                        'asc' => ['end_date' => SORT_ASC],
+                        'desc' => ['end_date' => SORT_DESC]
+                    ],
+                    'item_start_date' => [
+                        'asc' => ['item_start_date' => SORT_ASC],
+                        'desc' => ['item_start_date' => SORT_DESC]
+                    ],
+                    'item_end_date' => [
+                        'asc' => ['item_end_date' => SORT_ASC],
+                        'desc' => ['item_end_date' => SORT_DESC]
+                    ],
                     'category_id' => [
                         'asc' => [$model_table . '.category_id' => SORT_ASC],
                         'desc' => [$model_table . '.category_id' => SORT_DESC]
@@ -151,6 +163,18 @@ class PublicationItem extends PublicationItemModel
 
         if (!empty($this->release_date)) {
             $query->andFilterHaving(['release_date' => date('Y-m-d H:i:s', strtotime($this->release_date))]);
+        }
+
+        if (!empty($this->end_date)) {
+            $query->andFilterHaving(['end_date' => date('Y-m-d H:i:s', strtotime($this->end_date))]);
+        }
+
+        if (!empty($this->item_start_date)) {
+            $query->andFilterHaving(['item_start_date' => date('Y-m-d H:i:s', strtotime($this->item_start_date))]);
+        }
+
+        if (!empty($this->item_end_date)) {
+            $query->andFilterHaving(['item_end_date' => date('Y-m-d H:i:s', strtotime($this->item_end_date))]);
         }
 
 

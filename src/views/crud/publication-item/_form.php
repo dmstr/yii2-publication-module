@@ -1,6 +1,7 @@
 <?php
 
 use dmstr\modules\publication\models\crud\PublicationTag;
+use dmstr\modules\publication\widgets\DateTimePickerTimezone;
 use kartik\select2\Select2;
 use rmrevin\yii\fontawesome\FA;
 use yii\bootstrap\ActiveForm;
@@ -121,16 +122,25 @@ use yii\helpers\Html;
                 <?php echo $form->field($model, 'status')->widget(\kartik\select2\Select2::class, [
                     'data' => [$model::STATUS_DRAFT => \Yii::t('crud', 'Draft'), $model::STATUS_PUBLISHED => \Yii::t('crud', 'Published')]]); ?>
 
-                <!-- attribute release_date -->
-                <?php echo $form->field($model, 'release_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>
-                <span class="mez-info"><?= Yii::t('publication', 'Selected UTC release date time corresponds to CEST {offset} hours', ['offset' => Html::tag('span', null, ['id' => 'release-date-mez-offset'])]) ?></span>
-                <br>
-                <br>
-                <!-- attribute end_date -->
-                <?php echo $form->field($model, 'end_date')->widget(zhuravljov\yii\widgets\DateTimePicker::class, ['clientOptions' => ['autoclose' => true]]) ?>
-                <span class="mez-info"><?= Yii::t('publication', 'Selected UTC end date time corresponds to CEST {offset} hours', ['offset' => Html::tag('span', null, ['id' => 'end-date-mez-offset'])]) ?></span>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <?php echo $form->field($model, 'item_start_date')->widget(DateTimePickerTimezone::class) ?>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <?php echo $form->field($model, 'item_end_date')->widget(DateTimePickerTimezone::class) ?>
+                    </div>
+                </div>
 
 
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <?php echo $form->field($model, 'release_date')->widget(DateTimePickerTimezone::class) ?>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <?php echo $form->field($model, 'end_date')->widget(DateTimePickerTimezone::class) ?>
+                    </div>
+                </div>
             </div>
         </div>
 
