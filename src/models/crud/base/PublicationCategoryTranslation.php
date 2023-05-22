@@ -45,11 +45,11 @@ abstract class PublicationCategoryTranslation extends \dmstr\modules\publication
      */
     public function behaviors()
     {
-        return [
-            [
-                'class' => TimestampBehavior::class,
-            ],
+        $behaviors = parent::behaviors();
+        $behaviors['timestamp'] = [
+            'class' => TimestampBehavior::class,
         ];
+        return $behaviors;
     }
 
     /**

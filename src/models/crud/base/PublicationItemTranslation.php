@@ -47,11 +47,11 @@ abstract class PublicationItemTranslation extends \dmstr\modules\publication\mod
      */
     public function behaviors()
     {
-        return [
-            [
-                'class' => TimestampBehavior::class,
-            ],
+        $behaviors = parent::behaviors();
+        $behaviors['timestamp'] = [
+            'class' => TimestampBehavior::class,
         ];
+        return $behaviors;
     }
 
     /**
