@@ -10,13 +10,29 @@
 namespace dmstr\modules\publication\models\crud;
 
 
+use bedezign\yii2\audit\AuditTrailBehavior;
+
 /**
  * Class ActiveRecord
+ *
  * @package dmstr\modules\publication\models\crud
  * @author Elias Luhr <e.luhr@herzogkommunikation.de>
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+
+    /**
+     * @inheritdoc
+    */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['audit-trail'] = [
+            'class' => AuditTrailBehavior::class
+        ];
+        return $behaviors;
+    }
+
     /**
      * overwrite \yii\db\BaseActiveRecord::instantiate() to be able to overload model classes returned by ActiveQuery
      *
