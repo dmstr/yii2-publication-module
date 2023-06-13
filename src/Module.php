@@ -22,6 +22,13 @@ class Module extends \yii\base\Module
     public $previewItemRole = null;
 
     /**
+     * Render cell widgets in frontend detail view (or not)
+     *
+     * @var bool
+     */
+    public $showWidgetCellsInDetailView = true;
+
+    /**
      * @param \yii\base\Action $action
      *
      * @return bool
