@@ -10,8 +10,6 @@
 namespace dmstr\modules\publication\models\crud;
 
 
-use bedezign\yii2\audit\AuditTrailBehavior;
-
 /**
  * Class ActiveRecord
  *
@@ -27,9 +25,12 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['audit-trail'] = [
-            'class' => AuditTrailBehavior::class
-        ];
+        if (class_exists('bedezign\yii2\audit\AuditTrailBehavior')) {
+            $behaviors['audit-trail'] = [
+                'class' => \bedezign\yii2\audit\AuditTrailBehavior::class
+            ];
+        }
+
         return $behaviors;
     }
 
