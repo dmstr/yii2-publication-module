@@ -48,11 +48,11 @@ abstract class PublicationCategory extends \dmstr\modules\publication\models\cru
      */
     public function behaviors()
     {
-        return [
-            [
-                'class' => TimestampBehavior::class,
-            ],
+        $behaviors = parent::behaviors();
+        $behaviors['timestamp'] = [
+            'class' => TimestampBehavior::class,
         ];
+        return $behaviors;
     }
 
     /**
