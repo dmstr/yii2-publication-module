@@ -46,11 +46,11 @@ abstract class PublicationItem extends \dmstr\modules\publication\models\crud\Ac
      */
     public function behaviors()
     {
-        return [
-            [
-                'class' => TimestampBehavior::class,
-            ],
+        $behaviors = parent::behaviors();
+        $behaviors['timestamp'] = [
+            'class' => TimestampBehavior::class,
         ];
+        return $behaviors;
     }
 
     /**
