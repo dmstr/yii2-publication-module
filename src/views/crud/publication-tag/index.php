@@ -2,11 +2,11 @@
 
 use dmstr\modules\publication\components\PublicationHelper;
 use dmstr\modules\publication\models\crud\PublicationTag;
-use rmrevin\yii\fontawesome\FA;
+use dmstr\modules\publication\models\crud\PublicationTagGroup;use rmrevin\yii\fontawesome\FA;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
 use yii\grid\GridView;
-use yii\helpers\Html;
+use yii\helpers\ArrayHelper;use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -55,6 +55,10 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                             [
                                 'url' => ['/publication/crud/publication-item/index'],
                                 'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Item'),
+                            ],
+                            [
+                                'url' => ['/publication/crud/publication-tag-group/index'],
+                                'label' => FA::icon(FA::_RANDOM) . ' ' . Yii::t('publication', 'Tag Group'),
                             ]
                         ]
                     ],
@@ -89,6 +93,16 @@ $actionColumnTemplateString = '<div class="action-buttons">' . $actionColumnTemp
                 [
                     'class' => DataColumn::class,
                     'attribute' => 'name',
+                ],
+                [
+                    'attribute' => 'tag_group_id',
+                    'filter' => ArrayHelper::map(PublicationTagGroup::find()->all(), 'id', 'name'),
+                    'value' => function ($model) {
+                        if ($model->tagGroup) {
+                            return $model->tagGroup->name;
+                        }
+                        return null;
+                    }
                 ],
                 [
                     'class' => DataColumn::class,

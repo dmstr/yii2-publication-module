@@ -50,11 +50,6 @@ $this->params['breadcrumbs'][] = Yii::t('publication', 'View');
                 FA::icon(FA::_PLUS) . ' ' . Yii::t('publication', 'New'),
                 ['create'],
                 ['class' => 'btn btn-success']) ?>
-
-            <?php echo $model->ref_lang === Yii::$app->language ? Html::a(
-                FA::icon(FA::_LINK) . ' ' . Yii::t('publication', 'Attach'),
-                ['attach', 'id' => $model->id],
-                ['class' => 'btn btn-primary']) : '' ?>
         </div>
 
         <div class="pull-right">

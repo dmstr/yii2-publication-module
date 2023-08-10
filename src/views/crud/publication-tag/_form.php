@@ -46,6 +46,27 @@ use yii\helpers\Html;
     <?= Html::a(FA::icon(FA::_LIST) . ' ' . Yii::t('publication', 'Full list'), ['index'], ['class' => 'btn btn-default pull-right']) ?>
     <span class="clearfix"></span>
 
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <?= Yii::t('publication', 'General') ?>
+            </h3>
+        </div>
+        <div class="panel-body">
+
+            <!-- attribute category_id -->
+            <?php echo $form->field($model, 'tag_group_id')->widget(\kartik\select2\Select2::class, [
+                'model' => $model,
+                'attribute' => 'tag_group_id',
+                'data' => \yii\helpers\ArrayHelper::map(dmstr\modules\publication\models\crud\PublicationTagGroup::find()->all(), 'id', 'name'),
+                'options' => [
+                    'placeholder' => Yii::t('publication', 'Type to autocomplete'),
+                    'multiple' => false
+                ]
+            ]); ?>
+        </div>
+    </div>
+
 
     <div class="panel panel-default">
         <div class="panel-heading">

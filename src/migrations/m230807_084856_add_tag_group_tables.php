@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use Yii;
 
 /**
  * Class m230807_084856_add_tag_group_tables
@@ -36,17 +37,23 @@ class m230807_084856_add_tag_group_tables extends Migration
         $this->createIndex('UQ_tag_group_language_name', '{{%dmstr_publication_tag_group_translation}}', ['tag_group_id', 'language', 'name'], true);
         $this->addForeignKey('FK_tag_group_translation0', '{{%dmstr_publication_tag_group_translation}}', 'tag_group_id', '{{%dmstr_publication_tag_group}}', 'id');
 
+        // ref lang. Use fall back language param as default. If not set use fallback language for specific language. If not set, use first language from url manager. If not set use app language
+        $refLang = Yii::$app->params['fallbackLanguage'] ?? Yii::$app->params['fallbackLanguages'][Yii::$app->language] ?? Yii::$app->urlManager->languages[0] ?? Yii::$app->language;
+        $defaultTagGroupId = 1;
 
-        $this->createTable('{{%dmstr_publication_tag_group_x_tag}}',
-            [
-                'tag_group_id' => $this->integer()->notNull(),
-                'tag_id' => $this->integer()->notNull(),
-                'created_at' => $this->integer(),
-                'updated_at' => $this->integer(),
-                'PRIMARY KEY (tag_group_id, tag_id)'
-            ], $tableOptions);
-        $this->addForeignKey('fk_dmstr_tag_group_x_item0', '{{%dmstr_publication_tag_group_x_tag}}', 'tag_group_id', '{{%dmstr_publication_tag_group}}', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('fk_dmstr_tag_group_x_item1', '{{%dmstr_publication_tag_group_x_tag}}', 'tag_id', '{{%dmstr_publication_tag}}', 'id', 'CASCADE', 'CASCADE');
+        // create default tag group
+        $this->insert('{{%dmstr_publication_tag_group}}', ['id' => $defaultTagGroupId, 'ref_lang' => $refLang, 'created_at' => time(), 'updated_at' => time()]);
+        $this->insert('{{%dmstr_publication_tag_group_translation}}', ['tag_group_id' => $defaultTagGroupId, 'language' => $refLang, 'name' => 'Default', 'created_at' => time(), 'updated_at' => time()]);
+
+        // create fk column for tag
+        $this->addColumn('{{%dmstr_publication_tag}}', 'tag_group_id', $this->integer()->null()->after('id'));
+        $this->addForeignKey('FK_tag_tag_group_0', '{{%dmstr_publication_tag}}', 'tag_group_id', '{{%dmstr_publication_tag_group}}', 'id');
+
+        // update tag entries
+        $this->update('{{%dmstr_publication_tag}}', ['tag_group_id' => $defaultTagGroupId]);
+
+        // tag group ref in tag is required
+        $this->alterColumn('{{%dmstr_publication_tag}}', 'tag_group_id', $this->integer()->notNull());
     }
 
     /**
@@ -54,7 +61,7 @@ class m230807_084856_add_tag_group_tables extends Migration
      */
     public function down()
     {
-        $this->dropTable('{{%dmstr_publication_tag_group_x_item}}');
+        $this->dropColumn('{{%dmstr_publication_tag}}', 'tag_group_id');
         $this->dropTable('{{%dmstr_publication_tag_group_translation}}');
         $this->dropTable('{{%dmstr_publication_tag_group}}');
     }

@@ -46,6 +46,7 @@ class PublicationTagGroupTranslation extends ActiveRecord
         $rules['integerAttributes'] = ['tag_group_id', 'integer'];
         $rules['shortStringAttributes'] = ['language', 'string', 'max' => 7];
         $rules['requiredAttributes'] = ['name', 'required'];
+        $rules['tagGroupRef'] = [['tag_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => PublicationTagGroup::class, 'targetAttribute' => ['tag_group_id' => 'id']];
         return $rules;
     }
 

@@ -15,6 +15,7 @@ use dosamigos\translateable\TranslateableBehavior;
 use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
+use Yii;
 
 /**
  * Class PublicationTag
@@ -81,7 +82,8 @@ class PublicationTag extends ActiveRecord
     public function rules()
     {
         $rules = parent::rules();
-        $rules['requiredAttributes'] = ['name', 'required'];
+        $rules['requiredAttributes'] = [['name', 'tag_group_id'], 'required'];
+        $rules['tagGroupRef'] = [['tag_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => PublicationTagGroup::class, 'targetAttribute' => ['tag_group_id' => 'id']];
         return $rules;
     }
 
@@ -102,8 +104,25 @@ class PublicationTag extends ActiveRecord
         return $this->hasMany(PublicationItem::class, ['id' => 'item_id'])->viaTable('{{%dmstr_publication_tag_x_item}}', ['tag_id' => 'id']);
     }
 
+    /**
+     * @return ActiveQuery
+     */
+    public function getTagGroup()
+    {
+        return $this->hasOne(PublicationTagGroup::class, ['id' => 'tag_group_id']);
+    }
+
     public function getLabel()
     {
         return $this->name;
+    }
+
+    public function attributeLabels()
+    {
+        $attributeLabels = parent::attributeLabels();
+        $attributeLabels['name'] = Yii::t('publication', 'Name');
+        $attributeLabels['tag_group_id'] = \Yii::t('publication', 'Tag Group ID');
+        $attributeLabels['ref_lang'] = \Yii::t('publication', 'Ref Lang');
+        return $attributeLabels;
     }
 }

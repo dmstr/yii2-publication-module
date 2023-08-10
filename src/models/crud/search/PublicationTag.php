@@ -25,7 +25,7 @@ class PublicationTag extends PublicationTagModel
     public function rules()
     {
         return [
-            [['name', 'ref_lang'], 'safe'],
+            [['name', 'ref_lang','tag_group_id'], 'safe'],
         ];
     }
 
@@ -56,7 +56,7 @@ class PublicationTag extends PublicationTagModel
 
         $query = PublicationTag::find();
         $query->alias('tg');
-        $query->select(['tg.id', 'ref_lang', 'name' => new Expression('COALESCE(t.name, ft.name)')]);
+        $query->select(['tg.id', 'tag_group_id', 'ref_lang', 'name' => new Expression('COALESCE(t.name, ft.name)')]);
         $query->leftJoin(['t' => PublicationTagTranslationModel::tableName()], 'tg.id = t.tag_id AND t.language = :appLanguage', [':appLanguage' => $appLanguage]);
         $query->leftJoin(['ft' => PublicationTagTranslationModel::tableName()], 'tg.id = ft.tag_id AND ft.language = :fallbackLanguage', [':fallbackLanguage' => $this->getFallbackLanguage(Yii::$app->language)]);
 
@@ -73,6 +73,7 @@ class PublicationTag extends PublicationTagModel
 
         $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
         $query->andFilterHaving(['LIKE', 'name', $this->name]);
+        $query->andFilterHaving(['LIKE', 'tag_group_id', $this->tag_group_id]);
 
         return $dataProvider;
     }
