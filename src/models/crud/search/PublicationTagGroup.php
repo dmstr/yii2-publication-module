@@ -2,19 +2,24 @@
 
 namespace dmstr\modules\publication\models\crud\search;
 
-use dmstr\modules\publication\models\crud\PublicationTag as PublicationTagModel;
-use dmstr\modules\publication\models\crud\PublicationTagTranslation as PublicationTagTranslationModel;
+use dmstr\modules\publication\models\crud\PublicationTagGroup as PublicationTagGroupModel;
+use dmstr\modules\publication\models\crud\PublicationTagGroupTranslation as PublicationTagGroupTranslationModel;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use Yii;
 use yii\db\Expression;
 
 /**
- * PublicationTag represents the model behind the search form about `dmstr\modules\publication\models\crud\PublicationTag`.
+ * PublicationTag represents the model behind the search form about
+ * `dmstr\modules\publication\models\crud\PublicationTag`.
+ *
+ * @method string getFallbackLanguage($forLanguage = null)
+ *
+ * @property string $ref_lang
  *
  *
  */
-class PublicationTag extends PublicationTagModel
+class PublicationTagGroup extends PublicationTagGroupModel
 {
 
     /**
@@ -24,9 +29,7 @@ class PublicationTag extends PublicationTagModel
      */
     public function rules()
     {
-        return [
-            [['name', 'ref_lang'], 'safe'],
-        ];
+        return [[['name', 'ref_lang'], 'safe'],];
     }
 
 
@@ -37,7 +40,6 @@ class PublicationTag extends PublicationTagModel
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
@@ -47,6 +49,7 @@ class PublicationTag extends PublicationTagModel
      *
      *
      * @param array $params
+     *
      * @return ActiveDataProvider
      */
     public function search($params)
@@ -54,11 +57,11 @@ class PublicationTag extends PublicationTagModel
 
         $appLanguage = Yii::$app->language;
 
-        $query = PublicationTag::find();
+        $query = PublicationTagGroupModel::find();
         $query->alias('tg');
         $query->select(['tg.id', 'ref_lang', 'name' => new Expression('COALESCE(t.name, ft.name)')]);
-        $query->leftJoin(['t' => PublicationTagTranslationModel::tableName()], 'tg.id = t.tag_id AND t.language = :appLanguage', [':appLanguage' => $appLanguage]);
-        $query->leftJoin(['ft' => PublicationTagTranslationModel::tableName()], 'tg.id = ft.tag_id AND ft.language = :fallbackLanguage', [':fallbackLanguage' => $this->getFallbackLanguage(Yii::$app->language)]);
+        $query->leftJoin(['t' => PublicationTagGroupTranslationModel::tableName()], 'tg.id = t.tag_group_id AND t.language = :appLanguage', [':appLanguage' => $appLanguage]);
+        $query->leftJoin(['ft' => PublicationTagGroupTranslationModel::tableName()], 'tg.id = ft.tag_group_id AND ft.language = :fallbackLanguage', [':fallbackLanguage' => $this->getFallbackLanguage(Yii::$app->language)]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -41,4 +41,14 @@ use insolita\wgadminlte\SmallBox;
             ]) ?>
         </div>
     <?php endif; ?>
+    <?php if (Yii::$app->user->can('publication_crud_publication-tag-group_index') || Yii::$app->user->can('publication_crud_publication-tag-group')): ?>
+        <div class="col-xs-12 col-md-6">
+            <?= SmallBox::widget([
+                'head' => Yii::t('publication', 'Tag Groups'),
+                'footer' => Yii::t('publication', 'Manage tag groups'),
+                'footer_link' => ['/publication/crud/publication-tag-group/index'],
+                'type' => SmallBox::TYPE_YEL
+            ]) ?>
+        </div>
+    <?php endif; ?>
 </div>
