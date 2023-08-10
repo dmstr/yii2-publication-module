@@ -76,7 +76,7 @@ class PublicationTagGroup extends ActiveRecord
      */
     public function getTags()
     {
-        return $this->hasMany(PublicationTag::class, ['id' => 'tag_id'])->viaTable('{{%dmstr_publication_tag_group_x_tag}}', ['tag_group_id' => 'id']);
+        return $this->hasMany(PublicationTag::class, ['tag_group_id' => 'id']);
     }
 
     public function getLabel()
