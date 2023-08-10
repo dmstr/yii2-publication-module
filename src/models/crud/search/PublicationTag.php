@@ -64,16 +64,16 @@ class PublicationTag extends PublicationTagModel
             'query' => $query,
         ]);
 
-
         $this->load($params);
 
         if (!$this->validate()) {
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
         $query->andFilterHaving(['LIKE', 'name', $this->name]);
-        $query->andFilterHaving(['LIKE', 'tag_group_id', $this->tag_group_id]);
+
+        $query->andFilterWhere(['LIKE', 'ref_lang', $this->ref_lang]);
+        $query->andFilterWhere(['tag_group_id' => $this->tag_group_id]);
 
         return $dataProvider;
     }

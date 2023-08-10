@@ -24,6 +24,7 @@ use Yii;
  *
  * @property string name
  * @property string ref_lang
+ * @property int tag_group_id
  * @property string label
  * @property PublicationTagTranslation[] translations
  * @property PublicationItem[] items
