@@ -104,6 +104,5 @@ class DefaultController extends Controller
         $item->setScenario('crud');
 
         return $this->render('detail', ['item' => $item]);
-
     }
 }

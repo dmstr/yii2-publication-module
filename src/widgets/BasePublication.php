@@ -102,7 +102,7 @@ abstract class BasePublication extends Widget
 
     /**
      * can be:
-     * - null (no category constraint)
+     * - null (no tag constraint)
      * - 'all' (explicitly no category constraint)
      * - positiv integer (select items IN category ID)
      * - negativ integer (select items NOT IN category ID)
@@ -129,8 +129,41 @@ abstract class BasePublication extends Widget
      */
     public $sortOrder = ['release_date' => SORT_DESC];
 
+    /**
+     * integer|integer[]
+     * @var mixed
+     */
+    public $mainTagId;
+
+    /**
+     * integer|integer[]
+     * @var mixed
+     */
+    public $mainCategoryId;
+
+
+    /**
+     * Route to item detail
+     * @var string
+     */
+    public $itemDetailRoute = '/publication/default/detail';
+
+    /**
+     * @var string
+     */
+    public $filterPrefix;
+
+
+    /**
+     * TODO: Add docs
+     * @var string
+     */
+    public $mainTagLogical = 'AND'; // TODO: Default Value = OR
+
     public function init()
     {
+        $this->initFilter();
+
         $this->itemsQuery = PublicationItem::find()
             ->published()
             ->limit($this->limit);
@@ -139,11 +172,23 @@ abstract class BasePublication extends Widget
             $this->itemsQuery->andWhere($condition);
         }
 
-        if (!empty($this->tagId)) {
+        foreach ($this->filterConditions('mainCategoryId', 'category_id') as $condition) {
+            $this->itemsQuery->andWhere($condition);
+        }
+
+        if (!empty($this->tagId) || !empty($this->mainTagId)) {
             $this->itemsQuery->innerJoin(['x' => PublicationItemXTag::tableName()], PublicationItem::tableName() . '.id = x.item_id');
             $this->itemsQuery->groupBy(PublicationItem::tableName() . '.id');
+        }
 
+        if (!empty($this->tagId)) {
             foreach ($this->filterConditions('tagId', 'tag_id') as $condition) {
+                $this->itemsQuery->andWhere($condition);
+            }
+        }
+
+        if (!empty($this->mainTagId)) {
+            foreach ($this->filterConditions('mainTagId', 'tag_id', $this->mainTagLogical) as $condition) {
                 $this->itemsQuery->andWhere($condition);
             }
         }
@@ -157,7 +202,6 @@ abstract class BasePublication extends Widget
         }
 
         $this->itemsQuery->orderBy($this->sortOrder);
-
     }
 
     /**
@@ -217,7 +261,7 @@ abstract class BasePublication extends Widget
      * if we get one or a list of category_ids build constraint
      * to exclude IDs they can be defined as negative int
      */
-    protected function filterConditions(string $attributeName, string $columnName): array
+    protected function filterConditions(string $attributeName, string $columnName, $andOr = 'or'): array
     {
         $conditions = [];
         if (!empty($this->$attributeName) && $this->$attributeName !== PublicationHelper::ALL) {
@@ -234,12 +278,18 @@ abstract class BasePublication extends Widget
             }
 
             if (!empty($inIds)) {
-                $conditions[] = [$columnName => $inIds];
+                // TODO: Needs FIND_IN_SET
+                if (strtolower($andOr) === 'and') {
+                    foreach ($inIds as $inId) {
+                        $conditions['AND'] = [$columnName => $inId];
+                    }
+                } else {
+                    $conditions[] = [$columnName => $inIds];
+                }
             }
 
             if (!empty($notInIds)) {
                 $conditions[] = ['NOT', [$columnName => $notInIds]];
-
             }
         }
         return $conditions;
@@ -285,12 +335,63 @@ abstract class BasePublication extends Widget
         $publicationWidget .= $publicationItem->category->render((array)$properties, $this->teaser);
 
         if ($this->teaser) {
-            $itemId = $publicationItem instanceof PublicationItem ? $publicationItem->id : $publicationItem->item_id;
-            $urlParts = ['/publication/default/detail', 'itemId' => $itemId];
-            !empty($publicationItem->title) ? $urlParts['title'] = $publicationItem->title : null;
-            $publicationWidget = Html::a($publicationWidget, $urlParts, ['class' => 'publication-detail-link']);
+            $publicationWidget = Html::a($publicationWidget, $this->getItemUrl($publicationItem), ['class' => 'publication-detail-link']);
         }
 
         return $publicationWidget;
+    }
+
+    /**
+     * @param PublicationItem $publicationItem
+     *
+     * @return array
+     */
+    public function getItemUrl($publicationItem)
+    {
+        $itemId = $publicationItem instanceof PublicationItem ? $publicationItem->id : $publicationItem->item_id;
+        $urlOpts = ['itemId' => $itemId];
+        if (!empty($publicationItem->title)) {
+            $urlOpts['title'] = $publicationItem->title;
+        }
+
+        // merge with get persistent filters
+        return array_merge([$this->itemDetailRoute], $urlOpts, $this->getPersistentFilters());
+    }
+
+    public function getPersistentFilters()
+    {
+        $persistentFilters = ['mainTagId', 'mainCategoryId'];
+
+        $options = [];
+        foreach ($persistentFilters as $persistentFilter) {
+            $value = $this->$persistentFilter ?? null;
+            if (!empty($value)) {
+                $options[$persistentFilter] = $value;
+            }
+        }
+
+        if (!empty($this->filterPrefix)) {
+            return [$this->filterPrefix => $options];
+        }
+
+        return $options;
+    }
+
+    public function initFilter()
+    {
+
+        $filterOptions = Yii::$app->getRequest()->get();
+        if (!empty($this->filterPrefix) && !empty(Yii::$app->getRequest()->get($this->filterPrefix))) {
+            $filterOptions = Yii::$app->getRequest()->get($this->filterPrefix);
+        }
+
+        $possibleOptions = ['mainTagId','mainCategoryId', 'tagId', 'categoryId', 'excludeId'];
+
+        foreach ($possibleOptions as $possibleOption) {
+            // Check if filter option is set via query params and is not se
+            if (!empty($filterOptions[$possibleOption]) && !empty($this->$possibleOption)) {
+                $this->$possibleOption = $filterOptions[$possibleOption];
+            }
+        }
     }
 }
