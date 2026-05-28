@@ -17,6 +17,7 @@ use yii\helpers\Url;
 class PublicationFeedBuilder
 {
     private Module $module;
+    private ?string $feedUrl = null;
 
     public function __construct(Module $module)
     {
@@ -29,6 +30,8 @@ class PublicationFeedBuilder
      */
     public function buildFeed(array $items, string $feedUrl): Feed
     {
+        $this->feedUrl = $feedUrl;
+
         $feed = new Feed();
         $feed->setTitle($this->module->rssChannelTitle ?? Yii::$app->name);
         $feed->setDescription((string)($this->module->rssChannelDescription ?? ''));
@@ -46,7 +49,39 @@ class PublicationFeedBuilder
 
     public function renderRss(Feed $feed): string
     {
-        return (new FeedIo())->toRss($feed);
+        $xml = (new FeedIo())->toRss($feed);
+        return $this->feedUrl ? $this->injectAtomSelfLink($xml, $this->feedUrl) : $xml;
+    }
+
+    /**
+     * Adds <atom:link rel="self" .../> to the channel so feed validators
+     * (and well-behaved aggregators) can detect the canonical feed URL.
+     */
+    private function injectAtomSelfLink(string $rssXml, string $feedUrl): string
+    {
+        $atomNs = 'http://www.w3.org/2005/Atom';
+        $dom = new \DOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        if (!@$dom->loadXML($rssXml)) {
+            return $rssXml;
+        }
+
+        $rss = $dom->documentElement;
+        $channel = $rss ? $rss->getElementsByTagName('channel')->item(0) : null;
+        if (!$rss || !$channel) {
+            return $rssXml;
+        }
+
+        $rss->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:atom', $atomNs);
+
+        $atomLink = $dom->createElementNS($atomNs, 'atom:link');
+        $atomLink->setAttribute('href', $feedUrl);
+        $atomLink->setAttribute('rel', 'self');
+        $atomLink->setAttribute('type', 'application/rss+xml');
+        $channel->insertBefore($atomLink, $channel->firstChild);
+
+        return $dom->saveXML();
     }
 
     private function buildItem(Feed $feed, PublicationItem $item): \FeedIo\Feed\Item
