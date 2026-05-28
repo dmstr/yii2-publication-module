@@ -18,7 +18,8 @@
         "insolita/yii2-adminlte-widgets": "~1.1",
         "2amigos/yii2-translateable-behavior": "^1.0.4",
         "yiisoft/yii2-twig": "^2.0.4",
-        "dmstr/yii2-json-editor": "^1.0.0"
+        "dmstr/yii2-json-editor": "^1.0.0",
+        "php-feed-io/feed-io": "^6.3"
     },
     "repositories": {
       "dmstr/yii2-json-editor": {
