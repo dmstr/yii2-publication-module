@@ -1,7 +1,6 @@
 <?php
 
 use yii\db\Migration;
-use Yii;
 
 /**
  * Class m230807_084856_add_tag_group_tables
